@@ -86,3 +86,8 @@ module.exports.DestroySession=function(req,res)
       });
 }
 
+module.exports.signupadmin=function(req,res){
+    return res.render('signupadmin',{
+        title:'signupadmin'
+    });
+}

@@ -40,7 +40,7 @@ app.use(session({
     },
     store:  MongoStore.create(
         {
-            mongoUrl:'mongodb://localhost/AdoptConnect',
+            mongoUrl:'mongodb+srv://admin:abcdefgh@cluster0.zshjdva.mongodb.net/',
             autoRemove: 'disabled'
         
         },

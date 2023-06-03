@@ -3,6 +3,10 @@ const passport=require('passport');
 const router=express.Router();
 
 const userController=require('../controllers/user_controller');
+
+router.get('/signupadmin',userController.signupadmin);
+
+
 router.get('/Sign-In',userController.signIn);
 router.get('/sign-out',userController.DestroySession);
 router.get('/admin/signin',userController.AdminSignIn);
