@@ -6,5 +6,5 @@ const childController=require('../controllers/child_controller');
 
 router.post('/create_child',childController.create);
 router.post('/update_child',childController.update_details_child);
-router.get('/delete_child/:id',childController.delete_child);
+router.delete('/delete_child',childController.delete_child);
 module.exports=router;

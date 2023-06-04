@@ -107,12 +107,10 @@ module.exports.update_details_child = function (req, res) {
     });
 }
 module.exports.delete_child=function(req,res){
-    console.log("sadfsf");
     if(req.user.category!='admin'){
-        console.log("anfiksd");
-        return res.status(404).send("you are not accessed to delete child");
+        return res.status(404).send("you are not accessed to delete child. contact to admin");
     }
-    Child.findOne({child_id:req.params.id},function(err,child){
+    Child.findOne({child_id:req.body.child_id},function(err,child){
         if(!child){
             return res.status(404).send("no child found with given id");
         }
