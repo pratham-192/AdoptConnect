@@ -93,3 +93,9 @@ module.exports.signupadmin = function (req, res) {
     // });
     return res.status("admin signed up");
 }
+module.exports.getLoggedInUser=function(req,res){
+    if(req.isAuthenticated){
+        return res.status(200).json({response:req.user});
+    }
+    return res.status(404).send("log in first");
+}

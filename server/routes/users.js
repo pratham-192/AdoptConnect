@@ -12,11 +12,17 @@ router.get('/sign-out',userController.DestroySession);
 router.get('/admin/signin',userController.AdminSignIn);
 // router.get('/users/Sign-In',userController.AdminsignIn);
 router.get('/signup',userController.signup);
-router.post('/create',userController.create);
+router.post('/create',passport.checkAuthentication,userController.create);
 router.get('/profile',userController.profile);
 router.post('/createSession',passport.authenticate(
     'local',//local passport session is used
     {failureRedirect:'/users/Sign-In'},
 ),userController.createSession)
+
+
+//get logged in user
+router.get('/loggedin_user',userController.getLoggedInUser);
+
+
 
 module.exports=router;
