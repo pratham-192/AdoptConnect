@@ -4,7 +4,8 @@ const path = require('path');
 const childSchema = mongoose.Schema({
     child_id: {
         type: String, 
-        unique: true
+        unique: true,
+        required:true
     },
     state: {
         type: String
@@ -32,7 +33,7 @@ const childSchema = mongoose.Schema({
     },
     childClassification: {
         type: String,
-        unique:true
+        required:true
     },
     recommendedForAdoption: {
         type: String
