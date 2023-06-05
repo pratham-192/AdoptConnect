@@ -77,7 +77,7 @@ module.exports.AdminSignIn = function (req, res) {
 }
 //sign in and create session for the user
 module.exports.createSession = function (req, res) {
-    return res.status(200).send("log in session created");
+    return res.status(200).send(req.user);
 }
 
 module.exports.DestroySession = function (req, res) {
@@ -93,9 +93,9 @@ module.exports.signupadmin = function (req, res) {
     // });
     return res.status("admin signed up");
 }
-module.exports.getLoggedInUser=function(req,res){
-    if(req.isAuthenticated){
-        return res.status(200).json({response:req.user});
+module.exports.getLoggedInUser = function (req, res) {
+    if (req.isAuthenticated) {
+        return res.status(200).json({ response: req.user });
     }
     return res.status(404).send("log in first");
 }
