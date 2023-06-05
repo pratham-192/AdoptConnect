@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { ImCross } from "react-icons/im";
-import { useStateContext } from "../../Contexts/ContextProvider";
 
 export default function AddWorkerPopUp({ setopenAddWorker }) {
   const [userId, setuserId] = useState("");
@@ -9,8 +8,6 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
   const [userEmail, setuserEmail] = useState("");
   const [userCat, setuserCat] = useState("worker");
   const [userPass, setuserPass] = useState("");
-  const { activeMenu, setActiveMenu, screenSize, currentColor } =
-    useStateContext();
 
   const addWorkerHandler = async () => {
     // console.log(userId);
