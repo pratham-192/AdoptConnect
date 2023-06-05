@@ -26,7 +26,7 @@ const childSchema = mongoose.Schema({
         type: String
     },
     dateOfBirth: {
-        type: Date
+        type: String
     },
     age: {
         type: Number
@@ -39,7 +39,7 @@ const childSchema = mongoose.Schema({
         type: String
     },
     inquiryDateOfAdmission: {
-        type: Date
+        type: String
     },
     reasonForAdmission: {
         type: String
@@ -48,10 +48,10 @@ const childSchema = mongoose.Schema({
         type: String
     },
     lastVisit: {
-        type: Date
+        type: String
     },
     lastCall: {
-        type: Date
+        type: String
     },
     caseHistory: {
         type: String
@@ -81,13 +81,13 @@ const childSchema = mongoose.Schema({
         type: String
     },
     dateLFA_CSR_MERUploadedInCARINGS: {
-        type: Date
+        type: String
     },
     createdByUser: {
         type: String
     },
     createdDate: {
-        type: Date
+        type: String
     },
 
     contactNo: [
