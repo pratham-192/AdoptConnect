@@ -5,8 +5,8 @@ export default function childDetails({ childDetails, setopenchildDetails }) {
   console.log(childDetails);
   return (
     <div className="z-50 h-screen w-screen fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center overflow-y-hidden">
-      <div className="p-16">
-        <div className="p-8 bg-white shadow mt-24 rounded-lg">
+      <div className="h-full w-full flex justify-center items-center">
+        <div className="h-5/6 w-5/6 p-8 bg-white shadow rounded-lg overflow-y-scroll">
           <div className="flex justify-end items-center">
             <button
               className="hover:text-slate-500"
@@ -32,7 +32,7 @@ export default function childDetails({ childDetails, setopenchildDetails }) {
                 </svg>
               </div>
             </div>
-            <div className="grid grid-cols-2 text-center order-last md:order-first mt-20 md:mt-0">
+            <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
               <div>
                 <p className="font-bold text-gray-700 text-xl">
                   {childDetails.child_id}
@@ -41,10 +41,15 @@ export default function childDetails({ childDetails, setopenchildDetails }) {
               </div>
               <div>
                 <p className="font-bold text-gray-700 text-xl">
-                  {childDetails.status}
-                  undefined
+                  {childDetails.caseStatus}
                 </p>
                 <p className="text-gray-400">Status</p>
+              </div>
+              <div>
+                <p className="font-bold text-gray-700 text-xl">
+                  {childDetails.gender}
+                </p>
+                <p className="text-gray-400">Gender</p>
               </div>
             </div>
             <div className="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
@@ -54,12 +59,12 @@ export default function childDetails({ childDetails, setopenchildDetails }) {
                 </p>
                 <p className="text-gray-400">Classification</p>
               </div>
-              {/* <button className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
-                Connect
-              </button> */}
-              {/* <button className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
-                Message
-              </button> */}
+              <div>
+                <p className="font-bold text-gray-700 text-xl">
+                  {childDetails.age}
+                </p>
+                <p className="text-gray-400">Age</p>
+              </div>
             </div>
           </div>
           <div className="mt-20 text-center border-b pb-12">
@@ -75,9 +80,14 @@ export default function childDetails({ childDetails, setopenchildDetails }) {
             <p className="mt-8 text-gray-500">
               {childDetails.district}, {childDetails.state}
             </p>
-            <p className="mt-2 text-gray-500">University of Computer Science</p>
           </div>
           <div className="mt-12 flex flex-col">
+            <p className="text-gray-800 font-bold p-1 lg:px-16">
+              Date of Birth :{" "}
+              <span className="text-slate-600 font-light">
+                {childDetails.dateOfBirth}
+              </span>
+            </p>
             <p className="text-gray-800 font-bold p-1 lg:px-16">
               Recommended For Adoption :{" "}
               <span className="text-slate-600 font-light">
@@ -98,8 +108,80 @@ export default function childDetails({ childDetails, setopenchildDetails }) {
                 {childDetails.caseHistory}
               </span>
             </p>
+            <p className="text-gray-800 font-bold p-1 lg:px-16">
+              Inquiry Date Of Admission :{" "}
+              <span className="text-slate-600 font-light">
+                {childDetails.inquiryDateOfAdmission}
+              </span>
+            </p>
+            <p className="text-gray-800 font-bold p-1 lg:px-16">
+              Reason for Admission :{" "}
+              <span className="text-slate-600 font-light">
+                {childDetails.reasonForAdmission}
+              </span>
+            </p>
+            <p className="text-gray-800 font-bold p-1 lg:px-16">
+              Last Visit :{" "}
+              <span className="text-slate-600 font-light">
+                {childDetails.lastVisit}
+              </span>
+            </p>
+            <p className="text-gray-800 font-bold p-1 lg:px-16">
+              Last Call :{" "}
+              <span className="text-slate-600 font-light">
+                {childDetails.lastCall}
+              </span>
+            </p>
+            <p className="text-gray-800 font-bold p-1 lg:px-16">
+              Guardian :{" "}
+              <span className="text-slate-600 font-light">
+                {childDetails.guardianListed}
+              </span>
+            </p>
+            <p className="text-gray-800 font-bold p-1 lg:px-16">
+              Last Family Visit Phone Call :{" "}
+              <span className="text-slate-600 font-light">
+                {childDetails.familyVisitPhoneCall}
+              </span>
+            </p>
+            <p className="text-gray-800 font-bold p-1 lg:px-16">
+              Number of siblings :{" "}
+              <span className="text-slate-600 font-light">
+                {childDetails.siblings}
+              </span>
+            </p>
+            <p className="text-gray-800 font-bold p-1 lg:px-16">
+              Last Date Of CWC order :{" "}
+              <span className="text-slate-600 font-light">
+                {childDetails.lastDateOfCWCOrder}
+              </span>
+            </p>
+            <p className="text-gray-800 font-bold p-1 lg:px-16">
+              Last CWC order :{" "}
+              <span className="text-slate-600 font-light">
+                {childDetails.Lastcwcorder}
+              </span>
+            </p>
+            <p className="text-gray-800 font-bold p-1 lg:px-16">
+              Time of stay in shelter :{" "}
+              <span className="text-slate-600 font-light">
+                {childDetails.lengthOfStayInShelter}
+              </span>
+            </p>
+            <p className="text-gray-800 font-bold p-1 lg:px-16">
+              CARINGS Registration Number :{" "}
+              <span className="text-slate-600 font-light">
+                {childDetails.caringsRegistrationNumber}
+              </span>
+            </p>
+            <p className="text-gray-800 font-bold p-1 lg:px-16">
+              Date LFA, CSR, MERU uploaded in CARINGS :{" "}
+              <span className="text-slate-600 font-light">
+                {childDetails.dateLFA_CSR_MERUUploadedINCARINGS}
+              </span>
+            </p>
             {/* <button className="text-indigo-500 py-2 px-4  font-medium mt-4">
-              Show more
+              Show
             </button> */}
           </div>
         </div>

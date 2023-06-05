@@ -27,8 +27,8 @@ export default function AddChildPopUp({ setopenAddchild }) {
   const [lengthOfStayInShelter, setlengthOfStayInShelter] = useState();
   const [caringsRegistrationNumber, setcaringsRegistrationNumber] = useState();
   const [
-    dateLFA_CSR_MERUUploadedINCARINGS,
-    setdateLFA_CSR_MERUUploadedINCARINGS,
+    dateLFA_CSR_MERUploadedINCARINGS,
+    setdateLFA_CSR_MERUploadedINCARINGS,
   ] = useState();
   const [contactNo, setcontactNo] = useState();
 
@@ -60,7 +60,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
         Lastcwcorder: Lastcwcorder,
         lengthOfStayInShelter: lengthOfStayInShelter,
         caringsRegistrationNumber: caringsRegistrationNumber,
-        dateLFA_CSR_MERUUploadedINCARINGS: dateLFA_CSR_MERUUploadedINCARINGS,
+        dateLFA_CSR_MERUploadedINCARINGS: dateLFA_CSR_MERUploadedINCARINGS,
         contact_no: contactNo,
       }
     );
@@ -338,9 +338,9 @@ export default function AddChildPopUp({ setopenAddchild }) {
                       <input
                         type="date"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        value={dateLFA_CSR_MERUUploadedINCARINGS}
+                        value={dateLFA_CSR_MERUploadedINCARINGS}
                         onChange={(e) =>
-                          setdateLFA_CSR_MERUUploadedINCARINGS(
+                          setdateLFA_CSR_MERUploadedINCARINGS(
                             String(e.target.value)
                           )
                         }

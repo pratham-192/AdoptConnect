@@ -33,11 +33,30 @@ const childGenderTemplate = (props) => (
   </div>
 );
 
+const caseStatusTemplate = (props) => (
+  <div className="flex gap-2 justify-center items-center text-gray-700 capitalize">
+    <p>
+      {props.caseStatus == "active" ? (
+        <p className="h-3 w-3 rounded-full bg-green-400"></p>
+      ) : (
+        <p>
+          {props.caseStatus == "on-hold" ? (
+            <p className="h-3 w-3 rounded-full bg-yellow-600"></p>
+          ) : (
+            <p className="h-3 w-3 rounded-full bg-red-600"></p>
+          )}
+        </p>
+      )}
+    </p>
+    <p>{props.caseStatus}</p>
+  </div>
+);
+
 const Customers = () => {
   const [childData, setchildData] = useState([]);
-  const [openAddChild, setopenAddChild] = useState(true);
+  const [openAddChild, setopenAddChild] = useState(false);
   const [childDetails, setchildDetails] = useState({});
-  const [openchildDetails, setopenchildDetails] = useState(false);
+  const [openchildDetails, setopenchildDetails] = useState(true);
 
   useEffect(async () => {
     const response = await axios.get("http://localhost:3000/admin/all_child");
@@ -102,9 +121,10 @@ const Customers = () => {
             width="120"
           ></ColumnDirective>
           <ColumnDirective
-            field="status"
+            field="caseStatus"
             headerText="Status"
             width="120"
+            template={caseStatusTemplate}
           ></ColumnDirective>
           <ColumnDirective
             field="shelterHome"
