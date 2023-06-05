@@ -8,7 +8,7 @@ module.exports = {
     },
     extend: {
       spacing: {
-        128: '32rem'
+        128: '36rem'
       },
       fontSize: {
         14: '14px',

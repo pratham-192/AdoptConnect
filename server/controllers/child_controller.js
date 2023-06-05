@@ -4,9 +4,9 @@ module.exports.create = async function (req, res) {
 
     // console.log(req.body);
     try {
-        if (req.user.category != 'admin') {
-            return res.status(200).send("you are not accessed to create child");
-        }
+        // if (req.user.category != 'admin') {
+        //     return res.status(200).send("you are not accessed to create child");
+        // }
         const childclass = req.body.childClassification.toLowerCase();
         let child = await Child.findOne({ child_id: req.body.child_id });
 

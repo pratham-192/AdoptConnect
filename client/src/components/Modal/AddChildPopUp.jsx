@@ -3,32 +3,73 @@ import React, { useState } from "react";
 import { ImCross } from "react-icons/im";
 
 export default function AddChildPopUp({ setopenAddchild }) {
-  const [userId, setuserId] = useState("");
-  const [userName, setuserName] = useState("");
-  const [userEmail, setuserEmail] = useState("");
-  const [userCat, setuserCat] = useState("child");
-  const [userPass, setuserPass] = useState("");
+  const [child_id, setchild_id] = useState("");
+  const [childName, setchildName] = useState();
+  const [age, setage] = useState();
+  const [gender, setgender] = useState("male");
+  const [dateOfBirth, setdateOfBirth] = useState();
+  const [state, setstate] = useState("");
+  const [district, setdistrict] = useState();
+  const [shelterHome, setshelterHome] = useState();
+  const [linkedWithSAA, setlinkedWithSAA] = useState("yes");
+  const [childClassification, setchildClassification] = useState("abandoned");
+  const [inquiryDateOfAdmission, setinquiryDateOfAdmission] = useState();
+  const [reasonForAdmission, setreasonForAdmission] = useState();
+  const [lastVisit, setlastVisit] = useState();
+  const [lastCall, setlastCall] = useState();
+  const [caseHistory, setcaseHistory] = useState();
+  const [caseStatus, setcaseStatus] = useState("active");
+  const [guardianListed, setguardianListed] = useState();
+  const [familyVisitPhoneCall, setfamilyVisitPhoneCall] = useState();
+  const [siblings, setsiblings] = useState();
+  const [lastDateOfCWCOrder, setlastDateOfCWCOrder] = useState();
+  const [Lastcwcorder, setLastcwcorder] = useState();
+  const [lengthOfStayInShelter, setlengthOfStayInShelter] = useState();
+  const [caringsRegistrationNumber, setcaringsRegistrationNumber] = useState();
+  const [
+    dateLFA_CSR_MERUUploadedINCARINGS,
+    setdateLFA_CSR_MERUUploadedINCARINGS,
+  ] = useState();
+  const [contactNo, setcontactNo] = useState();
 
   const addchildHandler = async () => {
-    // console.log(userId);
-    // console.log(userName);
-    // console.log(userEmail);
-    // console.log(userPass);
-    // console.log(userCat);
-    const response = await axios.post("http://localhost:3000/users/create", {
-      user_id: userId,
-      name: userName,
-      email: userEmail,
-      password: userPass,
-      category: userCat,
-    });
-    console.log(response.data);
+    console.log("hueuhe");
+    const response = await axios.post(
+      "http://localhost:3000/child/create_child",
+      {
+        child_id: child_id,
+        childName: childName,
+        age: age,
+        gender: gender,
+        dateOfBirth: dateOfBirth,
+        state: state,
+        district: district,
+        shelterHome: shelterHome,
+        linkedWithSAA: linkedWithSAA,
+        childClassification: childClassification,
+        inquiryDateOfAdmission: inquiryDateOfAdmission,
+        reasonForAdmission: reasonForAdmission,
+        lastVisit: lastVisit,
+        lastCall: lastCall,
+        caseHistory: caseHistory,
+        caseStatus: caseStatus,
+        guardianListed: guardianListed,
+        familyVisitPhoneCall: familyVisitPhoneCall,
+        siblings: siblings,
+        lastDateOfCWCOrder: lastDateOfCWCOrder,
+        Lastcwcorder: Lastcwcorder,
+        lengthOfStayInShelter: lengthOfStayInShelter,
+        caringsRegistrationNumber: caringsRegistrationNumber,
+        dateLFA_CSR_MERUUploadedINCARINGS: dateLFA_CSR_MERUUploadedINCARINGS,
+        contact_no: contactNo,
+      }
+    );
     setopenAddchild(false);
   };
 
   return (
     <div className="z-50 h-screen w-screen fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center overflow-y-hidden">
-      <div className="h-4/5 p-6 bg-gray-100 flex items-center justify-center rounded-lg">
+      <div className="h-5/6 p-6 bg-gray-100 flex items-center justify-center rounded-lg">
         <div className="h-full container max-w-screen-lg mx-auto">
           <div>
             <h2 className="font-semibold text-xl flex justify-between items-center text-gray-600 mb-5">
@@ -52,263 +93,274 @@ export default function AddChildPopUp({ setopenAddchild }) {
                 <div className="lg:col-span-2">
                   <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                     <div className="md:col-span-5">
-                      <label for="full_name">Full Name</label>
+                      <label htmlFor="full_name">Child ID</label>
                       <input
                         type="text"
-                        name="full_name"
-                        id="full_name"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        value=""
+                        value={child_id}
+                        onChange={(e) => setchild_id(e.target.value)}
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label for="full_name">Full Name</label>
+                      <label htmlFor="email">Child Name</label>
                       <input
                         type="text"
-                        name="full_name"
-                        id="full_name"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        value=""
+                        value={childName}
+                        onChange={(e) => setchildName(e.target.value)}
                       />
                     </div>
-                    <div className="md:col-span-5">
-                      <label for="full_name">Full Name</label>
-                      <input
-                        type="text"
-                        name="full_name"
-                        id="full_name"
+                    <div className="md:col-span-2">
+                      <label htmlFor="email">Gender</label>
+                      <select
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        value=""
-                      />
+                        onChange={(e) => setgender(e.target.value)}
+                      >
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                      </select>
                     </div>
-                    <div className="md:col-span-5">
-                      <label for="full_name">Full Name</label>
+                    <div className="md:col-span-1">
+                      <label htmlFor="address">Age</label>
                       <input
                         type="text"
-                        name="full_name"
-                        id="full_name"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        value=""
-                      />
-                    </div>
-                    <div className="md:col-span-5">
-                      <label for="full_name">Full Name</label>
-                      <input
-                        type="text"
-                        name="full_name"
-                        id="full_name"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        value=""
-                      />
-                    </div>
-                    <div className="md:col-span-5">
-                      <label for="email">Email Address</label>
-                      <input
-                        type="text"
-                        name="email"
-                        id="email"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        value=""
-                        placeholder="email@domain.com"
-                      />
-                    </div>
-
-                    <div className="md:col-span-3">
-                      <label for="address">Address / Street</label>
-                      <input
-                        type="text"
-                        name="address"
                         id="address"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        value=""
+                        value={age}
+                        onChange={(e) => setage(e.target.value)}
                         placeholder=""
                       />
                     </div>
-
                     <div className="md:col-span-2">
-                      <label for="city">City</label>
+                      <label htmlFor="address">Date of Birth</label>
+                      <input
+                        type="date"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={dateOfBirth}
+                        onChange={(e) => setdateOfBirth(String(e.target.value))}
+                        placeholder=""
+                      />
+                    </div>
+                    <div className="md:col-span-5">
+                      <label htmlFor="address">Shelter Home</label>
+                      <input
+                        type="text"
+                        id="address"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={shelterHome}
+                        onChange={(e) => setshelterHome(e.target.value)}
+                        placeholder=""
+                      />
+                    </div>
+                    <div className="md:col-span-3">
+                      <label htmlFor="address">Address / Street</label>
+                      <input
+                        type="text"
+                        id="address"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={state}
+                        onChange={(e) => setstate(e.target.value)}
+                        placeholder=""
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label htmlFor="city">City</label>
                       <input
                         type="text"
                         name="city"
                         id="city"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        value=""
+                        value={district}
+                        onChange={(e) => setdistrict(e.target.value)}
                         placeholder=""
                       />
                     </div>
-
                     <div className="md:col-span-2">
-                      <label for="country">Country / region</label>
-                      <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                        <input
-                          name="country"
-                          id="country"
-                          placeholder="Country"
-                          className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
-                          value=""
-                        />
-                        <button
-                          tabindex="-1"
-                          className="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-red-600"
-                        >
-                          <svg
-                            className="w-4 h-4 mx-2 fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                          </svg>
-                        </button>
-                        <button
-                          tabindex="-1"
-                          for="show_more"
-                          className="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-300 hover:text-blue-600"
-                        >
-                          <svg
-                            className="w-4 h-4 mx-2 fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <polyline points="18 15 12 9 6 15"></polyline>
-                          </svg>
-                        </button>
-                      </div>
+                      <label htmlFor="email">Linked With SAA</label>
+                      <select
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        onChange={(e) => setlinkedWithSAA(e.target.value)}
+                      >
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                      </select>
                     </div>
-
+                    <div className="md:col-span-3">
+                      <label htmlFor="email">Child Classification</label>
+                      <select
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        onChange={(e) => setchildClassification(e.target.value)}
+                      >
+                        <option value="abandoned">Abandoned</option>
+                        <option value="surrendered">Surrendered</option>
+                        <option value="abandoned-guardian">
+                          Abandoned by guardian
+                        </option>
+                      </select>
+                    </div>
                     <div className="md:col-span-2">
-                      <label for="state">State / province</label>
-                      <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                        <input
-                          name="state"
-                          id="state"
-                          placeholder="State"
-                          className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
-                          value=""
-                        />
-                        <button
-                          tabindex="-1"
-                          className="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-red-600"
-                        >
-                          <svg
-                            className="w-4 h-4 mx-2 fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                          </svg>
-                        </button>
-                        <button
-                          tabindex="-1"
-                          for="show_more"
-                          className="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-300 hover:text-blue-600"
-                        >
-                          <svg
-                            className="w-4 h-4 mx-2 fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <polyline points="18 15 12 9 6 15"></polyline>
-                          </svg>
-                        </button>
-                      </div>
+                      <label htmlFor="email">Inquiry Date of Admission</label>
+                      <input
+                        type="date"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={inquiryDateOfAdmission}
+                        onChange={(e) =>
+                          setinquiryDateOfAdmission(String(e.target.value))
+                        }
+                      />
                     </div>
-
-                    <div className="md:col-span-1">
-                      <label for="zipcode">Zipcode</label>
+                    <div className="md:col-span-3">
+                      <label htmlFor="email">Case Status</label>
+                      <select
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        onChange={(e) => setcaseStatus(e.target.value)}
+                      >
+                        <option value="active">Active</option>
+                        <option value="on-hold">On Hold</option>
+                        <option value="adopted">Adopted</option>
+                      </select>
+                    </div>
+                    <div className="md:col-span-5">
+                      <label htmlFor="email">Reason for admission</label>
                       <input
                         type="text"
-                        name="zipcode"
-                        id="zipcode"
-                        className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        placeholder=""
-                        value=""
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={reasonForAdmission}
+                        onChange={(e) =>
+                          setreasonForAdmission(String(e.target.value))
+                        }
                       />
                     </div>
-
                     <div className="md:col-span-5">
-                      <div className="inline-flex items-center">
-                        <input
-                          type="checkbox"
-                          name="billing_same"
-                          id="billing_same"
-                          className="form-checkbox"
-                        />
-                        <label for="billing_same" className="ml-2">
-                          My billing address is different than above.
-                        </label>
-                      </div>
+                      <label htmlFor="email">Case History</label>
+                      <input
+                        type="text"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={caseHistory}
+                        onChange={(e) => setcaseHistory(String(e.target.value))}
+                      />
                     </div>
-
+                    <div className="md:col-span-3">
+                      <label htmlFor="email">Last Visit</label>
+                      <input
+                        type="date"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={lastVisit}
+                        onChange={(e) => setlastVisit(String(e.target.value))}
+                      />
+                    </div>
                     <div className="md:col-span-2">
-                      <label for="soda">How many soda pops?</label>
-                      <div className="h-10 w-28 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                        <button
-                          tabindex="-1"
-                          for="show_more"
-                          className="cursor-pointer outline-none focus:outline-none border-r border-gray-200 transition-all text-gray-500 hover:text-blue-600"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 mx-2"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clip-rule="evenodd"
-                            />
-                          </svg>
-                        </button>
-                        <input
-                          name="soda"
-                          id="soda"
-                          placeholder="0"
-                          className="px-2 text-center appearance-none outline-none text-gray-800 w-full bg-transparent"
-                          value="0"
-                        />
-                        <button
-                          tabindex="-1"
-                          for="show_more"
-                          className="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-500 hover:text-blue-600"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 mx-2 fill-current"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                              clip-rule="evenodd"
-                            />
-                          </svg>
-                        </button>
-                      </div>
+                      <label htmlFor="email">Last Call</label>
+                      <input
+                        type="date"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={lastCall}
+                        onChange={(e) => setlastCall(String(e.target.value))}
+                      />
                     </div>
-
+                    <div className="md:col-span-5">
+                      <label htmlFor="email">Guardian Listed</label>
+                      <input
+                        type="text"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={guardianListed}
+                        onChange={(e) =>
+                          setguardianListed(String(e.target.value))
+                        }
+                      />
+                    </div>
+                    <div className="md:col-span-3">
+                      <label htmlFor="email">Family Phone Call</label>
+                      <input
+                        type="date"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={familyVisitPhoneCall}
+                        onChange={(e) =>
+                          setfamilyVisitPhoneCall(String(e.target.value))
+                        }
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label htmlFor="email">Number of siblings</label>
+                      <input
+                        type="text"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={siblings}
+                        onChange={(e) => setsiblings(String(e.target.value))}
+                      />
+                    </div>
+                    <div className="md:col-span-3">
+                      <label htmlFor="email">Last Date of CWC order</label>
+                      <input
+                        type="date"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={lastDateOfCWCOrder}
+                        onChange={(e) =>
+                          setlastDateOfCWCOrder(String(e.target.value))
+                        }
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label htmlFor="email">Last CWC order</label>
+                      <input
+                        type="text"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={Lastcwcorder}
+                        onChange={(e) =>
+                          setLastcwcorder(String(e.target.value))
+                        }
+                      />
+                    </div>
+                    <div className="md:col-span-5">
+                      <label htmlFor="email">Length of Stay in Shelter</label>
+                      <input
+                        type="text"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={lengthOfStayInShelter}
+                        onChange={(e) =>
+                          setlengthOfStayInShelter(String(e.target.value))
+                        }
+                      />
+                    </div>
+                    <div className="md:col-span-3">
+                      <label htmlFor="email">CARINGS Registration Number</label>
+                      <input
+                        type="text"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={caringsRegistrationNumber}
+                        onChange={(e) =>
+                          setcaringsRegistrationNumber(String(e.target.value))
+                        }
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label htmlFor="email">FA CSR MERU Upload Date</label>
+                      <input
+                        type="date"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={dateLFA_CSR_MERUUploadedINCARINGS}
+                        onChange={(e) =>
+                          setdateLFA_CSR_MERUUploadedINCARINGS(
+                            String(e.target.value)
+                          )
+                        }
+                      />
+                    </div>
+                    <div className="md:col-span-5">
+                      <label htmlFor="email">Contact Number</label>
+                      <input
+                        type="text"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={contactNo}
+                        onChange={(e) => setcontactNo(String(e.target.value))}
+                      />
+                    </div>
                     <div className="md:col-span-5 text-right">
                       <div className="inline-flex items-end">
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <button
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                          onClick={() => addchildHandler()}
+                        >
                           Submit
                         </button>
                       </div>
