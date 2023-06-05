@@ -4,9 +4,9 @@ module.exports.create = async function (req, res) {
 
     // console.log(req.body);
     try {
-        if (req.user.category != 'admin') {
-            return res.status(200).send("you are not accessed to create child");
-        }
+        // if (req.user.category != 'admin') {
+        //     return res.status(200).send("you are not accessed to create child");
+        // }
         const childclass = req.body.childClassification.toLowerCase();
         let child = await Child.findOne({ child_id: req.body.child_id });
 
@@ -60,9 +60,9 @@ module.exports.create = async function (req, res) {
 
 module.exports.update_details_child = async function (req, res) {
     try {
-        if (req.user.category != 'admin') {
-            return res.status(200).send("you are not accessed to update child");
-        }
+        // if (req.user.category != 'admin') {
+        //     return res.status(200).send("you are not accessed to update child");
+        // }
         const childclass = req.body.childClassification.toLowerCase();
         let child = await Child.findOne({ child_id: req.body.child_id });
         let childcategory = await ChildCategory.findOne({ childClassification: childclass })
@@ -110,9 +110,9 @@ module.exports.update_details_child = async function (req, res) {
     }
 }
 module.exports.delete_child = function (req, res) {
-    if (req.user.category != 'admin') {
-        return res.status(200).send("you are not accessed to delete child. contact to admin");
-    }
+    // if (req.user.category != 'admin') {
+    //     return res.status(200).send("you are not accessed to delete child. contact to admin");
+    // }
     Child.findOne({ child_id: req.body.child_id }, function (err, child) {
         if (!child) {
             return res.status(200).send("no child found with given id");
@@ -125,9 +125,9 @@ module.exports.delete_child = function (req, res) {
 
 //creation and deletion of child category
 module.exports.create_child_category = function (req, res) {
-    if (req.user.category != 'admin') {
-        return res.status(200).send("you are not accessed to create child=> contact to admin");
-    }
+    // if (req.user.category != 'admin') {
+    //     return res.status(200).send("you are not accessed to create child=> contact to admin");
+    // }
     const childclass = req.body.childClassification.toLowerCase();
     ChildCategory.findOne({ childClassification: childclass }, function (err, childcategory) {
         if (err) {
@@ -149,9 +149,9 @@ module.exports.create_child_category = function (req, res) {
 
 }
 module.exports.delete_child_category = function (req, res) {
-    if (req.user.category != 'admin') {
-        return res.status(200).send("you are not accessed to delete child=> contact to admin");
-    }
+    // if (req.user.category != 'admin') {
+    //     return res.status(200).send("you are not accessed to delete child=> contact to admin");
+    // }
     const childclass = req.body.childClassification.toLowerCase();
     ChildCategory.findOne({ childClassification: childclass }, function (err, childcateg) {
         if (err) {

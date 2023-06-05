@@ -11,20 +11,20 @@ import {
 import AddWorkerPopUp from "../Components/Modal/AddWorkerPopUp";
 import axios from "axios";
 import { Header } from "../Components";
-import { employeesGrid } from "../Data/dummy";
+import WorkerDetails from "../Components/Modal/WorkerDetails";
 
 const Employees = () => {
   const [workerData, setworkerData] = useState([]);
   const [openAddWorker, setopenAddWorker] = useState(false);
+  const [workerDetails, setworkerDetails] = useState({});
+  const [openworkerDetails, setopenworkerDetails] = useState(false);
 
   useEffect(async () => {
     const response = await axios.get("http://localhost:3000/admin/all_admin");
-    console.log(response.data.response);
     setworkerData(response.data.response);
     const response2 = await axios.get(
       "http://localhost:3000/admin/all_workers"
     );
-    console.log(response2.data.response);
     setworkerData(response.data.response.concat(response2.data.response));
   }, [openAddWorker]);
 
@@ -33,14 +33,24 @@ const Employees = () => {
     if (grid) {
       const selectedrowindex = grid.getSelectedRowIndexes();
       const selectedrecords = grid.getSelectedRecords();
-      // setopenAddWorker(JSON.stringify(selectedrecords));
+      console.log(selectedrecords);
+      setworkerDetails(selectedrecords[0]);
+      setopenworkerDetails(true);
     }
   };
 
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl capitalize">
       {openAddWorker ? (
         <AddWorkerPopUp setopenAddWorker={setopenAddWorker} />
+      ) : (
+        ""
+      )}
+      {openworkerDetails ? (
+        <WorkerDetails
+          workerDetails={workerDetails}
+          setopenworkerDetails={setopenworkerDetails}
+        />
       ) : (
         ""
       )}
@@ -51,7 +61,6 @@ const Employees = () => {
       >
         Add New +
       </button>
-      {console.log(workerData.length)}
       <GridComponent
         dataSource={workerData}
         allowPaging
@@ -66,12 +75,12 @@ const Employees = () => {
             field="user_id"
             headerText="User Id"
             format="C2"
+            isPrimaryKey={true}
             width="100"
           ></ColumnDirective>
           <ColumnDirective
             field="name"
             headerText="Name"
-            isPrimaryKey={true}
             width="120"
             textAlign="Left"
           ></ColumnDirective>

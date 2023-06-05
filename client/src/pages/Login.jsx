@@ -13,7 +13,6 @@ export default function Login() {
         category: "admin",
       }
     );
-    console.log(response.data);
     if (response.data.name) {
       localStorage.setItem("userDetails", JSON.stringify(response.data));
       window.location.href = "/";
