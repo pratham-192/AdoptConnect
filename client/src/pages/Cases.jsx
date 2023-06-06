@@ -10,11 +10,11 @@ import {
   Filter,
   Search,
 } from "@syncfusion/ej2-react-grids";
-import { Header } from "../Components";
+import { Header } from "../components";
 import axios from "axios";
 import { FaMale, FaFemale } from "react-icons/fa";
-import AddChildPopUp from "../Components/Modal/AddChildPopUp";
-import ChildDetails from "../Components/Modal/ChildDetails";
+import AddChildPopUp from "../components/Modal/AddChildPopUp";
+import ChildDetails from "../components/Modal/ChildDetails";
 
 const childGenderTemplate = (props) => (
   <div className="flex gap-2 justify-center items-center text-gray-700 capitalize">
@@ -52,11 +52,11 @@ const caseStatusTemplate = (props) => (
   </div>
 );
 
-const Customers = () => {
+const Cases = () => {
   const [childData, setchildData] = useState([]);
   const [openAddChild, setopenAddChild] = useState(false);
   const [childDetails, setchildDetails] = useState({});
-  const [openchildDetails, setopenchildDetails] = useState(true);
+  const [openchildDetails, setopenchildDetails] = useState(false);
 
   useEffect(async () => {
     const response = await axios.get("http://localhost:3000/admin/all_child");
@@ -145,4 +145,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Cases;

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import bal_asha_logo from "../assets/bal_asha_logo.png";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { publicRoute } from "../contexts/ProtectedRoute";
 
-export default function Login() {
+function Login() {
   const [userid, setuserid] = useState("");
   const [pass, setpass] = useState("");
+  const navigate = useNavigate();
 
   const loginHandler = async () => {
     const response = await axios.post(
@@ -15,7 +18,7 @@ export default function Login() {
     );
     if (response.data.name) {
       localStorage.setItem("userDetails", JSON.stringify(response.data));
-      window.location.href = "/";
+      navigate("/");
     }
   };
 
@@ -107,3 +110,5 @@ export default function Login() {
     </div>
   );
 }
+
+export default publicRoute(Login);

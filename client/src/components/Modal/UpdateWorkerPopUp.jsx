@@ -2,23 +2,26 @@ import axios from "axios";
 import React, { useState } from "react";
 import { ImCross } from "react-icons/im";
 
-export default function AddWorkerPopUp({ setopenAddWorker }) {
-  const [userId, setuserId] = useState("");
-  const [userName, setuserName] = useState("");
-  const [userEmail, setuserEmail] = useState("");
-  const [userCat, setuserCat] = useState("worker");
-  const [userPass, setuserPass] = useState("");
+export default function UpdateWorkerPopUp({
+  workerDetails,
+  setopenupdateWorker,
+}) {
+  const [userId, setuserId] = useState(workerDetails.user_id);
+  const [userName, setuserName] = useState(workerDetails.name);
+  const [userEmail, setuserEmail] = useState(workerDetails.email);
+  const [userCat, setuserCat] = useState(workerDetails.category);
+  const [userPass, setuserPass] = useState(workerDetails.password);
 
-  const addWorkerHandler = async () => {
-    const response = await axios.post("http://localhost:3000/users/create", {
-      user_id: userId,
-      name: userName,
-      email: userEmail,
-      password: userPass,
-      category: userCat,
-    });
-    console.log(response.data);
-    setopenAddWorker(false);
+  const updateWorkerHandler = async () => {
+    // const response = await axios.post("http://localhost:3000/users/update", {
+    //   user_id: userId,
+    //   name: userName,
+    //   email: userEmail,
+    //   password: userPass,
+    //   category: userCat,
+    // });
+    // console.log(response.data);
+    setopenupdateWorker(false);
   };
 
   return (
@@ -27,11 +30,11 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
         <div className="container max-w-screen-lg mx-auto">
           <div>
             <h2 className="font-semibold text-xl flex justify-between items-center text-gray-600 mb-5">
-              <div className="pl-4">Add New Worker</div>
+              <div className="pl-4">update New Worker</div>
               <div>
                 <button
                   className="hover:text-slate-500"
-                  onClick={() => setopenAddWorker(false)}
+                  onClick={() => setopenupdateWorker(false)}
                 >
                   <ImCross />
                 </button>
@@ -53,16 +56,10 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                           type="text"
                           name="user_id"
                           id="user_id"
-                          className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                          className="h-10 cursor-not-allowed border mt-1 rounded px-4 w-full bg-gray-50"
                           value={userId}
-                          onChange={(e) => setuserId(e.target.value)}
                         />
-                        <button
-                          className="h-10 bg-blue-500 text-slate-100 w-3/4 mt-1 rounded ml-10 hover:bg-blue-400"
-                          onClick={() => {
-                            setuserId(Math.floor(Math.random() * 1000000000));
-                          }}
-                        >
+                        <button className="cursor-not-allowed h-10 bg-blue-500 text-slate-100 w-3/4 mt-1 rounded ml-10 hover:bg-blue-400">
                           Generate Random
                         </button>
                       </div>
@@ -79,7 +76,7 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="email">Email Address</label>
+                      <label htmlFor="email">Email addressress</label>
                       <input
                         type="text"
                         name="email"
@@ -110,8 +107,8 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                         name="pass"
                         id="pass"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        value={userPass}
-                        onChange={(e) => setuserPass(e.target.value)}
+                        // value={userPass}
+                        // onChange={(e) => setuserPass(e.target.value)}
                         placeholder="*********"
                       />
                     </div>
@@ -119,7 +116,7 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                       <div className="inline-flex items-end">
                         <button
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                          onClick={() => addWorkerHandler()}
+                          onClick={() => updateWorkerHandler()}
                         >
                           Submit
                         </button>
