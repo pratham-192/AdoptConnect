@@ -56,6 +56,8 @@ module.exports.create = async function (req, res) {
             if (req.body.worker_alloted) {
                 let worker = await User.findById(req.body.worker_alloted);
                 worker.alloted_children.push(child._id);
+                child.worker_alloted=req.body.worker_alloted;
+                worker.save();
             }
 
             // console.log("ad");
