@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import bal_asha_logo from "../assets/bal_Asha_logo.png";
+import bal_asha_logo from "../assets/bal_asha_logo.png";
 import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
