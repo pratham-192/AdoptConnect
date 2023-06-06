@@ -1,6 +1,7 @@
 const Child = require('../models/child');
 const ChildCategory = require('../models/child_category');
-const AdoptionFlow=require('../models/adoption_flow');
+const AdoptionFlow = require('../models/adoption_flow');
+const User = require('../models/user');
 module.exports.create = async function (req, res) {
 
     // console.log(req.body);
@@ -49,9 +50,18 @@ module.exports.create = async function (req, res) {
                     avatar: req.body.avatar,
                     childNote: req.body.childNote
                 })
-            if (req.body.contact_no) child.contactNo=req.body.contact_no;
-            child.individualAdoptionFlow=await AdoptionFlow.findOne({childClassification:childclass});
+            if (req.body.contact_no) child.contactNo = req.body.contact_no;
+            child.individualAdoptionFlow = await AdoptionFlow.findOne({ childClassification: childclass });
             child.save();
+            if (req.body.worker_alloted) {
+                let worker = await User.findById(req.body.worker_alloted);
+                worker.alloted_children.push(child._id);
+            }
+
+            // console.log("ad");
+            // console.log(typeof(req.body.worker_alloted))
+            // console.log(User.findById(worker_alloted));
+            child.populate('worker_alloted');
             return res.status(200).json({ "response": child });
         } else {
             return res.status(200).send("child already exists");
@@ -98,15 +108,23 @@ module.exports.update_details_child = async function (req, res) {
             child.dateLFA_CSR_MERUploadedInCARINGS = req.body.dateLFA_CSR_MERUploadedInCARINGS;
             child.createdByUser = req.body.createdByUser;
             child.createdDate = req.body.createdDate;
-            child.worker_alloted = req.body.worker_alloted;
             child.avatar = req.body.avatar;
-            child.childNote=req.body.childNote;
-            if (req.body.contact_no) child.contactNo=req.body.contact_no;
-            if (req.body.childClassification) {
+            child.childNote = req.body.childNote;
+            if (req.body.contact_no) child.contactNo = req.body.contact_no;
+            if (req.body.childClassification != child.childClassification) {
                 child.childClassification = childclass
-                child.individualAdoptionFlow=await AdoptionFlow.findOne({childClassification:childclass});
+                child.individualAdoptionFlow = await AdoptionFlow.findOne({ childClassification: childclass });
             };
+            if (req.body.worker_alloted) {
+                let prev_worker=await User.findById(child.worker_alloted);
+                prev_worker.alloted_children.pull(child);
+                prev_worker.save();
+                let worker = await User.findById(req.body.worker_alloted);
+                worker.alloted_children.push(child._id);
+                worker.save();
+            }
             child.save();
+            child.populate('worker_alloted');
             return res.status(200).json({ response: child });
         } else {
             return res.status(200).send("child not found");
@@ -116,17 +134,18 @@ module.exports.update_details_child = async function (req, res) {
         res.status(200).send("error in updating child details");
     }
 }
-module.exports.delete_child = function (req, res) {
+module.exports.delete_child = async function (req, res) {
     // if (req.user.category != 'admin') {
     //     return res.status(200).send("you are not accessed to delete child. contact to admin");
     // }
-    Child.findOne({ child_id: req.body.child_id }, function (err, child) {
-        if (!child) {
-            return res.status(200).send("no child found with given id");
-        }
-        child.remove();
-        return res.status(200).send("child deleted");
-    })
+    let child = await Child.findOne({ child_id: req.body.child_id })
+    if (!child) {
+        return res.status(200).send("no child found with given id");
+    }
+    let worker=User.findById(child.worker_alloted);
+    worker.alloted_children.pull(child);
+    child.remove();
+    return res.status(200).send("child deleted");
 }
 
 
@@ -142,7 +161,7 @@ module.exports.create_child_category = async function (req, res) {
         const childcateg = await ChildCategory.create({
             childClassification: childclass
         })
-        AdoptionFlow.create({childClassification:childclass});
+        AdoptionFlow.create({ childClassification: childclass });
         return res.status(200).json({
             response: childcateg
         })
@@ -167,32 +186,32 @@ module.exports.delete_child_category = function (req, res) {
 }
 
 //adoption flow status update
-module.exports.statusUpdate=async function(req,res){
-    try{
+module.exports.statusUpdate = async function (req, res) {
+    try {
         let child = await Child.findOne({ child_id: req.body.child_id });
-        let minorTaskStatus=req.body.minorTaskStatus;
-        let majorTaskPosition=req.body.majorTaskPosition;
-        let minorTaskPosition=req.body.minorTaskPosition;
-        let majorStatus=child.individualAdoptionFlow.majorTask[majorTaskPosition];
-        majorStatus.minorTask[minorTaskPosition].minorTaskStatus=minorTaskStatus;
-        let flag=0;
-        for(let u of majorStatus.minorTask){
-            if(u.minorTaskStatus==1){
-                majorStatus.majorTaskStatus=1;
+        let minorTaskStatus = req.body.minorTaskStatus;
+        let majorTaskPosition = req.body.majorTaskPosition;
+        let minorTaskPosition = req.body.minorTaskPosition;
+        let majorStatus = child.individualAdoptionFlow.majorTask[majorTaskPosition];
+        majorStatus.minorTask[minorTaskPosition].minorTaskStatus = minorTaskStatus;
+        let flag = 0;
+        for (let u of majorStatus.minorTask) {
+            if (u.minorTaskStatus == 1) {
+                majorStatus.majorTaskStatus = 1;
             }
-            if(u.minorTaskStatus==0 || u.minorTaskStatus==1){
-                flag=1;
+            if (u.minorTaskStatus == 0 || u.minorTaskStatus == 1) {
+                flag = 1;
             }
         }
-        if(!flag && majorStatus.minorTask.length){
-            majorStatus.majorTaskStatus=2;
+        if (!flag && majorStatus.minorTask.length) {
+            majorStatus.majorTaskStatus = 2;
         }
         child.save();
         return res.status(200).json({
-            response:child
+            response: child
         })
-        
-    }catch(err){
+
+    } catch (err) {
         return res.status(200).send("error in updating the status")
     }
 
