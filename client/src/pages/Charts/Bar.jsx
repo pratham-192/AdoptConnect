@@ -15,9 +15,9 @@ import {
   barCustomSeries,
   barPrimaryXAxis,
   barPrimaryYAxis,
-} from "../../data/dummy";
+} from "../../Data/dummy";
 
-import { useStateContext } from "../../contexts/ContextProvider";
+import { useStateContext } from "../../Contexts/ContextProvider";
 import { ChartsHeader } from "../../components";
 
 const Area = () => {

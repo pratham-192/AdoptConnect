@@ -10,7 +10,7 @@ import {
   AccumulationTooltip,
 } from "@syncfusion/ej2-react-charts";
 
-import { useStateContext } from "../../contexts/ContextProvider";
+import { useStateContext } from "../../Contexts/ContextProvider";
 
 const Doughnut = ({ id, data, legendVisiblity, height }) => {
   const { currentMode } = useStateContext();
