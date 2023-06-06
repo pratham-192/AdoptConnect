@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 import "./index.css";
 import App from "./App";
-import { ContextProvider } from "./contexts/ContextProvider";
+import { ContextProvider } from "./Contexts/ContextProvider";
 
 ReactDOM.render(
   <ContextProvider>

@@ -3,8 +3,8 @@ import { MdOutlineCancel } from "react-icons/md";
 import { Button } from ".";
 import { FiUser } from "react-icons/fi";
 import { BsFillInboxesFill } from "react-icons/bs";
-import { useStateContext } from "../contexts/ContextProvider";
-import avatar from "../data/avatar.jpg";
+import { useStateContext } from "../Contexts/ContextProvider";
+import avatar from "../Data/avatar.jpg";
 // import axios from "axios";
 import { useNavigate } from "react-router-dom";
 

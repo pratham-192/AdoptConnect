@@ -9,7 +9,7 @@ import {
   Toolbar,
 } from "@syncfusion/ej2-react-richtexteditor";
 
-import { EditorData } from "../data/dummy";
+import { EditorData } from "../Data/dummy";
 import { Header } from "../components";
 
 const Editor = () => {

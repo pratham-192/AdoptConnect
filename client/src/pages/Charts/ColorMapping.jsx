@@ -16,9 +16,9 @@ import {
   ColorMappingPrimaryXAxis,
   ColorMappingPrimaryYAxis,
   rangeColorMapping,
-} from "../../data/dummy";
+} from "../../Data/dummy";
 import { ChartsHeader } from "../../components";
-import { useStateContext } from "../../contexts/ContextProvider";
+import { useStateContext } from "../../Contexts/ContextProvider";
 
 const ColorMapping = () => {
   const { currentMode } = useStateContext();

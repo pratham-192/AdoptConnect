@@ -14,9 +14,9 @@ import {
   stackedCustomSeries,
   stackedPrimaryXAxis,
   stackedPrimaryYAxis,
-} from "../../data/dummy";
+} from "../../Data/dummy";
 
-import { useStateContext } from "../../contexts/ContextProvider";
+import { useStateContext } from "../../Contexts/ContextProvider";
 
 const Stacked = ({ width, height }) => {
   const { currentMode } = useStateContext();
