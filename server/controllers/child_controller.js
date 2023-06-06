@@ -49,7 +49,7 @@ module.exports.create = async function (req, res) {
                     avatar: req.body.avatar,
                     childNote: req.body.childNote
                 })
-            if (req.body.contact_no) child.contactNo.push(req.body.contact_no);
+            if (req.body.contact_no) child.contactNo=req.body.contact_no;
             child.individualAdoptionFlow=await AdoptionFlow.findOne({childClassification:childclass});
             child.save();
             return res.status(200).json({ "response": child });
@@ -101,7 +101,7 @@ module.exports.update_details_child = async function (req, res) {
             child.worker_alloted = req.body.worker_alloted;
             child.avatar = req.body.avatar;
             child.childNote=req.body.childNote;
-            if (req.body.contact_no) child.contactNo.push(req.body.contact_no);
+            if (req.body.contact_no) child.contactNo=req.body.contact_no;
             if (req.body.childClassification) {
                 child.childClassification = childclass
                 child.individualAdoptionFlow=await AdoptionFlow.findOne({childClassification:childclass});

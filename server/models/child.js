@@ -90,11 +90,11 @@ const childSchema = mongoose.Schema({
         type: String
     },
 
-    contactNo: [
+    contactNo: 
         {
             type: Number
         }
-    ],
+    ,
     worker_alloted: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
