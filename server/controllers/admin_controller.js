@@ -38,13 +38,18 @@ module.exports.addChildtoWorker=async function(req,res){
     try{
         let child=await Child.findOne({child_id:req.body.child_id});
         let worker=await User.findOne({user_id:req.body.user_id});
-        worker.alloted_children.push(child);
-        worker.save();
-        let prevWorker=child.worker_alloted;
-        if(prevWorker){
-            prevWorker.alloted_children.pull(child);
-            prevWorker.save();
-            child.worker_alloted=worker;
+        if(!worker.alloted_children.find(child)){
+
+            worker.alloted_children.push(child);
+            worker.save();
+            let prevWorker=child.worker_alloted;
+            if(prevWorker){
+                prevWorker.alloted_children.pull(child);
+                prevWorker.save();
+                child.worker_alloted=worker;
+            }else{
+                child.worker_alloted=worker;
+            }
         }
         return res.status(200).json({response:worker});
     }catch(err){
