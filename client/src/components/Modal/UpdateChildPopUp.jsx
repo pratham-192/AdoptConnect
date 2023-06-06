@@ -2,68 +2,87 @@ import axios from "axios";
 import React, { useState } from "react";
 import { ImCross } from "react-icons/im";
 
-export default function AddChildPopUp({ setopenAddchild }) {
-  const [child_id, setchild_id] = useState("");
-  const [childName, setchildName] = useState();
-  const [age, setage] = useState();
-  const [gender, setgender] = useState("male");
-  const [dateOfBirth, setdateOfBirth] = useState();
-  const [state, setstate] = useState("");
-  const [district, setdistrict] = useState();
-  const [shelterHome, setshelterHome] = useState();
-  const [linkedWithSAA, setlinkedWithSAA] = useState("yes");
-  const [childClassification, setchildClassification] = useState("abandoned");
-  const [inquiryDateOfAdmission, setinquiryDateOfAdmission] = useState();
-  const [reasonForAdmission, setreasonForAdmission] = useState();
-  const [lastVisit, setlastVisit] = useState();
-  const [lastCall, setlastCall] = useState();
-  const [caseHistory, setcaseHistory] = useState();
-  const [caseStatus, setcaseStatus] = useState("active");
-  const [guardianListed, setguardianListed] = useState();
-  const [familyVisitPhoneCall, setfamilyVisitPhoneCall] = useState();
-  const [siblings, setsiblings] = useState();
-  const [lastDateOfCWCOrder, setlastDateOfCWCOrder] = useState();
-  const [Lastcwcorder, setLastcwcorder] = useState();
-  const [lengthOfStayInShelter, setlengthOfStayInShelter] = useState();
-  const [caringsRegistrationNumber, setcaringsRegistrationNumber] = useState();
+export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
+  const [child_id, setchild_id] = useState(childDetails.child_id);
+  const [childName, setchildName] = useState(childDetails.childName);
+  const [age, setage] = useState(childDetails.age);
+  const [gender, setgender] = useState(childDetails.gender);
+  const [dateOfBirth, setdateOfBirth] = useState(childDetails.dateOfBirth);
+  const [state, setstate] = useState(childDetails.state);
+  const [district, setdistrict] = useState(childDetails.district);
+  const [shelterHome, setshelterHome] = useState(childDetails.shelterHome);
+  const [linkedWithSAA, setlinkedWithSAA] = useState(
+    childDetails.linkedWithSAA
+  );
+  const [childClassification, setchildClassification] = useState(
+    childDetails.childClassification
+  );
+  const [inquiryDateOfAdmission, setinquiryDateOfAdmission] = useState(
+    childDetails.inquiryDateOfAdmission
+  );
+  const [reasonForAdmission, setreasonForAdmission] = useState(
+    childDetails.reasonForAdmission
+  );
+  const [lastVisit, setlastVisit] = useState(childDetails.lastVisit);
+  const [lastCall, setlastCall] = useState(childDetails.lastCall);
+  const [caseHistory, setcaseHistory] = useState(childDetails.caseHistory);
+  const [caseStatus, setcaseStatus] = useState(childDetails.caseStatus);
+  const [guardianListed, setguardianListed] = useState(
+    childDetails.guardianListed
+  );
+  const [familyVisitPhoneCall, setfamilyVisitPhoneCall] = useState(
+    childDetails.familyVisitPhoneCall
+  );
+  const [siblings, setsiblings] = useState(childDetails.siblings);
+  const [lastDateOfCWCOrder, setlastDateOfCWCOrder] = useState(
+    childDetails.lastDateOfCWCOrder
+  );
+  const [Lastcwcorder, setLastcwcorder] = useState(childDetails.Lastcwcorder);
+  const [lengthOfStayInShelter, setlengthOfStayInShelter] = useState(
+    childDetails.lengthOfStayInShelter
+  );
+  const [caringsRegistrationNumber, setcaringsRegistrationNumber] = useState(
+    childDetails.caringsRegistrationNumber
+  );
   const [
     dateLFA_CSR_MERUploadedINCARINGS,
     setdateLFA_CSR_MERUploadedINCARINGS,
-  ] = useState();
-  const [contactNo, setcontactNo] = useState();
+  ] = useState(childDetails.dateLFA_CSR_MERUploadedINCARINGS);
+  const [contactNo, setcontactNo] = useState(childDetails.contactNo);
 
-  const addchildHandler = async () => {
-    console.log("hueuhe");
-    await axios.post("http://localhost:3000/child/create_child", {
-      child_id: child_id,
-      childName: childName,
-      age: age,
-      gender: gender,
-      dateOfBirth: dateOfBirth,
-      state: state,
-      district: district,
-      shelterHome: shelterHome,
-      linkedWithSAA: linkedWithSAA,
-      childClassification: childClassification,
-      inquiryDateOfAdmission: inquiryDateOfAdmission,
-      reasonForAdmission: reasonForAdmission,
-      lastVisit: lastVisit,
-      lastCall: lastCall,
-      caseHistory: caseHistory,
-      caseStatus: caseStatus,
-      guardianListed: guardianListed,
-      familyVisitPhoneCall: familyVisitPhoneCall,
-      siblings: siblings,
-      lastDateOfCWCOrder: lastDateOfCWCOrder,
-      Lastcwcorder: Lastcwcorder,
-      lengthOfStayInShelter: lengthOfStayInShelter,
-      caringsRegistrationNumber: caringsRegistrationNumber,
-      dateLFA_CSR_MERUploadedINCARINGS: dateLFA_CSR_MERUploadedINCARINGS,
-      contact_no: contactNo,
-      createdByUser: JSON.parse(localStorage.getItem("userDetails"))._id,
-      createdDate: new Date().toISOString().slice(0, 10),
-    });
-    setopenAddchild(false);
+  const updatechildHandler = async () => {
+    await axios.post(
+      "http://localhost:3000/child/update_child",
+      {
+        ...childDetails,
+        child_id: child_id,
+        childName: childName,
+        age: age,
+        gender: gender,
+        dateOfBirth: dateOfBirth,
+        state: state,
+        district: district,
+        shelterHome: shelterHome,
+        linkedWithSAA: linkedWithSAA,
+        childClassification: childClassification,
+        inquiryDateOfAdmission: inquiryDateOfAdmission,
+        reasonForAdmission: reasonForAdmission,
+        lastVisit: lastVisit,
+        lastCall: lastCall,
+        caseHistory: caseHistory,
+        caseStatus: caseStatus,
+        guardianListed: guardianListed,
+        familyVisitPhoneCall: familyVisitPhoneCall,
+        siblings: siblings,
+        lastDateOfCWCOrder: lastDateOfCWCOrder,
+        Lastcwcorder: Lastcwcorder,
+        lengthOfStayInShelter: lengthOfStayInShelter,
+        caringsRegistrationNumber: caringsRegistrationNumber,
+        dateLFA_CSR_MERUploadedINCARINGS: dateLFA_CSR_MERUploadedINCARINGS,
+        contact_no: contactNo,
+      }
+    );
+    setopenEditDetails(false);
   };
 
   return (
@@ -76,7 +95,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
               <div>
                 <button
                   className="hover:text-slate-500"
-                  onClick={() => setopenAddchild(false)}
+                  onClick={() => setopenEditDetails(false)}
                 >
                   <ImCross />
                 </button>
@@ -358,7 +377,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
                       <div className="inline-flex items-end">
                         <button
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                          onClick={() => addchildHandler()}
+                          onClick={() => updatechildHandler()}
                         >
                           Submit
                         </button>

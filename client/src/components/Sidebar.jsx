@@ -4,8 +4,8 @@ import bal_asha_logo from "../assets/bal_asha_logo.png";
 import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
-import { links } from "../Data/dummy";
-import { useStateContext } from "../Contexts/ContextProvider";
+import { links } from "../data/dummy";
+import { useStateContext } from "../contexts/ContextProvider";
 
 const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize, currentColor } =

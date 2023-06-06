@@ -3,11 +3,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
-import { Navbar, Footer, Sidebar, ThemeSettings } from './Components';
-import { Ecommerce, Orders, Calendar, Employees, Login, Stacked, Pyramid, Customers, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor } from './Pages';
+import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
+import { Analytics, Orders, Calendar, Employees, Login, Stacked, Pyramid, Cases, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor, EditProfile } from './pages';
 import './App.css';
 
-import { useStateContext } from './Contexts/ContextProvider';
+import { useStateContext } from './contexts/ContextProvider';
 
 const App = () => {
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
@@ -65,21 +65,21 @@ const App = () => {
 
               <Routes>
                 {/* dashboard  */}
-                <Route path="/" element={(<Ecommerce />)} />
+                <Route path="/" element={(<Analytics />)} />
                 <Route path="/login/admin" element={(<Login />)} />
                 <Route path="/login/user" element={(<Login />)} />
-                <Route path="/analytics" element={(<Ecommerce />)} />
+                <Route path="/analytics" element={(<Analytics />)} />
 
                 {/* pages  */}
                 {/* <Route path="/orders" element={<Orders />} /> */}
                 <Route path="/workers" element={<Employees />} />
-                <Route path="/cases" element={<Customers />} />
+                <Route path="/cases" element={<Cases />} />
 
                 {/* apps  */}
                 <Route path="/progress" element={<Kanban />} />
                 {/* <Route path="/editor" element={<Editor />} /> */}
                 {/* <Route path="/calendar" element={<Calendar />} /> */}
-                {/* <Route path="/color-picker" element={<ColorPicker />} /> */}
+                <Route path="/edit-profile" element={<EditProfile />} />
 
                 {/* charts  */}
                 {/* <Route path="/line" element={<Line />} />

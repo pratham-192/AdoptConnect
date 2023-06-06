@@ -8,10 +8,10 @@ import {
   Inject,
   Toolbar,
 } from "@syncfusion/ej2-react-grids";
-import AddWorkerPopUp from "../Components/Modal/AddWorkerPopUp";
+import AddWorkerPopUp from "../components/Modal/AddWorkerPopUp";
 import axios from "axios";
-import { Header } from "../Components";
-import WorkerDetails from "../Components/Modal/WorkerDetails";
+import { Header } from "../components";
+import WorkerDetails from "../components/Modal/WorkerDetails";
 
 const Employees = () => {
   const [workerData, setworkerData] = useState([]);
