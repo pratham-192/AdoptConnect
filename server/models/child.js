@@ -101,6 +101,40 @@ const childSchema = mongoose.Schema({
     },
     avatar: {
         type: String
+    },
+    childNote:{
+        type:String
+    },
+    individualAdoptionFlow:{
+        majorTask:[
+            {
+                majorTaskStatement:{
+                    type:String
+                },
+                majorTaskStatus:{
+                    type:Number,
+                    default:0
+                },
+                majorTaskNote:{
+                    type:String
+                },
+                minorTask:[
+                    {
+                        minorTaskStatement:{
+                            type:String
+                        },
+                        minorTaskStatus:{
+                            type:Number,
+                            default:0
+                        },
+                        minorTaskNote:{
+                            type:String
+                        }
+                    }
+                ]
+    
+            }
+        ]
     }
 
 }, {

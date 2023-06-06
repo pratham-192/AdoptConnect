@@ -1,5 +1,6 @@
 const Child = require('../models/child');
 const ChildCategory = require('../models/child_category');
+const AdoptionFlow=require('../models/adoption_flow');
 module.exports.create = async function (req, res) {
 
     // console.log(req.body);
@@ -45,9 +46,11 @@ module.exports.create = async function (req, res) {
                     createdByUser: req.body.createdByUser,
                     createdDate: req.body.createdDate,
                     worker_alloted: req.body.worker_alloted,
-                    avatar: req.body.avatar
+                    avatar: req.body.avatar,
+                    childNote: req.body.childNote
                 })
             if (req.body.contact_no) child.contactNo.push(req.body.contact_no);
+            child.individualAdoptionFlow=await AdoptionFlow.findOne({childClassification:childclass});
             child.save();
             return res.status(200).json({ "response": child });
         } else {
@@ -77,7 +80,6 @@ module.exports.update_details_child = async function (req, res) {
             child.gender = req.body.gender;
             child.dateOfBirth = req.body.dateOfBirth;
             child.age = req.body.age;
-            if (req.body.childClassification) child.childClassification = childclass;
             child.recommendedForAdoption = req.body.recommendedForAdoption;
             child.inquiryDateOfAdmission = req.body.inquiryDateOfAdmission;
             child.reasonForAdmission = req.body.reasonForAdmission;
@@ -98,7 +100,12 @@ module.exports.update_details_child = async function (req, res) {
             child.createdDate = req.body.createdDate;
             child.worker_alloted = req.body.worker_alloted;
             child.avatar = req.body.avatar;
+            child.childNote=req.body.childNote;
             if (req.body.contact_no) child.contactNo.push(req.body.contact_no);
+            if (req.body.childClassification) {
+                child.childClassification = childclass
+                child.individualAdoptionFlow=await AdoptionFlow.findOne({childClassification:childclass});
+            };
             child.save();
             return res.status(200).json({ response: child });
         } else {
@@ -124,28 +131,25 @@ module.exports.delete_child = function (req, res) {
 
 
 //creation and deletion of child category
-module.exports.create_child_category = function (req, res) {
+module.exports.create_child_category = async function (req, res) {
     // if (req.user.category != 'admin') {
     //     return res.status(200).send("you are not accessed to create child=> contact to admin");
     // }
-    const childclass = req.body.childClassification.toLowerCase();
-    ChildCategory.findOne({ childClassification: childclass }, function (err, childcategory) {
-        if (err) {
-            res.status(200).send("error in finding child category");
-        }
+    try {
+        const childclass = req.body.childClassification.toLowerCase();
+        const childcategory = await ChildCategory.findOne({ childClassification: childclass })
         if (childcategory) { return res.status(404).send("child category already exist"); }
-        ChildCategory.create({
+        const childcateg = await ChildCategory.create({
             childClassification: childclass
-        }, function (err, childcateg) {
-            if (err) {
-                return res.status(200).send("error in creating child category");
-            }
-            return res.status(200).json({
-                response: childcateg
-            })
         })
+        AdoptionFlow.create({childClassification:childclass});
+        return res.status(200).json({
+            response: childcateg
+        })
+    } catch (err) {
+        res.send(200).send("error in creating child category");
+    }
 
-    });
 
 }
 module.exports.delete_child_category = function (req, res) {
@@ -159,5 +163,37 @@ module.exports.delete_child_category = function (req, res) {
         }
         return res.status(200).send("child-category deleted successfully");
     })
+
+}
+
+//adoption flow status update
+module.exports.statusUpdate=async function(req,res){
+    try{
+        let child = await Child.findOne({ child_id: req.body.child_id });
+        let minorTaskStatus=req.body.minorTaskStatus;
+        let majorTaskPosition=req.body.majorTaskPosition;
+        let minorTaskPosition=req.body.minorTaskPosition;
+        let majorStatus=child.individualAdoptionFlow.majorTask[majorTaskPosition];
+        majorStatus.minorTask[minorTaskPosition].minorTaskStatus=minorTaskStatus;
+        let flag=0;
+        for(let u of majorStatus.minorTask){
+            if(u.minorTaskStatus==1){
+                majorStatus.majorTaskStatus=1;
+            }
+            if(u.minorTaskStatus==0 || u.minorTaskStatus==1){
+                flag=1;
+            }
+        }
+        if(!flag && majorStatus.minorTask.length){
+            majorStatus.majorTaskStatus=2;
+        }
+        child.save();
+        return res.status(200).json({
+            response:child
+        })
+        
+    }catch(err){
+        return res.status(200).send("error in updating the status")
+    }
 
 }
