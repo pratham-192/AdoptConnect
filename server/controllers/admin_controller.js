@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 module.exports.getAllAdmin = async function (req, res) {
     try {
-        let alladmin = await User.find({ category: "admin" }).populate('alloted_children');
+        let alladmin = await User.find({ }).populate('alloted_children');
 
         res.status(200).json({
             response: alladmin
@@ -26,19 +26,19 @@ module.exports.getAllWorkers = async function (req, res) {
     }
 
 }
-module.exports.getAllCaseManagers = async function (req, res) {
-    try {
-        let allmanagers = await User.find({ category: "manager" }).populate('alloted_children');
+// module.exports.getAllCaseManagers = async function (req, res) {
+//     try {
+//         let allmanagers = await User.find({ category: "manager" }).populate('alloted_children');
 
-        // allworkers.populate('alloted_children')
-        res.status(200).json({
-            response: allmanagers
-        })
-    } catch (err) {
-        res.status(200).send("error in finding all managers");
-    }
+//         // allworkers.populate('alloted_children')
+//         res.status(200).json({
+//             response: allmanagers
+//         })
+//     } catch (err) {
+//         res.status(200).send("error in finding all managers");
+//     }
 
-}
+// }
 module.exports.getAllChild = async function (req, res) {
     try {
         let allchild = await Child.find({}).populate('worker_alloted');
