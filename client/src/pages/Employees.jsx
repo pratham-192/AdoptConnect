@@ -28,6 +28,8 @@ const Employees = () => {
     setworkerData(response.data.response.concat(response2.data.response));
   }, [openAddWorker]);
 
+  console.log(workerData);
+
   let grid;
   const rowSelected = () => {
     if (grid) {

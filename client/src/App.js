@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
-import { Analytics, Orders, Calendar, Employees, Login, Stacked, Pyramid, Cases, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor, EditProfile } from './pages';
+import { Analytics, ChildAlloted, Employees, Login, Cases, Kanban, EditProfile } from './pages';
 import './App.css';
 
 import { useStateContext } from './Contexts/ContextProvider';
@@ -80,6 +79,7 @@ const App = () => {
                 {/* <Route path="/editor" element={<Editor />} /> */}
                 {/* <Route path="/calendar" element={<Calendar />} /> */}
                 <Route path="/edit-profile" element={<EditProfile />} />
+                <Route path="/child-alloted" element={<ChildAlloted />} />
 
                 {/* charts  */}
                 {/* <Route path="/line" element={<Line />} />

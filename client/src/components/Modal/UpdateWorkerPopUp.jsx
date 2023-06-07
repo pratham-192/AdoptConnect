@@ -11,6 +11,10 @@ export default function UpdateWorkerPopUp({
   const [userEmail, setuserEmail] = useState(workerDetails.email);
   const [userCat, setuserCat] = useState(workerDetails.category);
   const [userPass, setuserPass] = useState(workerDetails.password);
+  const [userZone, setuserZone] = useState(workerDetails.zone);
+  const [userAddress, setuserAddress] = useState(workerDetails.address);
+  const [userAadhar, setuserAadhar] = useState(workerDetails.aadharCardNo);
+  const [userContact, setuserContact] = useState(workerDetails.contactNo);
 
   const updateWorkerHandler = async () => {
     // const response = await axios.post("http://localhost:3000/users/update", {
@@ -26,8 +30,8 @@ export default function UpdateWorkerPopUp({
 
   return (
     <div className="z-50 h-screen w-screen fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center overflow-y-hidden">
-      <div className="h-4/5 p-6 px-10 bg-gray-100 flex items-center justify-center rounded-lg">
-        <div className="container max-w-screen-lg mx-auto">
+      <div className="h-5/6 p-6 bg-gray-100 flex items-center justify-center rounded-lg">
+        <div className="h-full container max-w-screen-lg mx-auto">
           <div>
             <h2 className="font-semibold text-xl flex justify-between items-center text-gray-600 mb-5">
               <div className="pl-4">update New Worker</div>
@@ -40,7 +44,7 @@ export default function UpdateWorkerPopUp({
                 </button>
               </div>
             </h2>
-            <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
+            <div className="h-128 overflow-y-scroll bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
               <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
                 <div className="text-gray-600">
                   <p className="font-medium text-lg">Worker Details</p>
@@ -58,6 +62,7 @@ export default function UpdateWorkerPopUp({
                           id="user_id"
                           className="h-10 cursor-not-allowed border mt-1 rounded px-4 w-full bg-gray-50"
                           value={userId}
+                          disabled
                         />
                         <button className="cursor-not-allowed h-10 bg-blue-500 text-slate-100 w-3/4 mt-1 rounded ml-10 hover:bg-blue-400">
                           Generate Random
@@ -101,15 +106,51 @@ export default function UpdateWorkerPopUp({
                       </select>
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="pass">Password</label>
+                      <label htmlFor="pass">Address</label>
                       <input
                         type="text"
                         name="pass"
                         id="pass"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        // value={userPass}
-                        // onChange={(e) => setuserPass(e.target.value)}
-                        placeholder="*********"
+                        value={userAddress}
+                        onChange={(e) => setuserAddress(e.target.value)}
+                        placeholder=""
+                      />
+                    </div>
+                    <div className="md:col-span-5">
+                      <label htmlFor="pass">Aadhar Card Number</label>
+                      <input
+                        type="text"
+                        name="pass"
+                        id="pass"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={userAadhar}
+                        onChange={(e) => setuserAadhar(e.target.value)}
+                        placeholder=""
+                      />
+                    </div>
+                    <div className="md:col-span-5">
+                      <label htmlFor="pass">Contact Number</label>
+                      <input
+                        type="text"
+                        name="pass"
+                        id="pass"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={userContact}
+                        onChange={(e) => setuserContact(e.target.value)}
+                        placeholder=""
+                      />
+                    </div>
+                    <div className="md:col-span-5">
+                      <label htmlFor="pass">Zone</label>
+                      <input
+                        type="text"
+                        name="pass"
+                        id="pass"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={userZone}
+                        onChange={(e) => setuserZone(e.target.value)}
+                        placeholder=""
                       />
                     </div>
                     <div className="md:col-span-5 text-right">

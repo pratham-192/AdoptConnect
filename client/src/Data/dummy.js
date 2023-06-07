@@ -7,7 +7,7 @@ import { TiTick } from 'react-icons/ti'
 import { RiContactsLine } from 'react-icons/ri';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
 import { HiOutlineRefresh } from 'react-icons/hi';
-import { GiLouvrePyramid } from 'react-icons/gi';
+import { FaChild } from 'react-icons/fa'
 import { GrLocation } from 'react-icons/gr';
 import avatar from './avatar.jpg';
 import avatar2 from './avatar2.jpg';
@@ -46,7 +46,8 @@ export const kanbanGrid = [
   {
     headerText: 'To Do',
     keyField: 'Open',
-    allowToggle: true
+    allowToggle: true,
+    allowDragAndDrop: true
   },
 
   {
@@ -58,7 +59,8 @@ export const kanbanGrid = [
   {
     headerText: 'Done',
     keyField: 'Close',
-    allowToggle: true
+    allowToggle: true,
+    allowDragAndDrop: false
   },
 ];
 const gridEmployeeProfile = (props) => (
@@ -517,6 +519,10 @@ export const links = [
       {
         name: 'cases',
         icon: <RiContactsLine />,
+      },
+      {
+        name: 'child-alloted',
+        icon: <FaChild />,
       },
     ],
   },

@@ -3,18 +3,42 @@ import axios from "axios";
 import { ImCross } from "react-icons/im";
 import { FaSave } from "react-icons/fa";
 import UpdateChildPopUp from "./UpdateChildPopUp";
+import PopUp from "./PopUp";
 
-export default function ChildDetails({ childDetails, setopenchildDetails }) {
+export default function ChildDetails({
+  childDetails,
+  setopenchildDetails,
+  openEditDetails,
+  setopenEditDetails,
+}) {
   const [allWorkers, setallWorkers] = useState();
   const [selectedWorker, setselectedWorker] = useState();
-  const [openEditDetails, setopenEditDetails] = useState(false);
+  const [openPopUp, setopenPopUp] = useState(false);
+  const [popUpDetails, setpopUpDetails] = useState({});
 
   const updatementorHandler = async () => {
-    console.log(selectedWorker);
-    await axios.post("http://localhost:3000/child/update_child", {
-      ...childDetails,
-      worker_alloted: selectedWorker,
-    });
+    const response = await axios.post(
+      "http://localhost:3000/admin/addchildtoworker",
+      {
+        child_id: childDetails.child_id,
+        user_id: selectedWorker,
+      }
+    );
+    console.log(response.data);
+    if (response.data.response) {
+      setpopUpDetails({
+        status: true,
+        message: "Worker succesfully updated",
+        heading: "Success",
+      });
+    } else {
+      setpopUpDetails({
+        status: false,
+        message: "Please select a worker to update",
+        heading: "Failure",
+      });
+    }
+    setopenPopUp(true);
   };
 
   useEffect(async () => {
@@ -28,6 +52,16 @@ export default function ChildDetails({ childDetails, setopenchildDetails }) {
         <UpdateChildPopUp
           childDetails={childDetails}
           setopenEditDetails={setopenEditDetails}
+        />
+      ) : (
+        ""
+      )}
+      {openPopUp ? (
+        <PopUp
+          setopenPopUp={setopenPopUp}
+          status={popUpDetails.status}
+          message={popUpDetails.message}
+          heading={popUpDetails.heading}
         />
       ) : (
         ""
@@ -107,29 +141,6 @@ export default function ChildDetails({ childDetails, setopenchildDetails }) {
                 {childDetails.age}
               </span>
             </h1>
-            {allWorkers && allWorkers.length ? (
-              <div>
-                <p className="flex justify-center mt-5 items-center">
-                  <span>Mentor Assigned</span>
-                  <select
-                    className="h-10 border mt-1 rounded px-4 w-1/3 bg-gray-50 ml-5"
-                    onChange={(e) => setselectedWorker(e.target.value)}
-                  >
-                    {allWorkers.map((item) => {
-                      return <option value={item._id}>{item.name}</option>;
-                    })}
-                  </select>
-                  <button
-                    className="text-green-500 ml-5 hover:text-green-400 cursor-pointer"
-                    onClick={() => updatementorHandler()}
-                  >
-                    <FaSave size={25} />
-                  </button>
-                </p>
-              </div>
-            ) : (
-              ""
-            )}
             <p className="font-light text-lg text-gray-600 mt-3">
               {childDetails.shelterHome}
             </p>
@@ -138,6 +149,31 @@ export default function ChildDetails({ childDetails, setopenchildDetails }) {
             </p>
           </div>
           <div className="mt-12 flex flex-col">
+            {allWorkers && allWorkers.length ? (
+              <div>
+                <p className="flex justify-start sm:px-16 mt-5 items-center">
+                  <span className="font-semibold pr-5">Mentor Assigned : </span>
+                  <select
+                    className="h-10 border mt-1 rounded px-4 w-1/3 bg-gray-50 ml-5"
+                    onChange={(e) => setselectedWorker(e.target.value)}
+                  >
+                    <option value="">Please Select</option>
+                    {allWorkers.map((item) => {
+                      return <option value={item.user_id}>{item.name}</option>;
+                    })}
+                  </select>
+                  <button
+                    className="text-slate-100 ml-5 hover:bg-green-400 cursor-pointer flex justify-center items-center bg-green-500 px-6 py-2 rounded"
+                    onClick={() => updatementorHandler()}
+                  >
+                    <FaSave size={25} />
+                    <span className="pl-3 text-lg">Save</span>
+                  </button>
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
             <p className="text-gray-800 font-bold p-1 lg:px-16">
               Date of Birth :{" "}
               <span className="text-slate-600 font-light">

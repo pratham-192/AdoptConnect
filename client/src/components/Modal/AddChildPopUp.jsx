@@ -31,9 +31,39 @@ export default function AddChildPopUp({ setopenAddchild }) {
     setdateLFA_CSR_MERUploadedINCARINGS,
   ] = useState();
   const [contactNo, setcontactNo] = useState();
+  const [err, seterr] = useState("");
 
   const addchildHandler = async () => {
-    console.log("hueuhe");
+    if (
+      !child_id ||
+      !childName ||
+      !age ||
+      !gender ||
+      !dateOfBirth ||
+      !state ||
+      !district ||
+      !shelterHome ||
+      !linkedWithSAA ||
+      !childClassification ||
+      !inquiryDateOfAdmission ||
+      !reasonForAdmission ||
+      !lastVisit ||
+      !lastCall ||
+      !caseHistory ||
+      !caseStatus ||
+      !guardianListed ||
+      !familyVisitPhoneCall ||
+      !siblings ||
+      !lastDateOfCWCOrder ||
+      !Lastcwcorder ||
+      !lengthOfStayInShelter ||
+      !caringsRegistrationNumber ||
+      !dateLFA_CSR_MERUploadedINCARINGS ||
+      !contactNo
+    ) {
+      seterr("Please fill all the details");
+      return;
+    }
     await axios.post("http://localhost:3000/child/create_child", {
       child_id: child_id,
       childName: childName,
@@ -354,6 +384,13 @@ export default function AddChildPopUp({ setopenAddchild }) {
                         onChange={(e) => setcontactNo(String(e.target.value))}
                       />
                     </div>
+                    {err ? (
+                      <div className="text-red-500 text-sm md:col-span-5">
+                        {err}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                     <div className="md:col-span-5 text-right">
                       <div className="inline-flex items-end">
                         <button

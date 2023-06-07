@@ -51,7 +51,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
   const [contactNo, setcontactNo] = useState(childDetails.contactNo);
 
   const updatechildHandler = async () => {
-    await axios.post(
+    const response = await axios.post(
       "http://localhost:3000/child/update_child",
       {
         ...childDetails,
@@ -82,6 +82,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
         contact_no: contactNo,
       }
     );
+    console.log(response.data);
     setopenEditDetails(false);
   };
 
