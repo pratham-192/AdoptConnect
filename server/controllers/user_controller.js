@@ -129,7 +129,7 @@ module.exports.update = async function (req, res) {
 module.exports.getWorkerbyId=async function(req,res){
     try{
         let worker=await User.findOne({user_id:req.body.user_id}).populate('alloted_children');
-        res.send(200).json({
+        res.status(200).json({
             response:worker
         })
     }catch(err){
