@@ -152,7 +152,7 @@ module.exports.create_child_category = async function (req, res) {
             response: childcateg
         })
     } catch (err) {
-        res.send(200).send("error in creating child category");
+        res.status(200).send("error in creating child category");
     }
 
 
@@ -205,10 +205,10 @@ module.exports.statusUpdate = async function (req, res) {
 module.exports.getChildbyId=async function(req,res){
     try{
         let child=await Child.findOne({child_id:req.body.child_id}).populate('worker_alloted');
-        res.send(200).json({
+        res.status(200).json({
             response:child
         })
     }catch(err){
-        return res.send(200).send("error in getting child by id");
+        return res.status(200).send("error in getting child by id");
     }
 }

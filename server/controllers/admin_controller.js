@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 module.exports.getAllAdmin = async function (req, res) {
     try {
-        let alladmin = await User.find({ }).populate('alloted_children');
+        let alladmin = await User.find({}).populate('alloted_children');
 
         res.status(200).json({
             response: alladmin
