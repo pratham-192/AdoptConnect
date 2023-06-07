@@ -3,7 +3,7 @@ import { FiBarChart, FiUser, FiCreditCard, FiStar, FiShoppingCart } from 'react-
 import { BsKanban, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
 import { IoMdContacts } from 'react-icons/io';
 import { TbDeviceDesktopAnalytics } from 'react-icons/tb'
-import { TiTick } from 'react-icons/ti'
+import { TiTick, TiFlowChildren } from 'react-icons/ti'
 import { RiContactsLine } from 'react-icons/ri';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
 import { HiOutlineRefresh } from 'react-icons/hi';
@@ -537,10 +537,10 @@ export const links = [
         name: 'progress',
         icon: <BsKanban />,
       },
-      // {
-      //   name: 'editor',
-      //   icon: <FiEdit />,
-      // },
+      {
+        name: 'flow-management',
+        icon: <TiFlowChildren />,
+      },
       {
         name: 'edit-profile',
         icon: <FiUser />,

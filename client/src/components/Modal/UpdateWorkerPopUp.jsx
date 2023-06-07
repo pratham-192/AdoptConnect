@@ -17,14 +17,18 @@ export default function UpdateWorkerPopUp({
   const [userContact, setuserContact] = useState(workerDetails.contactNo);
 
   const updateWorkerHandler = async () => {
-    // const response = await axios.post("http://localhost:3000/users/update", {
-    //   user_id: userId,
-    //   name: userName,
-    //   email: userEmail,
-    //   password: userPass,
-    //   category: userCat,
-    // });
-    // console.log(response.data);
+    const response = await axios.post("http://localhost:3000/users/update", {
+      user_id: userId,
+      name: userName,
+      email: userEmail,
+      password: userPass,
+      category: userCat,
+      zone: userZone,
+      address: userAddress,
+      aadharCardNo: userAadhar,
+      contactNo: userContact,
+    });
+    console.log(response.data);
     setopenupdateWorker(false);
   };
 
