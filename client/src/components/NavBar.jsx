@@ -5,7 +5,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
 import avatar from "../Data/avatar.jpg";
-import { Cart, Chat, Notification, UserProfile } from ".";
+import { Notification, UserProfile } from ".";
 import { useStateContext } from "../Contexts/ContextProvider";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
@@ -85,7 +85,8 @@ const Navbar = () => {
             <p>
               <span className="text-gray-400 text-14">Hi,</span>{" "}
               <span className="text-gray-400 font-bold ml-1 text-14">
-                Michael
+                {JSON.parse(localStorage.getItem("userDetails")) &&
+                  JSON.parse(localStorage.getItem("userDetails")).name}
               </span>
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />

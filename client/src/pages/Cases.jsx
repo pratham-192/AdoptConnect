@@ -57,12 +57,13 @@ const Cases = () => {
   const [openAddChild, setopenAddChild] = useState(false);
   const [childDetails, setchildDetails] = useState({});
   const [openchildDetails, setopenchildDetails] = useState(false);
+  const [openEditDetails, setopenEditDetails] = useState(false);
 
   useEffect(async () => {
     const response = await axios.get("http://localhost:3000/admin/all_child");
     console.log(response.data);
     setchildData(response.data.response);
-  }, [openAddChild]);
+  }, [openAddChild, openchildDetails, openEditDetails]);
 
   let grid;
   const rowSelected = () => {
@@ -81,6 +82,8 @@ const Cases = () => {
         <ChildDetails
           childDetails={childDetails}
           setopenchildDetails={setopenchildDetails}
+          openEditDetails={openEditDetails}
+          setopenEditDetails={setopenEditDetails}
         />
       ) : (
         ""
