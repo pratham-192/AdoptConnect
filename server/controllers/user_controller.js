@@ -35,7 +35,7 @@ module.exports.create = async function (req, res) {
 
         }
     } catch (err) {
-        res.send(200).send("error in creating user");
+        res.status(200).send("error in creating user");
     }
 }
 
@@ -123,7 +123,7 @@ module.exports.update = async function (req, res) {
 
         }
     } catch (err) {
-        res.send(200).send("error in updating user");
+        res.status(200).send("error in updating user");
     }
 }
 module.exports.getWorkerbyId=async function(req,res){
@@ -133,7 +133,7 @@ module.exports.getWorkerbyId=async function(req,res){
             response:worker
         })
     }catch(err){
-        return res.send(200).send("error in getting worker by id");
+        return res.status(200).send("error in getting worker by id");
     }
 }
 module.exports.getManagerbyId=async function(req,res){
@@ -143,7 +143,7 @@ module.exports.getManagerbyId=async function(req,res){
             response:manager
         })
     }catch(err){
-        return res.send(200).send("error in getting manager by id");
+        return res.status(200).send("error in getting manager by id");
     }
 }
 

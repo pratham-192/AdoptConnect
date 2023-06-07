@@ -106,6 +106,10 @@ const childSchema = mongoose.Schema({
         type:String
     },
     individualAdoptionFlow:{
+        currMajorTask:{
+            type:Number,
+            default:0
+        },
         majorTask:[
             {
                 majorTaskStatement:{
@@ -117,6 +121,13 @@ const childSchema = mongoose.Schema({
                 },
                 majorTaskNote:{
                     type:String
+                },
+                iterationMethod:{
+                    type:String,
+                },
+                currMinorTask:{
+                    type:Number,
+                    default:0
                 },
                 minorTask:[
                     {

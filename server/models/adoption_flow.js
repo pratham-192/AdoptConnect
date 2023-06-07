@@ -19,6 +19,13 @@ const adoptionFlowSchema=mongoose.Schema({
             majorTaskNote:{
                 type:String
             },
+            iterationMethod:{
+                type:String,
+            },
+            currMinorTask:{
+                type:Number,
+                default:0
+            },
             minorTask:[
                 {
                     minorTaskStatement:{
