@@ -11,13 +11,16 @@ import {
 import AddWorkerPopUp from "../components/Modal/AddWorkerPopUp";
 import axios from "axios";
 import { Header } from "../components";
-import WorkerDetails from "../components/Modal/WorkerDetails";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const Employees = () => {
   const [workerData, setworkerData] = useState([]);
   const [openAddWorker, setopenAddWorker] = useState(false);
   const [workerDetails, setworkerDetails] = useState({});
   const [openworkerDetails, setopenworkerDetails] = useState(false);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(async () => {
     const response = await axios.get("http://localhost:3000/admin/all_admin");
@@ -28,16 +31,14 @@ const Employees = () => {
     setworkerData(response.data.response.concat(response2.data.response));
   }, [openAddWorker]);
 
-  console.log(workerData);
-
   let grid;
   const rowSelected = () => {
     if (grid) {
-      const selectedrowindex = grid.getSelectedRowIndexes();
       const selectedrecords = grid.getSelectedRecords();
-      console.log(selectedrecords);
       setworkerDetails(selectedrecords[0]);
-      setopenworkerDetails(true);
+      console.log(selectedrecords[0]);
+      navigate(`/worker-details?id=${selectedrecords[0].user_id}`);
+      // setopenworkerDetails(true);
     }
   };
 
@@ -48,20 +49,12 @@ const Employees = () => {
       ) : (
         ""
       )}
-      {openworkerDetails ? (
-        <WorkerDetails
-          workerDetails={workerDetails}
-          setopenworkerDetails={setopenworkerDetails}
-        />
-      ) : (
-        ""
-      )}
-      <Header category="Page" title="Employees" />
+      <Header category={t("Page")} title={t("Employees")} />
       <button
         className="p-2 mb-2 font-light text-sm rounded px-5 hover:bg-slate-100 cursor-pointer w-32 flex justify-center items-center"
         onClick={() => setopenAddWorker(true)}
       >
-        Add New +
+        {t("Add New")} +
       </button>
       <GridComponent
         dataSource={workerData}
@@ -75,25 +68,25 @@ const Employees = () => {
         <ColumnsDirective>
           <ColumnDirective
             field="user_id"
-            headerText="User Id"
+            headerText={t("User Id")}
             format="C2"
             isPrimaryKey={true}
             width="100"
           ></ColumnDirective>
           <ColumnDirective
             field="name"
-            headerText="Name"
+            headerText={t("Name")}
             width="120"
             textAlign="Left"
           ></ColumnDirective>
           <ColumnDirective
             field="category"
-            headerText="Category"
+            headerText={t("Category")}
             width="120"
           ></ColumnDirective>
           <ColumnDirective
             field="email"
-            headerText="Email"
+            headerText={t("Email")}
             width="120"
           ></ColumnDirective>
         </ColumnsDirective>

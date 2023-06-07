@@ -34,7 +34,7 @@ export default function UpdateWorkerPopUp({
         <div className="h-full container max-w-screen-lg mx-auto">
           <div>
             <h2 className="font-semibold text-xl flex justify-between items-center text-gray-600 mb-5">
-              <div className="pl-4">update New Worker</div>
+              <div className="pl-4">Update New Worker</div>
               <div>
                 <button
                   className="hover:text-slate-500"

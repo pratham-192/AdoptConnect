@@ -1,22 +1,16 @@
 import React, { useState } from "react";
 import { Header } from "../components";
-import ChildDetails from "../components/Modal/ChildDetails";
+import { useNavigate } from "react-router-dom";
 
 const ChildAlloted = () => {
-  const [openchildDetails, setopenchildDetails] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl ">
       <Header category="App" title="Child Details" />
-      {openchildDetails ? (
-        <ChildDetails setopenchildDetails={setopenchildDetails} />
-      ) : (
-        ""
-      )}
       <div className="mt-12 flex flex-col justify-center">
         <div className="pl-3 text-lg font-bold">Child Allocated</div>
         <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <li class="py-4 sm:py-6" onClick={() => setopenchildDetails(true)}>
+          <li class="py-4 sm:py-6">
             <div class="flex items-center space-x-4 capitalize">
               <div class="flex-shrink-0">
                 {/* <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-1.jpg" alt="Neil image" /> */}
