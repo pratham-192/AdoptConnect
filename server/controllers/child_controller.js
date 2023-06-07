@@ -159,7 +159,7 @@ module.exports.create_child_category = async function (req, res) {
     try {
         const childclass = req.body.childClassification.toLowerCase();
         const childcategory = await ChildCategory.findOne({ childClassification: childclass })
-        if (childcategory) { return res.status(404).send("child category already exist"); }
+        if (childcategory) { return res.status(200).send("child category already exist"); }
         const childcateg = await ChildCategory.create({
             childClassification: childclass
         })
@@ -217,4 +217,14 @@ module.exports.statusUpdate = async function (req, res) {
         return res.status(200).send("error in updating the status")
     }
 
+}
+module.exports.getChildbyId=async function(req,res){
+    try{
+        let child=await Child.findOne({child_id:req.body.child_id}).populate('worker_alloted');
+        res.send(200).json({
+            response:child
+        })
+    }catch(err){
+        return res.send(200).send("error in getting child by id");
+    }
 }

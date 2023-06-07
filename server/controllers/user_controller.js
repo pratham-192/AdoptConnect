@@ -96,7 +96,7 @@ module.exports.getLoggedInUser = function (req, res) {
     if (req.isAuthenticated) {
         return res.status(200).json({ response: req.user });
     }
-    return res.status(404).send("log in first");
+    return res.status(200).send("log in first");
 }
 
 module.exports.update = async function (req, res) {
@@ -124,6 +124,26 @@ module.exports.update = async function (req, res) {
         }
     } catch (err) {
         res.send(200).send("error in updating user");
+    }
+}
+module.exports.getWorkerbyId=async function(req,res){
+    try{
+        let worker=await User.findOne({user_id:req.body.user_id,category:'worker'}).populate('alloted_children');
+        res.send(200).json({
+            response:worker
+        })
+    }catch(err){
+        return res.send(200).send("error in getting worker by id");
+    }
+}
+module.exports.getManagerbyId=async function(req,res){
+    try{
+        let manager=await User.findOne({user_id:req.body.user_id, category:'manager'}).populate('alloted_children');
+        res.send(200).json({
+            response:manager
+        })
+    }catch(err){
+        return res.send(200).send("error in getting manager by id");
     }
 }
 
