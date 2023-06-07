@@ -90,17 +90,51 @@ const childSchema = mongoose.Schema({
         type: String
     },
 
-    contactNo: [
+    contactNo: 
         {
             type: Number
         }
-    ],
+    ,
     worker_alloted: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
     avatar: {
         type: String
+    },
+    childNote:{
+        type:String
+    },
+    individualAdoptionFlow:{
+        majorTask:[
+            {
+                majorTaskStatement:{
+                    type:String
+                },
+                majorTaskStatus:{
+                    type:Number,
+                    default:0
+                },
+                majorTaskNote:{
+                    type:String
+                },
+                minorTask:[
+                    {
+                        minorTaskStatement:{
+                            type:String
+                        },
+                        minorTaskStatus:{
+                            type:Number,
+                            default:0
+                        },
+                        minorTaskNote:{
+                            type:String
+                        }
+                    }
+                ]
+    
+            }
+        ]
     }
 
 }, {

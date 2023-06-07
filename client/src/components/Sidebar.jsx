@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import bal_asha_logo from "../assets/bal_asha_logo.png";
+import mail_logo from "../assets/mail_logo.png";
 import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
@@ -32,7 +32,7 @@ const Sidebar = () => {
               onClick={handleCloseSidebar}
               className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900"
             >
-              <img src={bal_asha_logo} className="h-20" />
+              <img src={mail_logo} className="h-20" />
             </Link>
             <TooltipComponent content="Menu" position="BottomCenter">
               <button

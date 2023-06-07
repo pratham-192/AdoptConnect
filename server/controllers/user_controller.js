@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Child=require('../models/child');
 module.exports.profile = function (req, res) {
     // return res.render('user_profile', {
     //     title: 'User Profile'
@@ -6,38 +7,36 @@ module.exports.profile = function (req, res) {
     return res.status(200).send("profile page");
 }
 
-module.exports.create = function (req, res) {
+module.exports.create = async function (req, res) {
     // console.log(req.body)
     // if(req.body.password!=req.body.confirmpassword)
     // {
     // return res.status(404).send("password doesn't matches");
     // }
-    User.findOne({ user_id: req.body.user_id }, function (err, user) {
-        if (err) {
-            // console.log("Error in finding the user signing up");
-            return res.status(404).send("error in finding the user");
-        }
+    try {
+        let user = await User.findOne({ user_id: req.body.user_id });
         if (!user) {
-            User.create({
+            let newuser = await User.create({
                 user_id: req.body.user_id,
                 name: req.body.name,
                 email: req.body.email,
                 password: req.body.password,
-                category: req.body.category
-            }, function (err, user) {
-                if (err) {
-                    console.log(err)
-                    // console.log("Error in creating the user signing up");
-                    return res.status(400).send("Error in creating the user signing up");
-                }
-                // return res.redirect('/users/signup')
-                return res.status(200).json({ "response": user });
+                category: req.body.category,
+                zone: req.body.zone,
+                address: req.body.address,
+                aadharCardNo: req.body.aadharCardNo,
+                contactNo: req.body.contactNo
             })
+
+            // return res.redirect('/users/signup')
+            return res.status(200).json({ "response": newuser });
         } else {
-            return res.status(200).send("user not found");
+            return res.status(200).send("user already exists");
 
         }
-    });
+    } catch (err) {
+        res.send(200).send("error in creating user");
+    }
 }
 
 module.exports.signIn = function (req, res) {
@@ -99,3 +98,32 @@ module.exports.getLoggedInUser = function (req, res) {
     }
     return res.status(404).send("log in first");
 }
+
+module.exports.update = async function (req, res) {
+    // console.log(req.body)
+    // if(req.body.password!=req.body.confirmpassword)
+    // {
+    // return res.status(404).send("password doesn't matches");
+    // }
+    try {
+        let user = await User.findOne({ user_id: req.body.user_id });
+        if (user) {
+                user.user_id= req.body.user_id;
+                user.name= req.body.name;
+                user.email= req.body.email;
+                user.password= req.body.password;
+                user.category= req.body.category;
+                user.zone= req.body.zone;
+                user.address= req.body.address;
+                user.aadharCardNo= req.body.aadharCardNo;
+                user.contactNo= req.body.contactNo;
+            return res.status(200).json({ "response": user });
+        } else {
+            return res.status(200).send("create user");
+
+        }
+    } catch (err) {
+        res.send(200).send("error in updating user");
+    }
+}
+

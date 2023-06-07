@@ -23,6 +23,24 @@ const userSchema=mongoose.Schema({
     category:{
         type:String,
         required:true
+    },
+    alloted_children:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Child'
+        }
+    ],
+    zone:{
+        type:String
+    },
+    address:{
+        type:String
+    },
+    aadharCardNo:{
+        type:String
+    },
+    contactNo:{
+        type:Number
     }
     
 },{

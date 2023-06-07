@@ -6,7 +6,7 @@ import {
   Inject,
   DateTime,
   SplineAreaSeries,
-  Legend
+  Legend,
 } from "@syncfusion/ej2-react-charts";
 
 import {
@@ -16,13 +16,13 @@ import {
 } from "../../Data/dummy";
 
 import { useStateContext } from "../../Contexts/ContextProvider";
-import { ChartsHeader } from "../../Components";
+import { ChartsHeader } from "../../components";
 
 const Area = () => {
   const { currentMode } = useStateContext();
   return (
-    <div className='m-4 md:m-10 mt-24 p-10 bg-white dark:bg-secondary-dark-bg rounded-3xl'>
-      <ChartsHeader category="Area" title="Inflation Rate in Percentage"/>
+    <div className="m-4 md:m-10 mt-24 p-10 bg-white dark:bg-secondary-dark-bg rounded-3xl">
+      <ChartsHeader category="Area" title="Inflation Rate in Percentage" />
       <ChartComponent
         id="area-chart"
         height="420px"

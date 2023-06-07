@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { ImCross } from "react-icons/im";
+import UpdateWorkerPopUp from "./UpdateWorkerPopUp";
 
 export default function WorkerDetails({ workerDetails, setopenworkerDetails }) {
-  console.log(workerDetails);
+  const [openupdateWorker, setopenupdateWorker] = useState(false);
+
   return (
     <div className="z-50 h-screen w-screen fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center overflow-y-hidden">
       <div className="p-16">
+        {openupdateWorker ? (
+          <UpdateWorkerPopUp
+            workerDetails={workerDetails}
+            setopenupdateWorker={setopenupdateWorker}
+          />
+        ) : (
+          ""
+        )}
         <div className="p-8 bg-white shadow mt-24 rounded-lg">
           <div className="flex justify-end items-center">
             <button
@@ -49,11 +59,14 @@ export default function WorkerDetails({ workerDetails, setopenworkerDetails }) {
               </div>
             </div>
             <div className="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
-              {/* <button className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
-                Connect
-              </button> */}
               <button className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
                 Message
+              </button>
+              <button
+                className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                onClick={() => setopenupdateWorker(true)}
+              >
+                Edit Details
               </button>
             </div>
           </div>
@@ -66,7 +79,6 @@ export default function WorkerDetails({ workerDetails, setopenworkerDetails }) {
               {workerDetails.zone}
             </p>
             <p className="mt-8 text-gray-500">{workerDetails.category}</p>
-            {/* <p className="mt-2 text-gray-500">University of Computer Science</p> */}
           </div>
           <div className="mt-12 flex flex-col justify-center">
             <p className="text-gray-600 text-center font-light lg:px-16">

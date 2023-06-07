@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import bal_asha_logo from "../assets/bal_asha_logo.png";
+import mail_logo from "../assets/mail_logo.png";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { publicRoute } from "../Contexts/ProtectedRoute";
 
-export default function Login() {
+function Login() {
   const [userid, setuserid] = useState("");
   const [pass, setpass] = useState("");
+  const navigate = useNavigate();
 
   const loginHandler = async () => {
     const response = await axios.post(
@@ -15,7 +18,7 @@ export default function Login() {
     );
     if (response.data.name) {
       localStorage.setItem("userDetails", JSON.stringify(response.data));
-      window.location.href = "/";
+      navigate("/");
     }
   };
 
@@ -27,7 +30,7 @@ export default function Login() {
             href="#"
             className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
           >
-            <img className="h-20" src={bal_asha_logo} alt="logo" />
+            <img className="h-20" src={mail_logo} alt="logo" />
           </a>
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -107,3 +110,5 @@ export default function Login() {
     </div>
   );
 }
+
+export default publicRoute(Login);

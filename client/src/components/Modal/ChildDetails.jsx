@@ -1,10 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { ImCross } from "react-icons/im";
+import { FaSave } from "react-icons/fa";
+import UpdateChildPopUp from "./UpdateChildPopUp";
 
-export default function childDetails({ childDetails, setopenchildDetails }) {
-  console.log(childDetails);
+export default function ChildDetails({ childDetails, setopenchildDetails }) {
+  const [allWorkers, setallWorkers] = useState();
+  const [selectedWorker, setselectedWorker] = useState();
+  const [openEditDetails, setopenEditDetails] = useState(false);
+
+  const updatementorHandler = async () => {
+    console.log(selectedWorker);
+    await axios.post("http://localhost:3000/child/update_child", {
+      ...childDetails,
+      worker_alloted: selectedWorker,
+    });
+  };
+
+  useEffect(async () => {
+    const response = await axios.get("http://localhost:3000/admin/all_workers");
+    setallWorkers(response.data.response);
+  }, []);
+
   return (
-    <div className="z-50 h-screen w-screen fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center overflow-y-hidden">
+    <div className="z-50 h-screen w-screen fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center overflow-y-hidden capitalize">
+      {openEditDetails ? (
+        <UpdateChildPopUp
+          childDetails={childDetails}
+          setopenEditDetails={setopenEditDetails}
+        />
+      ) : (
+        ""
+      )}
       <div className="h-full w-full flex justify-center items-center">
         <div className="h-5/6 w-5/6 p-8 bg-white shadow rounded-lg overflow-y-scroll">
           <div className="flex justify-end items-center">
@@ -15,7 +42,7 @@ export default function childDetails({ childDetails, setopenchildDetails }) {
               <ImCross />
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 pt-10">
             <div className="relative">
               <div className="w-48 h-48 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
                 <svg
@@ -65,16 +92,45 @@ export default function childDetails({ childDetails, setopenchildDetails }) {
                 </p>
                 <p className="text-gray-400">Age</p>
               </div>
+              <button
+                className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                onClick={() => setopenEditDetails(true)}
+              >
+                Edit Details
+              </button>
             </div>
           </div>
           <div className="mt-20 text-center border-b pb-12">
             <h1 className="text-4xl font-medium text-gray-700">
-              {childDetails.childName}
+              {childDetails.childName}{" "}
               <span className="font-light text-gray-500">
                 {childDetails.age}
               </span>
             </h1>
-            <p className="font-light text-gray-600 mt-3">
+            {allWorkers && allWorkers.length ? (
+              <div>
+                <p className="flex justify-center mt-5 items-center">
+                  <span>Mentor Assigned</span>
+                  <select
+                    className="h-10 border mt-1 rounded px-4 w-1/3 bg-gray-50 ml-5"
+                    onChange={(e) => setselectedWorker(e.target.value)}
+                  >
+                    {allWorkers.map((item) => {
+                      return <option value={item._id}>{item.name}</option>;
+                    })}
+                  </select>
+                  <button
+                    className="text-green-500 ml-5 hover:text-green-400 cursor-pointer"
+                    onClick={() => updatementorHandler()}
+                  >
+                    <FaSave size={25} />
+                  </button>
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
+            <p className="font-light text-lg text-gray-600 mt-3">
               {childDetails.shelterHome}
             </p>
             <p className="mt-8 text-gray-500">
@@ -180,9 +236,6 @@ export default function childDetails({ childDetails, setopenchildDetails }) {
                 {childDetails.dateLFA_CSR_MERUUploadedINCARINGS}
               </span>
             </p>
-            {/* <button className="text-indigo-500 py-2 px-4  font-medium mt-4">
-              Show
-            </button> */}
           </div>
         </div>
       </div>

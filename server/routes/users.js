@@ -12,7 +12,8 @@ router.get('/sign-out',userController.DestroySession);
 router.get('/admin/signin',userController.AdminSignIn);
 // router.get('/users/Sign-In',userController.AdminsignIn);
 router.get('/signup',userController.signup);
-router.post('/create',passport.checkAuthentication,userController.create);
+router.post('/create',userController.create);
+router.post('/update',userController.update);
 router.get('/profile',userController.profile);
 router.post('/createSession',passport.authenticate(
     'local',//local passport session is used

@@ -1,7 +1,6 @@
 const mongoose=require('mongoose');
 const path=require('path');
 
-
 const adoptionFlowSchema=mongoose.Schema({
     childClassification:{
         type:String,
@@ -13,18 +12,24 @@ const adoptionFlowSchema=mongoose.Schema({
             majorTaskStatement:{
                 type:String
             },
-            majorStatus:{
+            majorTaskStatus:{
                 type:Number,
                 default:0
+            },
+            majorTaskNote:{
+                type:String
             },
             minorTask:[
                 {
                     minorTaskStatement:{
                         type:String
                     },
-                    minorStatus:{
+                    minorTaskStatus:{
                         type:Number,
                         default:0
+                    },
+                    minorTaskNote:{
+                        type:String
                     }
                 }
             ]
