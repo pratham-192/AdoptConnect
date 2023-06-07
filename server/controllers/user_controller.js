@@ -128,7 +128,7 @@ module.exports.update = async function (req, res) {
 }
 module.exports.getWorkerbyId=async function(req,res){
     try{
-        let worker=await User.findOne({user_id:req.body.user_id,category:'worker'}).populate('alloted_children');
+        let worker=await User.findOne({user_id:req.body.user_id}).populate('alloted_children');
         res.send(200).json({
             response:worker
         })
@@ -136,14 +136,14 @@ module.exports.getWorkerbyId=async function(req,res){
         return res.status(200).send("error in getting worker by id");
     }
 }
-module.exports.getManagerbyId=async function(req,res){
-    try{
-        let manager=await User.findOne({user_id:req.body.user_id, category:'manager'}).populate('alloted_children');
-        res.send(200).json({
-            response:manager
-        })
-    }catch(err){
-        return res.status(200).send("error in getting manager by id");
-    }
-}
+// module.exports.getManagerbyId=async function(req,res){
+//     try{
+//         let manager=await User.findOne({user_id:req.body.user_id, category:'manager'}).populate('alloted_children');
+//         res.send(200).json({
+//             response:manager
+//         })
+//     }catch(err){
+//         return res.status(200).send("error in getting manager by id");
+//     }
+// }
 

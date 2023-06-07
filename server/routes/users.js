@@ -26,6 +26,6 @@ router.get('/loggedin_user',userController.getLoggedInUser);
 
 //get worker details
 router.get('/getworker',userController.getWorkerbyId);
-router.get('/getmanager',userController.getManagerbyId);
+// router.get('/getmanager',userController.getManagerbyId);
 
 module.exports=router;
