@@ -1,39 +1,56 @@
 const User = require('../models/user');
 const Child = require('../models/child');
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 
-module.exports.getAllAdmin = function (req, res) {
-    User.find({ category: "admin" }, function (err, alladmin) {
-        if (err) {
-            res.status(404).send("error in finding all admins");
-        }
+module.exports.getAllAdmin = async function (req, res) {
+    try {
+        let alladmin = await User.find({}).populate('alloted_children');
+
         res.status(200).json({
             response: alladmin
         })
-    })
+    } catch (err) {
+        return res.status(200).send("error in sending all admins");
+    }
 }
 module.exports.getAllWorkers = async function (req, res) {
     try {
-        let allworkers = await User.find({ category: "worker" })
+        let allworkers = await User.find({ category: "worker" }).populate('alloted_children');
 
         // allworkers.populate('alloted_children')
         res.status(200).json({
             response: allworkers
         })
     } catch (err) {
-        res.status(404).send("error in finding all workers");
+        res.status(200).send("error in finding all workers");
     }
 
 }
-module.exports.getAllChild = function (req, res) {
-    Child.find({}, function (err, allchild) {
-        if (err) {
-            res.status(404).send("error in finding all children");
-        }
+// module.exports.getAllCaseManagers = async function (req, res) {
+//     try {
+//         let allmanagers = await User.find({ category: "manager" }).populate('alloted_children');
+
+//         // allworkers.populate('alloted_children')
+//         res.status(200).json({
+//             response: allmanagers
+//         })
+//     } catch (err) {
+//         res.status(200).send("error in finding all managers");
+//     }
+
+// }
+module.exports.getAllChild = async function (req, res) {
+    try {
+        let allchild = await Child.find({}).populate('worker_alloted');
+
+        // allchild.populate('worker_alloted');
         res.status(200).json({
             response: allchild
         })
-    })
+    } catch (err) {
+        console.log(err);
+        res.status(200).send("error in sending all childs");
+    }
 }
 //request coming from admin/case-manager from worker profile
 module.exports.addChildtoWorker = async function (req, res) {
@@ -62,9 +79,9 @@ module.exports.addChildtoWorker = async function (req, res) {
 
 
         }
-        return res.status(200).json({ response: worker});
+        return res.status(200).json({ response: worker });
     } catch (err) {
-        return res.status(200).send("eror in adding child");
+        return res.status(200).send("erorr in adding child");
     }
 }
 

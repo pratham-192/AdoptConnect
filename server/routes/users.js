@@ -24,6 +24,8 @@ router.post('/createSession',passport.authenticate(
 //get logged in user
 router.get('/loggedin_user',userController.getLoggedInUser);
 
-
+//get worker details
+router.post('/getworker',userController.getWorkerbyId);
+// router.get('/getmanager',userController.getManagerbyId);
 
 module.exports=router;

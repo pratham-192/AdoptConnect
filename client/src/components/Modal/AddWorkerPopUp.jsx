@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { ImCross } from "react-icons/im";
+import { useTranslation } from "react-i18next";
 
 export default function AddWorkerPopUp({ setopenAddWorker }) {
   const [userId, setuserId] = useState("");
@@ -8,26 +9,49 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
   const [userEmail, setuserEmail] = useState("");
   const [userCat, setuserCat] = useState("worker");
   const [userPass, setuserPass] = useState("");
+  const [userZone, setuserZone] = useState("");
+  const [userAddress, setuserAddress] = useState("");
+  const [userAadhar, setuserAadhar] = useState("");
+  const [userContact, setuserContact] = useState("");
+  const [err, seterr] = useState("");
+  const { t } = useTranslation();
 
   const addWorkerHandler = async () => {
+    if (
+      !userId ||
+      !userName ||
+      !userEmail ||
+      !userPass ||
+      !userCat ||
+      !userZone ||
+      !userAddress ||
+      !userAadhar ||
+      !userContact
+    ) {
+      seterr("Please fill all the details");
+      return;
+    }
     const response = await axios.post("http://localhost:3000/users/create", {
       user_id: userId,
       name: userName,
       email: userEmail,
       password: userPass,
       category: userCat,
+      zone: userZone,
+      address: userAddress,
+      aadharCardNo: userAadhar,
+      contactNo: userContact,
     });
-    console.log(response.data);
     setopenAddWorker(false);
   };
 
   return (
     <div className="z-50 h-screen w-screen fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center overflow-y-hidden">
-      <div className="h-4/5 p-6 px-10 bg-gray-100 flex items-center justify-center rounded-lg">
-        <div className="container max-w-screen-lg mx-auto">
+      <div className="h-5/6 p-6 bg-gray-100 flex items-center justify-center rounded-lg">
+        <div className="h-full container max-w-screen-lg mx-auto">
           <div>
             <h2 className="font-semibold text-xl flex justify-between items-center text-gray-600 mb-5">
-              <div className="pl-4">Add New Worker</div>
+              <div>{t("Add New Worker")}</div>
               <div>
                 <button
                   className="hover:text-slate-500"
@@ -37,17 +61,17 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                 </button>
               </div>
             </h2>
-            <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
+            <div className="h-128 overflow-y-scroll bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
               <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
                 <div className="text-gray-600">
-                  <p className="font-medium text-lg">Worker Details</p>
-                  <p>Please fill out all the fields.</p>
+                  <p className="font-medium text-lg">{t("Worker Details")}</p>
+                  <p>{t("Please fill out all the fields")}.</p>
                 </div>
 
                 <div className="lg:col-span-2">
                   <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                     <div className="md:col-span-5">
-                      <label htmlFor="user_id">User ID</label>
+                      <label htmlFor="user_id">{t("User Id")}</label>
                       <div className="grid grid-cols-2">
                         <input
                           type="text"
@@ -68,7 +92,19 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                       </div>
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="full_name">Full Name</label>
+                      <label htmlFor="pass">{t("Password")}</label>
+                      <input
+                        type="text"
+                        name="pass"
+                        id="pass"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={userPass}
+                        onChange={(e) => setuserPass(e.target.value)}
+                        placeholder=""
+                      />
+                    </div>
+                    <div className="md:col-span-5">
+                      <label htmlFor="full_name">{t("Full Name")}</label>
                       <input
                         type="text"
                         name="full_name"
@@ -79,7 +115,7 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="email">Email Address</label>
+                      <label htmlFor="email">{t("Email Address")}</label>
                       <input
                         type="text"
                         name="email"
@@ -91,7 +127,7 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="email">Role</label>
+                      <label htmlFor="email">{t("Role")}</label>
                       <select
                         name="email"
                         id="email"
@@ -104,17 +140,60 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                       </select>
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="pass">Password</label>
+                      <label htmlFor="pass">{t("Address")}</label>
                       <input
                         type="text"
                         name="pass"
                         id="pass"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        value={userPass}
-                        onChange={(e) => setuserPass(e.target.value)}
-                        placeholder="*********"
+                        value={userAddress}
+                        onChange={(e) => setuserAddress(e.target.value)}
+                        placeholder=""
                       />
                     </div>
+                    <div className="md:col-span-5">
+                      <label htmlFor="pass">{t("Aadhar Card Number")}</label>
+                      <input
+                        type="text"
+                        name="pass"
+                        id="pass"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={userAadhar}
+                        onChange={(e) => setuserAadhar(e.target.value)}
+                        placeholder=""
+                      />
+                    </div>
+                    <div className="md:col-span-5">
+                      <label htmlFor="pass">{t("Contact Number")}</label>
+                      <input
+                        type="text"
+                        name="pass"
+                        id="pass"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={userContact}
+                        onChange={(e) => setuserContact(e.target.value)}
+                        placeholder=""
+                      />
+                    </div>
+                    <div className="md:col-span-5">
+                      <label htmlFor="pass">{t("Zone")}</label>
+                      <input
+                        type="text"
+                        name="pass"
+                        id="pass"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={userZone}
+                        onChange={(e) => setuserZone(e.target.value)}
+                        placeholder=""
+                      />
+                    </div>
+                    {err ? (
+                      <div className="text-red-500 text-sm md:col-span-5">
+                        {err}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                     <div className="md:col-span-5 text-right">
                       <div className="inline-flex items-end">
                         <button

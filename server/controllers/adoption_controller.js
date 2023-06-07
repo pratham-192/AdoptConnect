@@ -10,11 +10,13 @@ module.exports.createMajorTask = async function (req, res) {
         let majorTaskPosition = parseInt(req.body.majorTaskPosition);
         let major_task_statement = req.body.majorTaskStatement;
         let major_task_note=req.body.majorTaskNote;
+        let iteration_method=req.body.iterationMethod;
 
         let adoption_flow = await AdoptionFlow.findOne({ childClassification: req.body.childClassification });
         let insertstatement = {
             majorTaskStatement: major_task_statement,
-            majorTaskNote: major_task_note
+            majorTaskNote: major_task_note,
+            iterationMethod:iteration_method
         }
         if (adoption_flow.majorTask.length) {
             adoption_flow.majorTask.splice(majorTaskPosition, 0, insertstatement);
@@ -52,13 +54,15 @@ module.exports.updateMajorTask=async function(req,res){
         const childclass = await ChildCategory.findOne({ childClassification: req.body.childClassification });
         if (!childclass) return res.status(200).send("first, create the new child category ");
 
-        let update_position=parseInt(req.body.updatePosition);
+        let update_position=parseInt(req.body.majorTaskPosition);
         let update_statement=req.body.majorTaskStatement;
         let update_note=req.body.majorTaskNote;
+        let update_iteration_method=req.body.iterationMethod;
 
         let adoption_flow = await AdoptionFlow.findOne({ childClassification: req.body.childClassification });
         adoption_flow.majorTask[update_position].majorTaskStatement=update_statement;
         adoption_flow.majorTask[update_position].majorTaskNote=update_note;
+        adoption_flow.majorTask[update_position].iterationMethod=update_iteration_method;
         adoption_flow.save();
         return res.status(200).json({
             response:adoption_flow
@@ -147,5 +151,17 @@ module.exports.deleteMinorTask=async function(req,res){
         // })
     }catch(err){
         return res.status(200).send("error in deleting minor task");
+    }
+}
+module.exports.getCurrFlow=async function(req,res){
+    try{
+        const childclass = await ChildCategory.findOne({ childClassification: req.body.childClassification });
+        if (!childclass) return res.status(200).send("first, create the new child category ");
+        let currflow=await AdoptionFlow.findOne({ childClassification: req.body.childClassification });
+        return res.status(200).json({
+            reponse:currflow
+        })
+    }catch(err){
+        return res.status(200).send("error in getting curr flow");
     }
 }

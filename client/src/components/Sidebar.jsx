@@ -3,13 +3,14 @@ import { Link, NavLink } from "react-router-dom";
 import mail_logo from "../assets/mail_logo.png";
 import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-
+import { useTranslation } from "react-i18next";
 import { links } from "../Data/dummy";
 import { useStateContext } from "../Contexts/ContextProvider";
 
 const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize, currentColor } =
     useStateContext();
+  const { t } = useTranslation();
 
   const handleCloseSidebar = () => {
     if (activeMenu && screenSize <= 900) {
@@ -49,7 +50,7 @@ const Sidebar = () => {
             {links.map((item) => (
               <div key={item.title}>
                 <p className="text-gray-400 dark:text-gray-400 m-3 mt-4 uppercase">
-                  {item.title}
+                  {t(`${item.title}`)}
                 </p>
                 {item.links.map((link) => (
                   <NavLink
@@ -64,7 +65,7 @@ const Sidebar = () => {
                     }
                   >
                     {link.icon}
-                    <span className="capitalize ">{link.name}</span>
+                    <span className="capitalize ">{t(`${link.name}`)}</span>
                   </NavLink>
                 ))}
               </div>

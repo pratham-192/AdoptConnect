@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ImCross } from "react-icons/im";
 
 export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
@@ -49,9 +50,10 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
     setdateLFA_CSR_MERUploadedINCARINGS,
   ] = useState(childDetails.dateLFA_CSR_MERUploadedINCARINGS);
   const [contactNo, setcontactNo] = useState(childDetails.contactNo);
+  const { t } = useTranslation();
 
   const updatechildHandler = async () => {
-    await axios.post(
+    const response = await axios.post(
       "http://localhost:3000/child/update_child",
       {
         ...childDetails,
@@ -82,6 +84,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
         contact_no: contactNo,
       }
     );
+    console.log(response.data);
     setopenEditDetails(false);
   };
 
@@ -91,7 +94,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
         <div className="h-full container max-w-screen-lg mx-auto">
           <div>
             <h2 className="font-semibold text-xl flex justify-between items-center text-gray-600 mb-5">
-              <div>Add New Case</div>
+              <div>{t("Add New Case")}</div>
               <div>
                 <button
                   className="hover:text-slate-500"
@@ -104,14 +107,14 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
             <div className="h-128 overflow-y-scroll bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
               <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
                 <div className="text-gray-600">
-                  <p className="font-medium text-lg">Case Details</p>
-                  <p>Please fill out all the fields.</p>
+                  <p className="font-medium text-lg">{t("Case Details")}</p>
+                  <p>{t("Please fill out all the fields")}.</p>
                 </div>
 
                 <div className="lg:col-span-2">
                   <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                     <div className="md:col-span-5">
-                      <label htmlFor="full_name">Child ID</label>
+                      <label htmlFor="full_name">{t("Child Id")}</label>
                       <input
                         type="text"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -120,7 +123,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="email">Child Name</label>
+                      <label htmlFor="email">{t("Child Name")}</label>
                       <input
                         type="text"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -129,7 +132,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <label htmlFor="email">Gender</label>
+                      <label htmlFor="email">{t("Gender")}</label>
                       <select
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                         onChange={(e) => setgender(e.target.value)}
@@ -139,7 +142,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       </select>
                     </div>
                     <div className="md:col-span-1">
-                      <label htmlFor="address">Age</label>
+                      <label htmlFor="address">{t("Age")}</label>
                       <input
                         type="text"
                         id="address"
@@ -150,7 +153,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <label htmlFor="address">Date of Birth</label>
+                      <label htmlFor="address">{t("Date of Birth")}</label>
                       <input
                         type="date"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -160,7 +163,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="address">Shelter Home</label>
+                      <label htmlFor="address">{t("Shelter Home")}</label>
                       <input
                         type="text"
                         id="address"
@@ -171,7 +174,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-3">
-                      <label htmlFor="address">Address / Street</label>
+                      <label htmlFor="address">{t("Address / Street")}</label>
                       <input
                         type="text"
                         id="address"
@@ -182,7 +185,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <label htmlFor="city">City</label>
+                      <label htmlFor="city">{t("City")}</label>
                       <input
                         type="text"
                         name="city"
@@ -194,7 +197,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <label htmlFor="email">Linked With SAA</label>
+                      <label htmlFor="email">{t("Linked With SAA")}</label>
                       <select
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                         onChange={(e) => setlinkedWithSAA(e.target.value)}
@@ -204,20 +207,22 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       </select>
                     </div>
                     <div className="md:col-span-3">
-                      <label htmlFor="email">Child Classification</label>
+                      <label htmlFor="email">{t("Child Classification")}</label>
                       <select
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                         onChange={(e) => setchildClassification(e.target.value)}
                       >
-                        <option value="abandoned">Abandoned</option>
-                        <option value="surrendered">Surrendered</option>
+                        <option value="abandoned">{t("Abandoned")}</option>
+                        <option value="surrendered">{t("Surrendered")}</option>
                         <option value="abandoned-guardian">
-                          Abandoned by guardian
+                          {t("Abandoned by guardian")}
                         </option>
                       </select>
                     </div>
                     <div className="md:col-span-2">
-                      <label htmlFor="email">Inquiry Date of Admission</label>
+                      <label htmlFor="email">
+                        {t("Inquiry Date of Admission")}
+                      </label>
                       <input
                         type="date"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -228,7 +233,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-3">
-                      <label htmlFor="email">Case Status</label>
+                      <label htmlFor="email">{t("Case Status")}</label>
                       <select
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                         onChange={(e) => setcaseStatus(e.target.value)}
@@ -239,7 +244,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       </select>
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="email">Reason for admission</label>
+                      <label htmlFor="email">{t("Reason for admission")}</label>
                       <input
                         type="text"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -250,7 +255,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="email">Case History</label>
+                      <label htmlFor="email">{t("Case History")}</label>
                       <input
                         type="text"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -259,7 +264,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-3">
-                      <label htmlFor="email">Last Visit</label>
+                      <label htmlFor="email">{t("Last Visit")}</label>
                       <input
                         type="date"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -268,7 +273,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <label htmlFor="email">Last Call</label>
+                      <label htmlFor="email">{t("Last Call")}</label>
                       <input
                         type="date"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -277,7 +282,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="email">Guardian Listed</label>
+                      <label htmlFor="email">{t("Guardian Listed")}</label>
                       <input
                         type="text"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -288,7 +293,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-3">
-                      <label htmlFor="email">Family Phone Call</label>
+                      <label htmlFor="email">{t("Family Phone Call")}</label>
                       <input
                         type="date"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -299,7 +304,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <label htmlFor="email">Number of siblings</label>
+                      <label htmlFor="email">{t("Number of siblings")}</label>
                       <input
                         type="text"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -308,7 +313,9 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-3">
-                      <label htmlFor="email">Last Date of CWC order</label>
+                      <label htmlFor="email">
+                        {t("Last Date of CWC order")}
+                      </label>
                       <input
                         type="date"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -319,7 +326,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <label htmlFor="email">Last CWC order</label>
+                      <label htmlFor="email">{t("Last CWC order")}</label>
                       <input
                         type="text"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -330,7 +337,9 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="email">Length of Stay in Shelter</label>
+                      <label htmlFor="email">
+                        {t("Length of Stay in Shelter")}
+                      </label>
                       <input
                         type="text"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -341,7 +350,9 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-3">
-                      <label htmlFor="email">CARINGS Registration Number</label>
+                      <label htmlFor="email">
+                        {t("CARINGS Registration Number")}
+                      </label>
                       <input
                         type="text"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -352,7 +363,9 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <label htmlFor="email">FA CSR MERU Upload Date</label>
+                      <label htmlFor="email">
+                        {t("FA CSR MERU Upload Date")}
+                      </label>
                       <input
                         type="date"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -365,7 +378,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="email">Contact Number</label>
+                      <label htmlFor="email">{t("Contact Number")}</label>
                       <input
                         type="text"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"

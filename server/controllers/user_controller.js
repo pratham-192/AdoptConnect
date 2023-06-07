@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const Child=require('../models/child');
+const Child = require('../models/child');
 module.exports.profile = function (req, res) {
     // return res.render('user_profile', {
     //     title: 'User Profile'
@@ -27,7 +27,6 @@ module.exports.create = async function (req, res) {
                 aadharCardNo: req.body.aadharCardNo,
                 contactNo: req.body.contactNo
             })
-
             // return res.redirect('/users/signup')
             return res.status(200).json({ "response": newuser });
         } else {
@@ -35,7 +34,7 @@ module.exports.create = async function (req, res) {
 
         }
     } catch (err) {
-        res.send(200).send("error in creating user");
+        res.status(200).send("error in creating user");
     }
 }
 
@@ -96,7 +95,7 @@ module.exports.getLoggedInUser = function (req, res) {
     if (req.isAuthenticated) {
         return res.status(200).json({ response: req.user });
     }
-    return res.status(404).send("log in first");
+    return res.status(200).send("log in first");
 }
 
 module.exports.update = async function (req, res) {
@@ -108,22 +107,44 @@ module.exports.update = async function (req, res) {
     try {
         let user = await User.findOne({ user_id: req.body.user_id });
         if (user) {
-                user.user_id= req.body.user_id;
-                user.name= req.body.name;
-                user.email= req.body.email;
-                user.password= req.body.password;
-                user.category= req.body.category;
-                user.zone= req.body.zone;
-                user.address= req.body.address;
-                user.aadharCardNo= req.body.aadharCardNo;
-                user.contactNo= req.body.contactNo;
+            user.user_id = req.body.user_id;
+            user.name = req.body.name;
+            user.email = req.body.email;
+            user.password = req.body.password;
+            user.category = req.body.category;
+            user.zone = req.body.zone;
+            user.address = req.body.address;
+            user.aadharCardNo = req.body.aadharCardNo;
+            user.contactNo = req.body.contactNo;
+            user.save();
+
             return res.status(200).json({ "response": user });
         } else {
             return res.status(200).send("create user");
 
         }
     } catch (err) {
-        res.send(200).send("error in updating user");
+        res.status(200).send("error in updating user");
     }
 }
+module.exports.getWorkerbyId = async function (req, res) {
+    try {
+        let worker = await User.findOne({ user_id: req.body.user_id }).populate('alloted_children');
+        res.status(200).json({
+            response: worker
+        })
+    } catch (err) {
+        return res.status(200).send("error in getting worker by id");
+    }
+}
+// module.exports.getManagerbyId=async function(req,res){
+//     try{
+//         let manager=await User.findOne({user_id:req.body.user_id, category:'manager'}).populate('alloted_children');
+//         res.send(200).json({
+//             response:manager
+//         })
+//     }catch(err){
+//         return res.status(200).send("error in getting manager by id");
+//     }
+// }
 

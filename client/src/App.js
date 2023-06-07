@@ -2,12 +2,15 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
-import { Analytics, Orders, Calendar, Employees, Login, Stacked, Pyramid, Cases, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor, EditProfile } from './pages';
+import { Analytics, ChildAlloted, Employees, Login, Cases, Kanban, EditProfile } from './pages';
 import './App.css';
+import './i18n'
 
 import { useStateContext } from './Contexts/ContextProvider';
+import ChildDetails from './pages/ChildDetails';
+import WorkerDetails from './pages/WorkerDetails';
+import FlowManagement from './pages/FlowManagement';
 
 const App = () => {
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
@@ -64,33 +67,18 @@ const App = () => {
               {themeSettings && (<ThemeSettings />)}
 
               <Routes>
-                {/* dashboard  */}
                 <Route path="/" element={(<Analytics />)} />
                 <Route path="/login/admin" element={(<Login />)} />
                 <Route path="/login/user" element={(<Login />)} />
                 <Route path="/analytics" element={(<Analytics />)} />
-
-                {/* pages  */}
-                {/* <Route path="/orders" element={<Orders />} /> */}
                 <Route path="/workers" element={<Employees />} />
+                <Route path="/worker-details" element={<WorkerDetails />} />
                 <Route path="/cases" element={<Cases />} />
-
-                {/* apps  */}
                 <Route path="/progress" element={<Kanban />} />
-                {/* <Route path="/editor" element={<Editor />} /> */}
-                {/* <Route path="/calendar" element={<Calendar />} /> */}
                 <Route path="/edit-profile" element={<EditProfile />} />
-
-                {/* charts  */}
-                {/* <Route path="/line" element={<Line />} />
-                <Route path="/area" element={<Area />} />
-                <Route path="/bar" element={<Bar />} />
-                <Route path="/pie" element={<Pie />} />
-                <Route path="/financial" element={<Financial />} />
-                <Route path="/color-mapping" element={<ColorMapping />} />
-                <Route path="/pyramid" element={<Pyramid />} />
-                <Route path="/stacked" element={<Stacked />} /> */}
-
+                <Route path="/child-alloted" element={<ChildAlloted />} />
+                <Route path="/child-details" element={<ChildDetails />} />
+                <Route path="/flow-management" element={<FlowManagement />} />
               </Routes>
             </div>
             <Footer />

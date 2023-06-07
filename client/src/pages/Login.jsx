@@ -7,6 +7,7 @@ import { publicRoute } from "../Contexts/ProtectedRoute";
 function Login() {
   const [userid, setuserid] = useState("");
   const [pass, setpass] = useState("");
+  const [err, seterr] = useState("");
   const navigate = useNavigate();
 
   const loginHandler = async () => {
@@ -19,6 +20,9 @@ function Login() {
     if (response.data.name) {
       localStorage.setItem("userDetails", JSON.stringify(response.data));
       navigate("/");
+    } else {
+      seterr("User id and password doesn't match");
+      return;
     }
   };
 
@@ -74,7 +78,8 @@ function Login() {
                     onChange={(e) => setpass(e.target.value)}
                   />
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="text-red-500 text-sm">{err}</div>
+                {/* <div className="flex items-center justify-between">
                   <div className="flex items-start">
                     <div className="flex items-center h-5">
                       <input
@@ -94,7 +99,7 @@ function Login() {
                       </label>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <button
                   type="submit"
                   className="w-full text-slate-100 bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
