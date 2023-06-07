@@ -81,7 +81,7 @@ module.exports.addChildtoWorker = async function (req, res) {
         }
         return res.status(200).json({ response: worker });
     } catch (err) {
-        return res.status(200).send("eror in adding child");
+        return res.status(200).send("erorr in adding child");
     }
 }
 

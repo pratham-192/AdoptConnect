@@ -46,24 +46,17 @@ module.exports.create = async function (req, res) {
                     dateLFA_CSR_MERUploadedInCARINGS: req.body.dateLFA_CSR_MERUploadedInCARINGS,
                     createdByUser: req.body.createdByUser,
                     createdDate: req.body.createdDate,
-                    worker_alloted: req.body.worker_alloted,
                     avatar: req.body.avatar,
                     childNote: req.body.childNote
                 })
             if (req.body.contact_no) child.contactNo = req.body.contact_no;
             child.individualAdoptionFlow = await AdoptionFlow.findOne({ childClassification: childclass });
-            child.save();
-            if (req.body.worker_alloted) {
-                let worker = await User.findById(req.body.worker_alloted);
-                worker.alloted_children.push(child._id);
-                child.worker_alloted=req.body.worker_alloted;
-                worker.save();
-            }
+            
 
             // console.log("ad");
             // console.log(typeof(req.body.worker_alloted))
             // console.log(User.findById(worker_alloted));
-            child.populate('worker_alloted');
+            // child.populate('worker_alloted');
             return res.status(200).json({ "response": child });
         } else {
             return res.status(200).send("child already exists");
@@ -117,16 +110,7 @@ module.exports.update_details_child = async function (req, res) {
                 child.childClassification = childclass
                 child.individualAdoptionFlow = await AdoptionFlow.findOne({ childClassification: childclass });
             };
-            if (req.body.worker_alloted) {
-                let prev_worker=await User.findById(child.worker_alloted);
-                prev_worker.alloted_children.pull(child);
-                prev_worker.save();
-                let worker = await User.findById(req.body.worker_alloted);
-                worker.alloted_children.push(child._id);
-                worker.save();
-            }
-            child.save();
-            child.populate('worker_alloted');
+            // child.populate('worker_alloted');
             return res.status(200).json({ response: child });
         } else {
             return res.status(200).send("child not found");
@@ -145,7 +129,7 @@ module.exports.delete_child = async function (req, res) {
         return res.status(200).send("no child found with given id");
     }
     let worker=User.findById(child.worker_alloted);
-    worker.alloted_children.pull(child);
+    worker.alloted_children.pull(child._id);
     child.remove();
     return res.status(200).send("child deleted");
 }
