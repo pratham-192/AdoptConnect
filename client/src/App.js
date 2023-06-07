@@ -10,6 +10,7 @@ import './i18n'
 import { useStateContext } from './Contexts/ContextProvider';
 import ChildDetails from './pages/ChildDetails';
 import WorkerDetails from './pages/WorkerDetails';
+import FlowManagement from './pages/FlowManagement';
 
 const App = () => {
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
@@ -77,6 +78,7 @@ const App = () => {
                 <Route path="/edit-profile" element={<EditProfile />} />
                 <Route path="/child-alloted" element={<ChildAlloted />} />
                 <Route path="/child-details" element={<ChildDetails />} />
+                <Route path="/flow-management" element={<FlowManagement />} />
               </Routes>
             </div>
             <Footer />

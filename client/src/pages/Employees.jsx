@@ -25,10 +25,6 @@ const Employees = () => {
   useEffect(async () => {
     const response = await axios.get("http://localhost:3000/admin/all_admin");
     setworkerData(response.data.response);
-    const response2 = await axios.get(
-      "http://localhost:3000/admin/all_workers"
-    );
-    setworkerData(response.data.response.concat(response2.data.response));
   }, [openAddWorker]);
 
   let grid;

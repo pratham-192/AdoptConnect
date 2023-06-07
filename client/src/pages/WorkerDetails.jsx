@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import UpdateWorkerPopUp from "../components/Modal/UpdateWorkerPopUp";
+import { useTranslation } from "react-i18next";
 
 const WorkerDetails = () => {
   const location = useLocation();
@@ -12,13 +13,14 @@ const WorkerDetails = () => {
   const workerId = location.search.substring(4);
   const [workerDetails, setworkerDetails] = useState({});
   const [openupdateWorker, setopenupdateWorker] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(async () => {
     const response = await axios.post("http://localhost:3000/users/getworker", {
       user_id: workerId,
     });
     setworkerDetails(response.data.response);
-  }, []);
+  }, [openupdateWorker]);
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl ">
       <div className="flex justify-start items-center mb-7">
@@ -45,17 +47,17 @@ const WorkerDetails = () => {
               <p className="font-bold text-gray-700 text-xl">
                 {workerDetails && workerDetails.user_id}
               </p>
-              <p className="text-gray-400">User Id</p>
+              <p className="text-gray-400">{t("User Id")}</p>
             </div>
             <div>
               <p className="font-bold text-gray-700 text-xl">
                 {workerDetails && workerDetails.zone}
               </p>
-              <p className="text-gray-400">Zone</p>
+              <p className="text-gray-400">{t("Zone")}</p>
             </div>
             {/* <div>
                 <p className="font-bold text-gray-700 text-xl">89</p>
-                <p className="text-gray-400">Comments</p>
+                <p className="text-gray-400">{t('Comments')}</p>
               </div> */}
           </div>
           <div className="relative">
@@ -76,13 +78,13 @@ const WorkerDetails = () => {
           </div>
           <div className="space-x-8 flex justify-around mt-32 md:mt-0 md:justify-center">
             <button className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
-              Message
+              {t("Message")}
             </button>
             <button
               className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
               onClick={() => setopenupdateWorker(true)}
             >
-              Edit Details
+              {t("Edit Details")}
             </button>
           </div>
         </div>
@@ -99,7 +101,7 @@ const WorkerDetails = () => {
           </p>
         </div>
         <div className="mt-12 flex flex-col justify-center">
-          <div className="pl-3 text-lg font-bold">Child Allocated</div>
+          <div className="pl-3 text-lg font-bold">{t("Child Allocated")}</div>
           <ul className="w-full divide-y divide-gray-200 dark:divide-gray-700 ">
             {workerDetails &&
               workerDetails.alloted_children &&
@@ -124,7 +126,7 @@ const WorkerDetails = () => {
                         </p>
                       </div>
                       <div className="inline-flex items-center text-sm text-base font-semibold text-gray-900 dark:text-white">
-                        {child.childClassification}
+                        {t(`${child.childClassification}`)}
                       </div>
                     </div>
                   </li>
