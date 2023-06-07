@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Header } from "../components";
 import PopUp from "../components/Modal/PopUp";
+import { useTranslation } from "react-i18next";
 
 const EditProfile = () => {
   const currentuser = JSON.parse(localStorage.getItem("userDetails"));
@@ -14,6 +15,7 @@ const EditProfile = () => {
   const [userAddress, setuserAddress] = useState(currentuser.address);
   const [userAadhar, setuserAadhar] = useState(currentuser.aadharCardNo);
   const [userContact, setuserContact] = useState(currentuser.contactNo);
+  const { t } = useTranslation();
 
   const [openPopUp, setopenPopUp] = useState(false);
 
@@ -59,7 +61,7 @@ const EditProfile = () => {
                 <div className="lg:col-span-3">
                   <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                     <div className="md:col-span-5">
-                      <label htmlFor="user_id">User ID</label>
+                      <label htmlFor="user_id">{t("User Id")}</label>
                       <input
                         type="text"
                         name="user_id"
@@ -70,7 +72,7 @@ const EditProfile = () => {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="full_name">Full Name</label>
+                      <label htmlFor="full_name">{t("Full Name")}</label>
                       <input
                         type="text"
                         name="full_name"
@@ -81,7 +83,7 @@ const EditProfile = () => {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="email">Email Address</label>
+                      <label htmlFor="email">{t("Email Address")}</label>
                       <input
                         type="text"
                         name="email"
@@ -93,7 +95,7 @@ const EditProfile = () => {
                       />
                     </div>
                     <div className="md:col-span-5 cursor-not-allowed">
-                      <label htmlFor="email">Role</label>
+                      <label htmlFor="email">{t("Role")}</label>
                       <select
                         name="email"
                         id="email"
@@ -107,7 +109,7 @@ const EditProfile = () => {
                       </select>
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="pass">Address</label>
+                      <label htmlFor="pass">{t("Address")}</label>
                       <input
                         type="text"
                         name="pass"
@@ -119,7 +121,7 @@ const EditProfile = () => {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="pass">Aadhar Card Number</label>
+                      <label htmlFor="pass">{t("Aadhar Card Number")}</label>
                       <input
                         type="text"
                         name="pass"
@@ -131,7 +133,7 @@ const EditProfile = () => {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="pass">Contact Number</label>
+                      <label htmlFor="pass">{t("Contact Number")}</label>
                       <input
                         type="text"
                         name="pass"
@@ -143,7 +145,7 @@ const EditProfile = () => {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="pass">Zone</label>
+                      <label htmlFor="pass">{t("Zone")}</label>
                       <input
                         type="text"
                         name="pass"

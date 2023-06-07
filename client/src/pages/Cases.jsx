@@ -14,7 +14,8 @@ import { Header } from "../components";
 import axios from "axios";
 import { FaMale, FaFemale } from "react-icons/fa";
 import AddChildPopUp from "../components/Modal/AddChildPopUp";
-import ChildDetails from "../components/Modal/ChildDetails";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const childGenderTemplate = (props) => (
   <div className="flex gap-2 justify-center items-center text-gray-700 capitalize">
@@ -58,6 +59,8 @@ const Cases = () => {
   const [childDetails, setchildDetails] = useState({});
   const [openchildDetails, setopenchildDetails] = useState(false);
   const [openEditDetails, setopenEditDetails] = useState(false);
+  const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(async () => {
     const response = await axios.get("http://localhost:3000/admin/all_child");
@@ -71,29 +74,20 @@ const Cases = () => {
       const selectedrecords = grid.getSelectedRecords();
       console.log(selectedrecords);
       setchildDetails(selectedrecords[0]);
-      setopenchildDetails(true);
+      navigate(`/child-details?id=${selectedrecords[0].child_id}`);
+      // setopenchildDetails(true);
     }
   };
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl capitalize">
       {openAddChild ? <AddChildPopUp setopenAddchild={setopenAddChild} /> : ""}
-      {openchildDetails ? (
-        <ChildDetails
-          childDetails={childDetails}
-          setopenchildDetails={setopenchildDetails}
-          openEditDetails={openEditDetails}
-          setopenEditDetails={setopenEditDetails}
-        />
-      ) : (
-        ""
-      )}
-      <Header category="Page" title="Cases" />
+      <Header category={t("Page")} title={t("Cases")} />
       <button
         className="p-2 mb-2 font-light text-sm rounded px-5 hover:bg-slate-100 cursor-pointer w-32 flex justify-center items-center"
         onClick={() => setopenAddChild(true)}
       >
-        Add New +
+        {t("Add New")} +
       </button>
       <GridComponent
         dataSource={childData}
@@ -108,35 +102,35 @@ const Cases = () => {
         <ColumnsDirective>
           <ColumnDirective
             field="child_id"
-            headerText="Child ID"
+            headerText={t("Child Id")}
             format="C2"
             width="100"
           ></ColumnDirective>
           <ColumnDirective
             field="childName"
-            headerText="Name"
+            headerText={t("Name")}
             width="120"
             textAlign="Left"
           ></ColumnDirective>
           <ColumnDirective
             field="childClassification"
-            headerText="Category"
+            headerText={t("Category")}
             width="120"
           ></ColumnDirective>
           <ColumnDirective
             field="caseStatus"
-            headerText="Status"
+            headerText={t("Status")}
             width="120"
             template={caseStatusTemplate}
           ></ColumnDirective>
           <ColumnDirective
             field="shelterHome"
-            headerText="Shelter Home"
+            headerText={t("Shelter Home")}
             width="180"
           ></ColumnDirective>
           <ColumnDirective
             field="gender"
-            headerText="Gender"
+            headerText={t("Gender")}
             width="120"
             textAlign="Left"
             template={childGenderTemplate}
