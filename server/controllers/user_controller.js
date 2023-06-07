@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const Child=require('../models/child');
+const Child = require('../models/child');
 module.exports.profile = function (req, res) {
     // return res.render('user_profile', {
     //     title: 'User Profile'
@@ -27,7 +27,6 @@ module.exports.create = async function (req, res) {
                 aadharCardNo: req.body.aadharCardNo,
                 contactNo: req.body.contactNo
             })
-
             // return res.redirect('/users/signup')
             return res.status(200).json({ "response": newuser });
         } else {
@@ -108,15 +107,17 @@ module.exports.update = async function (req, res) {
     try {
         let user = await User.findOne({ user_id: req.body.user_id });
         if (user) {
-                user.user_id= req.body.user_id;
-                user.name= req.body.name;
-                user.email= req.body.email;
-                user.password= req.body.password;
-                user.category= req.body.category;
-                user.zone= req.body.zone;
-                user.address= req.body.address;
-                user.aadharCardNo= req.body.aadharCardNo;
-                user.contactNo= req.body.contactNo;
+            user.user_id = req.body.user_id;
+            user.name = req.body.name;
+            user.email = req.body.email;
+            user.password = req.body.password;
+            user.category = req.body.category;
+            user.zone = req.body.zone;
+            user.address = req.body.address;
+            user.aadharCardNo = req.body.aadharCardNo;
+            user.contactNo = req.body.contactNo;
+            user.save();
+
             return res.status(200).json({ "response": user });
         } else {
             return res.status(200).send("create user");
@@ -126,13 +127,13 @@ module.exports.update = async function (req, res) {
         res.status(200).send("error in updating user");
     }
 }
-module.exports.getWorkerbyId=async function(req,res){
-    try{
-        let worker=await User.findOne({user_id:req.body.user_id}).populate('alloted_children');
+module.exports.getWorkerbyId = async function (req, res) {
+    try {
+        let worker = await User.findOne({ user_id: req.body.user_id }).populate('alloted_children');
         res.status(200).json({
-            response:worker
+            response: worker
         })
-    }catch(err){
+    } catch (err) {
         return res.status(200).send("error in getting worker by id");
     }
 }

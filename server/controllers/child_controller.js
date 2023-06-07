@@ -50,8 +50,8 @@ module.exports.create = async function (req, res) {
                     childNote: req.body.childNote
                 })
             if (req.body.contact_no) child.contactNo = req.body.contact_no;
-            child.individualAdoptionFlow = await AdoptionFlow.findOne({ childClassification: childclass });
-            
+            child.individualAdoptionFlow.majorTask = await AdoptionFlow.findOne({ childClassification: childclass });
+
 
             // console.log("ad");
             // console.log(typeof(req.body.worker_alloted))
@@ -108,8 +108,9 @@ module.exports.update_details_child = async function (req, res) {
             if (req.body.contact_no) child.contactNo = req.body.contact_no;
             if (req.body.childClassification != child.childClassification) {
                 child.childClassification = childclass
-                child.individualAdoptionFlow = await AdoptionFlow.findOne({ childClassification: childclass });
+                child.individualAdoptionFlow.majorTask = await AdoptionFlow.findOne({ childClassification: childclass });
             };
+            child.save();
             // child.populate('worker_alloted');
             return res.status(200).json({ response: child });
         } else {
@@ -128,7 +129,7 @@ module.exports.delete_child = async function (req, res) {
     if (!child) {
         return res.status(200).send("no child found with given id");
     }
-    let worker=User.findById(child.worker_alloted);
+    let worker = User.findById(child.worker_alloted);
     worker.alloted_children.pull(child._id);
     child.remove();
     return res.status(200).send("child deleted");
@@ -162,7 +163,7 @@ module.exports.delete_child_category = function (req, res) {
     //     return res.status(200).send("you are not accessed to delete child=> contact to admin");
     // }
     const childclass = req.body.childClassification.toLowerCase();
-    ChildCategory.findOne({ childClassification: childclass }, function (err, childcateg) {
+    ChildCategory.findOneAndDelete({ childClassification: childclass }, function (err, childcateg) {
         if (err) {
             return res.status(200).send("error in deleting child category");
         }
@@ -175,40 +176,68 @@ module.exports.delete_child_category = function (req, res) {
 module.exports.statusUpdate = async function (req, res) {
     try {
         let child = await Child.findOne({ child_id: req.body.child_id });
-        let minorTaskStatus = req.body.minorTaskStatus;
-        let majorTaskPosition = req.body.majorTaskPosition;
-        let minorTaskPosition = req.body.minorTaskPosition;
-        let majorStatus = child.individualAdoptionFlow.majorTask[majorTaskPosition];
-        majorStatus.minorTask[minorTaskPosition].minorTaskStatus = minorTaskStatus;
-        let flag = 0;
-        for (let u of majorStatus.minorTask) {
-            if (u.minorTaskStatus == 1) {
-                majorStatus.majorTaskStatus = 1;
+        // let minorTaskStatus = req.body.minorTaskStatus;
+        // let majorTaskPosition = req.body.majorTaskPosition;
+        // let minorTaskPosition = req.body.minorTaskPosition;
+        // let majorStatus = child.individualAdoptionFlow.majorTask[majorTaskPosition];
+        // majorStatus.minorTask[minorTaskPosition].minorTaskStatus = minorTaskStatus;
+        // let flag = 0;
+        // for (let u of majorStatus.minorTask) {
+        //     if (u.minorTaskStatus == 1) {
+        //         majorStatus.majorTaskStatus = 1;
+        //     }
+        //     if (u.minorTaskStatus == 0 || u.minorTaskStatus == 1) {
+        //         flag = 1;
+        //     }
+        // }
+        // if (!flag && majorStatus.minorTask.length) {
+        //     majorStatus.majorTaskStatus = 2;
+        // }
+        // child.save();
+        // return res.status(200).json({
+        //     response: child
+        // })
+        let status_object = req.body.statusObject;
+        let curr_major = 0;
+        let curr_flag=0;
+        for (let u of status_object) {
+            let curr_minor = 0;
+            let flag=0;
+            if (u.minorTask.length==0)break;
+            for (let minor of u.minorTask) {
+                if (minor.minorTaskStatus == 1) {
+                    curr_minor=curr_minor+1;
+                }
+                if (minor.minorTaskStatus == 0 || minor.minorTaskStatus == 1) {
+                    flag = 1;
+                }
             }
-            if (u.minorTaskStatus == 0 || u.minorTaskStatus == 1) {
-                flag = 1;
-            }
+            u.currMinorTask=curr_minor;
+            u.save();
+            if (!flag) {
+                curr_major=curr_major+1;
+            }else break;
         }
-        if (!flag && majorStatus.minorTask.length) {
-            majorStatus.majorTaskStatus = 2;
-        }
+        status_object.save();
+        child.individualAdoptionFlow.currMajorTask=curr_major;
+        child.individualAdoptionFlow.majorTask=status_object;
         child.save();
-        return res.status(200).json({
-            response: child
-        })
+        return res.status(200).send(
+            "successfully updated"
+        )
 
     } catch (err) {
         return res.status(200).send("error in updating the status")
     }
 
 }
-module.exports.getChildbyId=async function(req,res){
-    try{
-        let child=await Child.findOne({child_id:req.body.child_id}).populate('worker_alloted');
+module.exports.getChildbyId = async function (req, res) {
+    try {
+        let child = await Child.findOne({ child_id: req.body.child_id }).populate('worker_alloted');
         res.status(200).json({
-            response:child
+            response: child
         })
-    }catch(err){
+    } catch (err) {
         return res.status(200).send("error in getting child by id");
     }
 }

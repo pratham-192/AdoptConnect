@@ -18,5 +18,5 @@ router.post('/status_update',childController.statusUpdate);
 
 //get child by id
 
-router.get('/getchild',childController.getChildbyId);
+router.post('/getchild',childController.getChildbyId);
 module.exports=router;
