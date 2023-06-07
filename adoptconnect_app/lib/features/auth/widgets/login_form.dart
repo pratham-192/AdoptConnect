@@ -1,4 +1,5 @@
 import 'package:adoptconnect_app/constants/global_variables.dart';
+import 'package:adoptconnect_app/features/auth/services/auth_service.dart';
 import 'package:adoptconnect_app/widgets/text_input.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -14,15 +15,26 @@ class _LoginFormState extends State<LoginForm> {
   final _userIdController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final authService = AuthService();
 
   String _userIdErrorText = "";
-  String _passwordErrorText = "";
+  String _passwordErrorText = ""; 
 
   @override
   void dispose() {
     _userIdController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void loginUser() {
+    if (!_formKey.currentState!.validate()) return;
+
+    authService.signInUser(
+        userId: _userIdController.text,
+        password: _passwordController.text,
+        category: 'admin',
+        context: context);
   }
 
   @override
@@ -41,6 +53,7 @@ class _LoginFormState extends State<LoginForm> {
             labelText: "User Id",
             controller: _userIdController,
             errorText: _userIdErrorText,
+            validate: true,
           ),
           const SizedBox(height: 20),
           InputText(
@@ -48,10 +61,11 @@ class _LoginFormState extends State<LoginForm> {
             isPassword: true,
             controller: _passwordController,
             errorText: _passwordErrorText,
+            validate: true,
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 40),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: loginUser,
             style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 40),
                 textStyle: const TextStyle(fontSize: 18),
