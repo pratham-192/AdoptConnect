@@ -153,3 +153,15 @@ module.exports.deleteMinorTask=async function(req,res){
         return res.status(200).send("error in deleting minor task");
     }
 }
+module.exports.getCurrFlow=async function(req,res){
+    try{
+        const childclass = await ChildCategory.findOne({ childClassification: req.body.childClassification });
+        if (!childclass) return res.status(200).send("first, create the new child category ");
+        let currflow=await AdoptionFlow.findOne({ childClassification: req.body.childClassification });
+        return res.status(200).json({
+            reponse:currflow
+        })
+    }catch(err){
+        return res.status(200).send("error in getting curr flow");
+    }
+}

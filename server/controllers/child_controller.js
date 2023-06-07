@@ -148,7 +148,7 @@ module.exports.create_child_category = async function (req, res) {
         const childcateg = await ChildCategory.create({
             childClassification: childclass
         })
-        AdoptionFlow.create({ childClassification: childclass });
+        await AdoptionFlow.create({ childClassification: childclass });
         return res.status(200).json({
             response: childcateg
         })
@@ -170,6 +170,17 @@ module.exports.delete_child_category = function (req, res) {
         return res.status(200).send("child-category deleted successfully");
     })
 
+}
+
+module.exports.get_child_category=async function(req,res){
+    try{
+        let child_category=await ChildCategory.find({});
+        return res.status(200).json({
+            response:child_category
+        })
+    }catch(err){
+        return res.status(200).send("error in getting child category");
+    }
 }
 
 //adoption flow status update

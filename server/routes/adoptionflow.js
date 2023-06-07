@@ -14,4 +14,7 @@ router.post('/minor/create',adoptionFlowController.createMinorTask);
 router.delete('/minor/delete',adoptionFlowController.deleteMinorTask);
 router.post('/minor/update',adoptionFlowController.updateMinorTask);
 
+
+router.post('/curr_flow',adoptionFlowController.getCurrFlow);
+
 module.exports=router;
