@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:adoptconnect_app/models/adoption_flow.dart';
-import 'package:adoptconnect_app/models/user.dart';
 
 class Child {
   final String id;
@@ -33,10 +32,11 @@ class Child {
   final String createdByUser;
   final String createdDate;
   final int contactNo;
-  final User workerAlloted;
-  final String avatar;
+  final String workerAlloted;
+  final Map<String, dynamic> avatar;
   final String childNote;
   final AdoptionFlow individualAdoptionFlow;
+  final List<dynamic> uploadedDocuments;
 
   Child({
     required this.id,
@@ -73,6 +73,7 @@ class Child {
     required this.avatar,
     required this.childNote,
     required this.individualAdoptionFlow,
+    required this.uploadedDocuments,
   });
 
   Map<String, dynamic> toMap() {
@@ -107,53 +108,54 @@ class Child {
       'createdByUser': createdByUser,
       'createdDate': createdDate,
       'contactNo': contactNo,
-      'worker_alloted': workerAlloted.toMap(),
+      'worker_alloted': workerAlloted,
       'avatar': avatar,
       'childNote': childNote,
       'individualAdoptionFlow': individualAdoptionFlow.toMap(),
+      'uploadedDocuments': uploadedDocuments,
     };
   }
 
   factory Child.fromMap(Map<String, dynamic> map) {
     return Child(
-      id: map['_id'] ?? '',
-      childId: map['child_id'] ?? '',
-      state: map['state'] ?? '',
-      district: map['district'] ?? '',
-      shelterHome: map['shelterHome'] ?? '',
-      childName: map['childName'] ?? '',
-      linkedWithSAA: map['linkedWithSAA'] ?? '',
-      gender: map['gender'] ?? '',
-      dateOfBirth: map['dateOfBirth'] ?? '',
-      age: map['age']?.toInt() ?? 0,
-      childClassification: map['childClassification'] ?? '',
-      recommendedForAdoption: map['recommendedForAdoption'] ?? '',
-      inquiryDateOfAdmission: map['inquiryDateOfAdmission'] ?? '',
-      reasonForAdmission: map['reasonForAdmission'] ?? '',
-      reasonForFlagging: map['reasonForFlagging'] ?? '',
-      lastVisit: map['lastVisit'] ?? '',
-      lastCall: map['lastCall'] ?? '',
-      caseHistory: map['caseHistory'] ?? '',
-      caseStatus: map['caseStatus'] ?? '',
-      guardianListed: map['guardianListed'] ?? '',
-      familyVisitsPhoneCall: map['familyVisitsPhoneCall'] ?? '',
-      siblings: map['siblings'] ?? '',
-      lastDateOfCWCOrder:
-          DateTime.fromMillisecondsSinceEpoch(map['lastDateOfCWCOrder']),
-      lastCWCOrder: map['Lastcwcorder'] ?? '',
-      lengthOfStayInShelter: map['lengthOfStayInShelter'] ?? '',
-      caringsRegistrationNumber: map['caringsRegistrationNumber'] ?? '',
-      dateLFACSRMERUploadedInCARINGS:
-          map['dateLFA_CSR_MERUploadedInCARINGS'] ?? '',
-      createdByUser: map['createdByUser'] ?? '',
-      createdDate: map['createdDate'] ?? '',
-      contactNo: map['contactNo']?.toInt() ?? 0,
-      workerAlloted: User.fromMap(map['worker_alloted']),
-      avatar: map['avatar'] ?? '',
-      childNote: map['childNote'] ?? '',
-      individualAdoptionFlow:
-          AdoptionFlow.fromMap(map['individualAdoptionFlow']),
-    );
+        id: map['_id'] ?? '',
+        childId: map['child_id'] ?? '',
+        state: map['state'] ?? '',
+        district: map['district'] ?? '',
+        shelterHome: map['shelterHome'] ?? '',
+        childName: map['childName'] ?? '',
+        linkedWithSAA: map['linkedWithSAA'] ?? '',
+        gender: map['gender'] ?? '',
+        dateOfBirth: map['dateOfBirth'] ?? '',
+        age: map['age']?.toInt() ?? 0,
+        childClassification: map['childClassification'] ?? '',
+        recommendedForAdoption: map['recommendedForAdoption'] ?? '',
+        inquiryDateOfAdmission: map['inquiryDateOfAdmission'] ?? '',
+        reasonForAdmission: map['reasonForAdmission'] ?? '',
+        reasonForFlagging: map['reasonForFlagging'] ?? '',
+        lastVisit: map['lastVisit'] ?? '',
+        lastCall: map['lastCall'] ?? '',
+        caseHistory: map['caseHistory'] ?? '',
+        caseStatus: map['caseStatus'] ?? '',
+        guardianListed: map['guardianListed'] ?? '',
+        familyVisitsPhoneCall: map['familyVisitsPhoneCall'] ?? '',
+        siblings: map['siblings'] ?? '',
+        lastDateOfCWCOrder:
+            DateTime.fromMillisecondsSinceEpoch(map['lastDateOfCWCOrder']?.toInt() ?? 0),
+        lastCWCOrder: map['Lastcwcorder'] ?? '',
+        lengthOfStayInShelter: map['lengthOfStayInShelter'] ?? '',
+        caringsRegistrationNumber: map['caringsRegistrationNumber'] ?? '',
+        dateLFACSRMERUploadedInCARINGS:
+            map['dateLFA_CSR_MERUploadedInCARINGS'] ?? '',
+        createdByUser: map['createdByUser'] ?? '',
+        createdDate: map['createdDate'] ?? '',
+        contactNo: map['contactNo']?.toInt() ?? 0,
+        workerAlloted: map['worker_alloted'],
+        avatar: map['avatar'] ?? {},
+        childNote: map['childNote'] ?? '',
+        individualAdoptionFlow:
+            AdoptionFlow.fromMap(map['individualAdoptionFlow']),
+        uploadedDocuments: List<dynamic>.from(map['uploaded_documents'] ?? []));
   }
 
   String toJson() => json.encode(toMap());
@@ -184,60 +186,61 @@ class Child {
     String? familyVisitsPhoneCall,
     String? siblings,
     DateTime? lastDateOfCWCOrder,
-    String? Lastcwcorder,
+    String? lastCWCOrder,
     String? lengthOfStayInShelter,
     String? caringsRegistrationNumber,
-    String? dateLFA_CSR_MERUploadedInCARINGS,
+    String? dateLFACSRMERUploadedInCARINGS,
     String? createdByUser,
     String? createdDate,
     int? contactNo,
-    User? worker_alloted,
-    String? avatar,
+    String? workerAlloted,
+    Map<String, dynamic>? avatar,
     String? childNote,
     AdoptionFlow? individualAdoptionFlow,
+    List<dynamic>? uploadedDocuments,
   }) {
     return Child(
-      id: id ?? this.id,
-      childId: childId ?? this.childId,
-      state: state ?? this.state,
-      district: district ?? this.district,
-      shelterHome: shelterHome ?? this.shelterHome,
-      childName: childName ?? this.childName,
-      linkedWithSAA: linkedWithSAA ?? this.linkedWithSAA,
-      gender: gender ?? this.gender,
-      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
-      age: age ?? this.age,
-      childClassification: childClassification ?? this.childClassification,
-      recommendedForAdoption:
-          recommendedForAdoption ?? this.recommendedForAdoption,
-      inquiryDateOfAdmission:
-          inquiryDateOfAdmission ?? this.inquiryDateOfAdmission,
-      reasonForAdmission: reasonForAdmission ?? this.reasonForAdmission,
-      reasonForFlagging: reasonForFlagging ?? this.reasonForFlagging,
-      lastVisit: lastVisit ?? this.lastVisit,
-      lastCall: lastCall ?? this.lastCall,
-      caseHistory: caseHistory ?? this.caseHistory,
-      caseStatus: caseStatus ?? this.caseStatus,
-      guardianListed: guardianListed ?? this.guardianListed,
-      familyVisitsPhoneCall:
-          familyVisitsPhoneCall ?? this.familyVisitsPhoneCall,
-      siblings: siblings ?? this.siblings,
-      lastDateOfCWCOrder: lastDateOfCWCOrder ?? this.lastDateOfCWCOrder,
-      lastCWCOrder: Lastcwcorder ?? this.lastCWCOrder,
-      lengthOfStayInShelter:
-          lengthOfStayInShelter ?? this.lengthOfStayInShelter,
-      caringsRegistrationNumber:
-          caringsRegistrationNumber ?? this.caringsRegistrationNumber,
-      dateLFACSRMERUploadedInCARINGS: dateLFA_CSR_MERUploadedInCARINGS ??
-          this.dateLFACSRMERUploadedInCARINGS,
-      createdByUser: createdByUser ?? this.createdByUser,
-      createdDate: createdDate ?? this.createdDate,
-      contactNo: contactNo ?? this.contactNo,
-      workerAlloted: worker_alloted ?? this.workerAlloted,
-      avatar: avatar ?? this.avatar,
-      childNote: childNote ?? this.childNote,
-      individualAdoptionFlow:
-          individualAdoptionFlow ?? this.individualAdoptionFlow,
-    );
+        id: id ?? this.id,
+        childId: childId ?? this.childId,
+        state: state ?? this.state,
+        district: district ?? this.district,
+        shelterHome: shelterHome ?? this.shelterHome,
+        childName: childName ?? this.childName,
+        linkedWithSAA: linkedWithSAA ?? this.linkedWithSAA,
+        gender: gender ?? this.gender,
+        dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+        age: age ?? this.age,
+        childClassification: childClassification ?? this.childClassification,
+        recommendedForAdoption:
+            recommendedForAdoption ?? this.recommendedForAdoption,
+        inquiryDateOfAdmission:
+            inquiryDateOfAdmission ?? this.inquiryDateOfAdmission,
+        reasonForAdmission: reasonForAdmission ?? this.reasonForAdmission,
+        reasonForFlagging: reasonForFlagging ?? this.reasonForFlagging,
+        lastVisit: lastVisit ?? this.lastVisit,
+        lastCall: lastCall ?? this.lastCall,
+        caseHistory: caseHistory ?? this.caseHistory,
+        caseStatus: caseStatus ?? this.caseStatus,
+        guardianListed: guardianListed ?? this.guardianListed,
+        familyVisitsPhoneCall:
+            familyVisitsPhoneCall ?? this.familyVisitsPhoneCall,
+        siblings: siblings ?? this.siblings,
+        lastDateOfCWCOrder: lastDateOfCWCOrder ?? this.lastDateOfCWCOrder,
+        lastCWCOrder: lastCWCOrder ?? this.lastCWCOrder,
+        lengthOfStayInShelter:
+            lengthOfStayInShelter ?? this.lengthOfStayInShelter,
+        caringsRegistrationNumber:
+            caringsRegistrationNumber ?? this.caringsRegistrationNumber,
+        dateLFACSRMERUploadedInCARINGS: dateLFACSRMERUploadedInCARINGS ??
+            this.dateLFACSRMERUploadedInCARINGS,
+        createdByUser: createdByUser ?? this.createdByUser,
+        createdDate: createdDate ?? this.createdDate,
+        contactNo: contactNo ?? this.contactNo,
+        workerAlloted: workerAlloted ?? this.workerAlloted,
+        avatar: avatar ?? this.avatar,
+        childNote: childNote ?? this.childNote,
+        individualAdoptionFlow:
+            individualAdoptionFlow ?? this.individualAdoptionFlow,
+        uploadedDocuments: uploadedDocuments ?? this.uploadedDocuments);
   }
 }
