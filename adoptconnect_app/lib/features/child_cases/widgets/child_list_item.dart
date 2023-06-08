@@ -1,8 +1,8 @@
 import 'package:adoptconnect_app/constants/global_variables.dart';
 import 'package:adoptconnect_app/models/child.dart';
 import 'package:flutter/material.dart';
-
 import 'child_status.dart';
+import 'child_avatar.dart';
 
 class ChildListItem extends StatefulWidget {
   final Child child;
@@ -32,10 +32,7 @@ class _ChildListItemState extends State<ChildListItem> {
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
         child: Row(
           children: [
-            const CircleAvatar(
-              radius: 30,
-              child: FlutterLogo(),
-            ),
+            ChildAvatar(avatar: widget.child.avatar),
             const SizedBox(
               width: 15,
             ),
