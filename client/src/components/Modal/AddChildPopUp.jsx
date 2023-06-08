@@ -32,6 +32,8 @@ export default function AddChildPopUp({ setopenAddchild }) {
     setdateLFA_CSR_MERUploadedINCARINGS,
   ] = useState();
   const [contactNo, setcontactNo] = useState();
+  const [avatar, setavatar] = useState();
+  const [extraDocument, setextraDocument] = useState();
   const [err, seterr] = useState("");
   const { t } = useTranslation();
 
@@ -95,6 +97,19 @@ export default function AddChildPopUp({ setopenAddchild }) {
       createdByUser: JSON.parse(localStorage.getItem("userDetails"))._id,
       createdDate: new Date().toISOString().slice(0, 10),
     });
+
+    const formData = new FormData();
+    formData.append("file", avatar);
+    formData.append("child_id", child_id);
+    await axios.post("http://localhost:3000/child/image_upload", formData);
+
+    const docformData = new FormData();
+    docformData.append("file", extraDocument);
+    docformData.append("child_id", "123");
+    await axios.post(
+      "http://localhost:3000/child/document/upload",
+      docformData
+    );
     setopenAddchild(false);
   };
 
@@ -123,6 +138,23 @@ export default function AddChildPopUp({ setopenAddchild }) {
 
                 <div className="lg:col-span-2">
                   <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                    <div className="md:col-span-5 flex flex-col mb-2">
+                      <label htmlFor="full_name" className="pb-2">
+                        {t("Child Image")}
+                      </label>
+                      {avatar ? (
+                        <img
+                          src={URL.createObjectURL(avatar)}
+                          className="h-40 w-40 mb-2"
+                        />
+                      ) : (
+                        ""
+                      )}
+                      <input
+                        type="file"
+                        onChange={(e) => setavatar(e.target.files[0])}
+                      />
+                    </div>
                     <div className="md:col-span-5">
                       <label htmlFor="full_name">{t("Child ID")}</label>
                       <input
@@ -394,6 +426,15 @@ export default function AddChildPopUp({ setopenAddchild }) {
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                         value={contactNo}
                         onChange={(e) => setcontactNo(String(e.target.value))}
+                      />
+                    </div>
+                    <div className="md:col-span-5 flex flex-col mb-2">
+                      <label htmlFor="full_name" className="pb-2">
+                        {t("Documents")}
+                      </label>
+                      <input
+                        type="file"
+                        onChange={(e) => setextraDocument(e.target.files[0])}
                       />
                     </div>
                     {err ? (

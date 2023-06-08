@@ -19,6 +19,7 @@ const ChildDetails = () => {
   const [openPopUp, setopenPopUp] = useState(false);
   const [popUpDetails, setpopUpDetails] = useState({});
   const [openEditDetails, setopenEditDetails] = useState(false);
+  const [imageUrl, setimageUrl] = useState("");
   const { t } = useTranslation();
 
   const updatementorHandler = async () => {
@@ -49,6 +50,9 @@ const ChildDetails = () => {
     const response = await axios.post("http://localhost:3000/child/getchild", {
       child_id: childId,
     });
+    const uint8Array = new Uint8Array(response.data.response.avatar.data);
+    const blob = new Blob([uint8Array]);
+    setimageUrl(URL.createObjectURL(blob));
     setchildDetails(response.data.response);
     const response2 = await axios.get(
       "http://localhost:3000/admin/all_workers"
@@ -89,18 +93,22 @@ const ChildDetails = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 pt-10">
           <div className="relative">
             <div className="w-48 h-48 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-24 w-24"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              {imageUrl ? (
+                <img src={imageUrl} className="h-48 w-48 rounded-full" />
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-24 w-24"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">

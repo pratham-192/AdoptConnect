@@ -24,6 +24,7 @@ const Employees = () => {
 
   useEffect(async () => {
     const response = await axios.get("http://localhost:3000/admin/all_admin");
+    console.log(response.data);
     setworkerData(response.data.response);
   }, [openAddWorker]);
 
