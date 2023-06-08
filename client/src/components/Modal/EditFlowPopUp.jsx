@@ -10,6 +10,7 @@ export default function EditFlowPopUp({
 }) {
   const [taskStatement, settaskStatement] = useState(editTaskDetails.statement);
   const [taskNote, settaskNote] = useState(editTaskDetails.note);
+  const [iteration, setiteration] = useState(editTaskDetails.iterationMethod);
 
   const saveTaskHandler = async () => {
     if (editTaskDetails.minorTask) {
@@ -34,6 +35,7 @@ export default function EditFlowPopUp({
           majorTaskStatement: taskStatement,
           majorTaskNote: taskNote,
           majorTaskPosition: editTaskDetails.majorIndex,
+          iterationMethod: iteration,
         }
       );
       changeCategory(editTaskDetails.childClassification);
@@ -104,6 +106,22 @@ export default function EditFlowPopUp({
                 value={taskNote}
                 onChange={(e) => settaskNote(e.target.value)}
               />
+              {editTaskDetails.majorTask ? (
+                <span>
+                  <label htmlFor="full_name" className="text-sm">
+                    Iteration Methd
+                  </label>
+                  <select
+                    className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                    onChange={(e) => setiteration(e.target.value)}
+                  >
+                    <option value="series">Series</option>
+                    <option value="parallel">Parallel</option>
+                  </select>
+                </span>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           <div className="grid grid-cols-2">

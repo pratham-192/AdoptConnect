@@ -18,25 +18,38 @@ const FlowManagement = () => {
   const [majorTaskPosition, setmajorTaskPosition] = useState(0);
   const [majorTaskStatement, setmajorTaskStatement] = useState("");
   const [majorTaskNote, setmajorTaskNote] = useState("");
+  const [majorTaskIteration, setmajorTaskIteration] = useState("series");
   const [minorTaskPosition, setminorTaskPosition] = useState(0);
   const [minorTaskStatement, setminorTaskStatement] = useState("");
   const [minorTaskNote, setminorTaskNote] = useState("");
   const [openEditPopUp, setopenEditPopUp] = useState(false);
   const [editTaskDetails, seteditTaskDetails] = useState({});
+  const [majorErr, setmajorErr] = useState("");
+  const [minorErr, setminorErr] = useState("");
 
   const addMajorTaskHandler = async () => {
+    if (!majorTaskNote || !majorTaskStatement || !majorTaskIteration) {
+      setmajorErr("Please fill all the details");
+      return;
+    }
     await axios.post("http://localhost:3000/admin/adoption_flow/major/create", {
       childClassification: selectedCategory.childClassification,
       majorTaskPosition: majorTaskPosition + 1,
       majorTaskNote: majorTaskNote,
       majorTaskStatement: majorTaskStatement,
+      iterationMethod: majorTaskIteration,
     });
     setmajorTaskNote("");
     setmajorTaskPosition(0);
     setmajorTaskStatement("");
     changeCategory(selectedCategory.childClassification);
+    setmajorErr("");
   };
   const addMinorTaskHandler = async () => {
+    if (!minorTaskNote || !minorTaskStatement) {
+      setminorErr("Please fill all the details");
+      return;
+    }
     await axios.post("http://localhost:3000/admin/adoption_flow/minor/create", {
       childClassification: selectedCategory.childClassification,
       majorTaskPosition: majorTaskPosition,
@@ -49,6 +62,7 @@ const FlowManagement = () => {
     setmajorTaskPosition(0);
     setminorTaskStatement("");
     changeCategory(selectedCategory.childClassification);
+    setminorErr("");
   };
 
   const addCategoryHandler = async () => {
@@ -194,6 +208,7 @@ const FlowManagement = () => {
                             majorIndex: majorIndex,
                             childClassification:
                               selectedCategory.childClassification,
+                            iterationMethod: major.iterationMethod,
                           });
                           setopenEditPopUp(true);
                         }}
@@ -280,6 +295,19 @@ const FlowManagement = () => {
             </div>
             <div className="md:col-span-5 mt-3">
               <label htmlFor="full_name" className="text-sm">
+                Major Task Iteration Type
+              </label>
+              <select
+                className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                onChange={(e) => setmajorTaskIteration(e.target.value)}
+              >
+                <option value="">Please select one</option>
+                <option value="series">Series</option>
+                <option value="parallel">Parallel</option>
+              </select>
+            </div>
+            <div className="md:col-span-5 mt-3">
+              <label htmlFor="full_name" className="text-sm">
                 Major Task Note
               </label>
               <input
@@ -289,6 +317,11 @@ const FlowManagement = () => {
                 onChange={(e) => setmajorTaskNote(e.target.value)}
               />
             </div>
+            {majorErr ? (
+              <div className="text-sm text-red-500">{majorErr}</div>
+            ) : (
+              ""
+            )}
             <div className="md:col-span-5 text-right">
               <div className="inline-flex items-end">
                 <button
@@ -374,6 +407,11 @@ const FlowManagement = () => {
                 disabled={!flowDetails || !flowDetails.length}
               />
             </div>
+            {minorErr ? (
+              <div className="text-sm text-red-500">{minorErr}</div>
+            ) : (
+              ""
+            )}
             <div className="md:col-span-5 text-right">
               <div className="inline-flex items-end">
                 <button

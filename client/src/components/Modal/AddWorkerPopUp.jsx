@@ -13,6 +13,8 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
   const [userAddress, setuserAddress] = useState("");
   const [userAadhar, setuserAadhar] = useState("");
   const [userContact, setuserContact] = useState("");
+  const [avatar, setavatar] = useState();
+  const [avatarURL, setavatarURL] = useState();
   const [err, seterr] = useState("");
   const { t } = useTranslation();
 
@@ -45,6 +47,22 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
     setopenAddWorker(false);
   };
 
+  const readFileDataAsBase64 = (e) => {
+    const file = e.target.files[0];
+    setavatarURL(URL.createObjectURL(e.target.files[0]));
+    // const reader = new FileReader();
+    // reader.readAsArrayBuffer(file);
+    // reader.onload = () => {
+    //   const buffer = Buffer.from(reader.result, "base64");
+    //   console.log(buffer);
+    //   setavatar(reader.result);
+    //   console.log(reader.result);
+    // };
+    // reader.onerror = (err) => {
+    //   console.log(err);
+    // };
+  };
+
   return (
     <div className="z-50 h-screen w-screen fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center overflow-y-hidden">
       <div className="h-5/6 p-6 bg-gray-100 flex items-center justify-center rounded-lg">
@@ -70,6 +88,20 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
 
                 <div className="lg:col-span-2">
                   <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                    <div className="md:col-span-5 flex flex-col mb-2">
+                      <label htmlFor="full_name" className="pb-2">
+                        {t("Worker Image")}
+                      </label>
+                      {avatarURL ? (
+                        <img src={avatarURL} className="h-40 w-40 mb-2" />
+                      ) : (
+                        ""
+                      )}
+                      <input
+                        type="file"
+                        onChange={(e) => console.log(e.target.files[0])}
+                      />
+                    </div>
                     <div className="md:col-span-5">
                       <label htmlFor="user_id">{t("User Id")}</label>
                       <div className="grid grid-cols-2">
