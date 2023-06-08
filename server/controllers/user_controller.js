@@ -129,7 +129,10 @@ module.exports.update = async function (req, res) {
 }
 module.exports.getWorkerbyId = async function (req, res) {
     try {
-        let worker = await User.findOne({ user_id: req.body.user_id }).populate('alloted_children');
+        let worker = await User.findOne({ user_id: req.body.user_id }).populate({
+            path:'alloted_children',
+            select: '-uploaded_documents'
+        });
         res.status(200).json({
             response: worker
         })
