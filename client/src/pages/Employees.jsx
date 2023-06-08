@@ -17,8 +17,6 @@ import { useNavigate } from "react-router-dom";
 const Employees = () => {
   const [workerData, setworkerData] = useState([]);
   const [openAddWorker, setopenAddWorker] = useState(false);
-  const [workerDetails, setworkerDetails] = useState({});
-  const [openworkerDetails, setopenworkerDetails] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -31,9 +29,7 @@ const Employees = () => {
   const rowSelected = () => {
     if (grid) {
       const selectedrecords = grid.getSelectedRecords();
-      setworkerDetails(selectedrecords[0]);
       navigate(`/worker-details?id=${selectedrecords[0].user_id}`);
-      // setopenworkerDetails(true);
     }
   };
 

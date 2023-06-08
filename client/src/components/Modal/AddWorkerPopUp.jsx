@@ -13,6 +13,7 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
   const [userAddress, setuserAddress] = useState("");
   const [userAadhar, setuserAadhar] = useState("");
   const [userContact, setuserContact] = useState("");
+  const [avatar, setavatar] = useState();
   const [err, seterr] = useState("");
   const { t } = useTranslation();
 
@@ -26,12 +27,13 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
       !userZone ||
       !userAddress ||
       !userAadhar ||
-      !userContact
+      !userContact ||
+      !avatar
     ) {
       seterr("Please fill all the details");
       return;
     }
-    const response = await axios.post("http://localhost:3000/users/create", {
+    await axios.post("http://localhost:3000/users/create", {
       user_id: userId,
       name: userName,
       email: userEmail,
@@ -42,6 +44,12 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
       aadharCardNo: userAadhar,
       contactNo: userContact,
     });
+
+    const formData = new FormData();
+    formData.append("file", avatar);
+    formData.append("user_id", userId);
+    await axios.post("http://localhost:3000/users/image_upload", formData);
+
     setopenAddWorker(false);
   };
 
@@ -70,6 +78,23 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
 
                 <div className="lg:col-span-2">
                   <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                    <div className="md:col-span-5 flex flex-col mb-2">
+                      <label htmlFor="full_name" className="pb-2">
+                        {t("Worker Image")}
+                      </label>
+                      {avatar ? (
+                        <img
+                          src={URL.createObjectURL(avatar)}
+                          className="h-40 w-40 mb-2"
+                        />
+                      ) : (
+                        ""
+                      )}
+                      <input
+                        type="file"
+                        onChange={(e) => setavatar(e.target.files[0])}
+                      />
+                    </div>
                     <div className="md:col-span-5">
                       <label htmlFor="user_id">{t("User Id")}</label>
                       <div className="grid grid-cols-2">

@@ -73,7 +73,6 @@ const Cases = () => {
       const selectedrecords = grid.getSelectedRecords();
       setchildDetails(selectedrecords[0]);
       navigate(`/child-details?id=${selectedrecords[0].child_id}`);
-      // setopenchildDetails(true);
     }
   };
 

@@ -8,6 +8,8 @@ import axios from "axios";
 import PopUp from "../components/Modal/PopUp";
 import UpdateChildPopUp from "../components/Modal/UpdateChildPopUp";
 import { useTranslation } from "react-i18next";
+import { MdDelete } from "react-icons/md";
+import ConfirmPopUp from "../components/Modal/ConfirmPopUp";
 
 const ChildDetails = () => {
   const location = useLocation();
@@ -19,6 +21,10 @@ const ChildDetails = () => {
   const [openPopUp, setopenPopUp] = useState(false);
   const [popUpDetails, setpopUpDetails] = useState({});
   const [openEditDetails, setopenEditDetails] = useState(false);
+  const [imageUrl, setimageUrl] = useState("");
+  const [allDocuments, setallDocuments] = useState({});
+  const [openConfirmPopUp, setopenConfirmPopUp] = useState(0);
+  const [dltDocId, setdltDocId] = useState();
   const { t } = useTranslation();
 
   const updatementorHandler = async () => {
@@ -45,19 +51,68 @@ const ChildDetails = () => {
     setopenPopUp(true);
   };
 
-  useEffect(async () => {
-    const response = await axios.post("http://localhost:3000/child/getchild", {
-      child_id: childId,
-    });
-    setchildDetails(response.data.response);
-    const response2 = await axios.get(
-      "http://localhost:3000/admin/all_workers"
+  const downloadDocumentHandler = async (docId) => {
+    const response = await axios.post(
+      "http://localhost:3000/child/document/download",
+      {
+        child_id: childId,
+        docId: docId,
+      }
     );
-    setallWorkers(response2.data.response);
-  }, [openEditDetails]);
+    console.log(response.data);
+  };
+
+  useEffect(async () => {
+    if (openConfirmPopUp === 1) {
+      await axios.post("http://localhost:3000/child/document/files/delete", {
+        child_id: childId,
+        docId: dltDocId,
+      });
+      setopenConfirmPopUp(0);
+    } else {
+      const response = await axios.post(
+        "http://localhost:3000/child/get_image",
+        {
+          child_id: childId,
+        }
+      );
+      if (response.data && response.data.response) {
+        const uint8Array = new Uint8Array(response.data.response.data);
+        const blob = new Blob([uint8Array]);
+        setimageUrl(URL.createObjectURL(blob));
+      }
+      const response2 = await axios.get(
+        "http://localhost:3000/admin/all_workers"
+      );
+      setallWorkers(response2.data.response);
+      const response3 = await axios.post(
+        "http://localhost:3000/child/getchild",
+        {
+          child_id: childId,
+        }
+      );
+      setchildDetails(response3.data.response);
+      const response4 = await axios.post(
+        "http://localhost:3000/child/document/getbychildid",
+        {
+          child_id: childId,
+        }
+      );
+      setallDocuments(response4.data.response);
+    }
+  }, [openEditDetails, openConfirmPopUp]);
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl ">
+      {openConfirmPopUp == 3 ? (
+        <ConfirmPopUp
+          message={"Are you sure you want to delete this document"}
+          heading={"Delete Document"}
+          setopenConfirmPopUp={setopenConfirmPopUp}
+        />
+      ) : (
+        ""
+      )}
       <div className="flex justify-start items-center mb-7">
         <button
           className="hover:text-slate-500"
@@ -89,18 +144,22 @@ const ChildDetails = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 pt-10">
           <div className="relative">
             <div className="w-48 h-48 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-24 w-24"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              {imageUrl ? (
+                <img src={imageUrl} className="h-48 w-48 rounded-full" />
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-24 w-24"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
@@ -284,6 +343,35 @@ const ChildDetails = () => {
             <span className="text-slate-600 font-light">
               {childDetails.dateLFA_CSR_MERUUploadedINCARINGS}
             </span>
+          </p>
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+            {t("All uploaded Documents")} :{" "}
+            {allDocuments && allDocuments.length
+              ? allDocuments.map((document) => {
+                  return (
+                    <div
+                      className="text-slate-600 font-light p-2 mt-1 hover:bg-slate-100 rounded flex justify-between items-center"
+                      key={document.docId}
+                    >
+                      <span
+                        className="hover:underline cursor-pointer"
+                        onClick={() => downloadDocumentHandler(document.docId)}
+                      >
+                        {document.name}
+                      </span>
+                      <span
+                        className="text-red-500 cursor-pointer hover:text-red-400"
+                        onClick={() => {
+                          setdltDocId(document.docId);
+                          setopenConfirmPopUp(3);
+                        }}
+                      >
+                        <MdDelete size={25} />
+                      </span>
+                    </div>
+                  );
+                })
+              : ""}
           </p>
         </div>
       </div>

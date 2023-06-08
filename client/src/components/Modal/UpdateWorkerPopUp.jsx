@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { ImCross } from "react-icons/im";
+import { useTranslation } from "react-i18next";
 
 export default function UpdateWorkerPopUp({
   workerDetails,
@@ -15,9 +16,11 @@ export default function UpdateWorkerPopUp({
   const [userAddress, setuserAddress] = useState(workerDetails.address);
   const [userAadhar, setuserAadhar] = useState(workerDetails.aadharCardNo);
   const [userContact, setuserContact] = useState(workerDetails.contactNo);
+  const [avatar, setavatar] = useState();
+  const { t } = useTranslation();
 
   const updateWorkerHandler = async () => {
-    const response = await axios.post("http://localhost:3000/users/update", {
+    await axios.post("http://localhost:3000/users/update", {
       user_id: userId,
       name: userName,
       email: userEmail,
@@ -28,7 +31,15 @@ export default function UpdateWorkerPopUp({
       aadharCardNo: userAadhar,
       contactNo: userContact,
     });
-    setopenupdateWorker(false);
+    if (avatar) {
+      const formData = new FormData();
+      formData.append("file", avatar);
+      formData.append("user_id", userId);
+      await axios.post("http://localhost:3000/users/image_upload", formData);
+      setopenupdateWorker(false);
+    } else {
+      setopenupdateWorker(false);
+    }
   };
 
   return (
@@ -56,6 +67,23 @@ export default function UpdateWorkerPopUp({
 
                 <div className="lg:col-span-2">
                   <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                    <div className="md:col-span-5 flex flex-col mb-2">
+                      <label htmlFor="full_name" className="pb-2">
+                        {t("Worker Image")}
+                      </label>
+                      {avatar ? (
+                        <img
+                          src={URL.createObjectURL(avatar)}
+                          className="h-40 w-40 mb-2"
+                        />
+                      ) : (
+                        ""
+                      )}
+                      <input
+                        type="file"
+                        onChange={(e) => setavatar(e.target.files[0])}
+                      />
+                    </div>
                     <div className="md:col-span-5">
                       <label htmlFor="user_id">User ID</label>
                       <div className="grid grid-cols-2">

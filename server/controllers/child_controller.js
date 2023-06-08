@@ -272,20 +272,6 @@ module.exports.upload = async function (req, res) {
         return res.status(200).send("error in uploading files");
     }
 }
-module.exports.getFiles = async function (req, res) {
-    try {
-        // console.log(req.body.child_id);
-        let child = await Child.findOne({ child_id: req.body.child_id });
-        // console.log(child)
-        // console.log(child.uploaded_documents);
-        return res.status(200).json({
-            response: child.uploaded_documents
-        })
-    } catch (err) {
-        console.log(err);
-        return res.status(200).send("error in getting all files");
-    }
-}
 module.exports.download = async function (req, res) {
     try {
         let child = await Child.findOne({ child_id: req.body.child_id });
@@ -388,10 +374,17 @@ module.exports.deleteImage=async function(req,res){
 module.exports.getDocuments=async function(req,res){
     try{
         let child=await Child.findOne({child_id:req.body.child_id});
+        const modifiedResponse = child.uploaded_documents.map((item) => {
+            return {
+              name: item.name,
+              docId: item._id,
+            };
+          });
         if(child){return res.status(200).json({
-            response:child.uploaded_documents
+            response:modifiedResponse
         })}else return res.status(200).send("child doesn't exists");
     }catch(err){
+        console.log(err);
         return res.status(200).send("error in getting documents");
     }
 }
