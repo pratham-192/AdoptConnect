@@ -1,4 +1,5 @@
 import 'package:adoptconnect_app/constants/global_variables.dart';
+import 'package:adoptconnect_app/features/child_cases/screens/add_child_screen.dart';
 import 'package:adoptconnect_app/features/child_cases/services/child_service.dart';
 import 'package:flutter/material.dart';
 import 'package:adoptconnect_app/features/child_cases/widgets/child_list.dart';
@@ -35,6 +36,19 @@ class _ChildCasesScreenState extends State<ChildCasesScreen> {
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(60),
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: GlobalVariables.primaryColor,
+        tooltip: "Add Child",
+        onPressed: () {
+          Navigator.pushNamed(
+              context, AddChildScreen.routeName);
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 34,
         ),
       ),
       body: const ChildList(),

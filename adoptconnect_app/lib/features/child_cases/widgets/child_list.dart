@@ -22,27 +22,29 @@ class _ChildListState extends State<ChildList> {
         ? const Center(
             child: CircularProgressIndicator.adaptive(),
           )
-        : ListView.separated(
-            separatorBuilder: (_, __) => const SizedBox(
-                  height: 25,
-                ),
-            padding: const EdgeInsets.symmetric(horizontal: 35.0),
-            itemCount: cases.length,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 170),
-                    ChildListItem(
-                      child: cases[index],
-                    ),
-                  ],
+        : Scrollbar(
+          child: ListView.separated(
+              separatorBuilder: (_, __) => const SizedBox(
+                    height: 25,
+                  ),
+              padding: const EdgeInsets.symmetric(horizontal: 35.0),
+              itemCount: cases.length,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 170),
+                      ChildListItem(
+                        child: cases[index],
+                      ),
+                    ],
+                  );
+                }
+                return ChildListItem(
+                  child: cases[index],
                 );
-              }
-              return ChildListItem(
-                child: cases[index],
-              );
-            });
+              }),
+        );
   }
 }
