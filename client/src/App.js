@@ -11,6 +11,7 @@ import { useStateContext } from './Contexts/ContextProvider';
 import ChildDetails from './pages/ChildDetails';
 import WorkerDetails from './pages/WorkerDetails';
 import FlowManagement from './pages/FlowManagement';
+import { Calendar } from './pages';
 
 const App = () => {
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
@@ -67,6 +68,7 @@ const App = () => {
               {themeSettings && (<ThemeSettings />)}
 
               <Routes>
+                {/* <Route path="/" element={(<Calendar />)} /> */}
                 <Route path="/" element={(<Analytics />)} />
                 <Route path="/login/admin" element={(<Login />)} />
                 <Route path="/login/user" element={(<Login />)} />

@@ -84,7 +84,6 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
         contact_no: contactNo,
       }
     );
-    console.log(response.data);
     setopenEditDetails(false);
   };
 

@@ -29,7 +29,6 @@ const ChildDetails = () => {
         user_id: selectedWorker,
       }
     );
-    console.log(response.data);
     if (response.data.response) {
       setpopUpDetails({
         status: true,
@@ -47,7 +46,6 @@ const ChildDetails = () => {
   };
 
   useEffect(async () => {
-    console.log(childId);
     const response = await axios.post("http://localhost:3000/child/getchild", {
       child_id: childId,
     });

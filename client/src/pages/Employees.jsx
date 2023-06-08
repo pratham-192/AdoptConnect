@@ -32,7 +32,6 @@ const Employees = () => {
     if (grid) {
       const selectedrecords = grid.getSelectedRecords();
       setworkerDetails(selectedrecords[0]);
-      console.log(selectedrecords[0]);
       navigate(`/worker-details?id=${selectedrecords[0].user_id}`);
       // setopenworkerDetails(true);
     }
