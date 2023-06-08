@@ -28,7 +28,7 @@ router.get('/get_child_category',childController.get_child_category);
 
 router.post('/document/upload',upload.single('file'),childController.upload);
 router.post('/document/download',childController.download);
-router.post('/document/files',childController.getFiles);
+router.post('/document/files',childController.getDocuments);
 router.post('/document/files/delete',childController.deleteFile);
 
 router.post('/document/getbychildid',childController.getDocuments);
