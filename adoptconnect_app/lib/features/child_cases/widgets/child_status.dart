@@ -8,13 +8,29 @@ class ChildStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String status;
+    Color? statusColor;
+
     try {
       MajorTask currentTask =
           adoptionFlow.majorTask[adoptionFlow.currMajorTask];
-      return Text(getStatus(currentTask.majorTaskStatus));
+      status = getStatus(currentTask.majorTaskStatus);
+      statusColor = getStatusColor(currentTask.majorTaskStatus);
     } catch (e) {
-      return const Text("No data");
+      status = "No data";
+      statusColor = Colors.black12;
     }
+
+    return Row(
+      children: [
+        CircleAvatar(
+          radius: 6,
+          backgroundColor: statusColor,
+        ),
+        const SizedBox(width: 4),
+        Text(status),
+      ],
+    );
   }
 }
 
@@ -25,8 +41,21 @@ String getStatus(int taskStatus) {
     case 1:
       return "Ongoing";
     case 2:
-      return "Adopted";
+      return "Completed";
   }
 
   return "No data";
+}
+
+Color? getStatusColor(int taskStatus) {
+  switch (taskStatus) {
+    case 0:
+      return Colors.red;
+    case 1:
+      return Colors.yellow[700];
+    case 2:
+      return Colors.green;
+  }
+
+  return Colors.black12;
 }
