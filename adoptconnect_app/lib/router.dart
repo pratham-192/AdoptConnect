@@ -1,4 +1,4 @@
-import 'package:adoptconnect_app/features/child_cases/child_cases_screen.dart';
+import 'package:adoptconnect_app/features/child_cases/screens/child_cases_screen.dart';
 import 'package:adoptconnect_app/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'features/auth/screens/auth_screen.dart';
