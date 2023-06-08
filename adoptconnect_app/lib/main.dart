@@ -1,15 +1,36 @@
+import 'package:adoptconnect_app/features/auth/services/auth_service.dart';
+import 'package:adoptconnect_app/providers/user_provider.dart';
 import 'package:adoptconnect_app/router.dart';
+import 'package:adoptconnect_app/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'constants/global_variables.dart';
 import 'features/auth/screens/auth_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
+      child: const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final AuthService authService = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    authService.getUserData(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +46,9 @@ class MyApp extends StatelessWidget {
         ),
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: const AuthScreen(),
+      home: Provider.of<UserProvider>(context).user.name.isNotEmpty
+          ? const BottomBar()
+          : const AuthScreen(),
     );
   }
 }
