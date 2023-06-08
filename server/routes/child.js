@@ -10,13 +10,13 @@ const childController=require('../controllers/child_controller');
 
 router.post('/create_child',childController.create);
 router.post('/update_child',childController.update_details_child);
-router.delete('/delete_child',childController.delete_child);
+router.post('/delete_child',childController.delete_child);
 
 
 
 //creation and deletion of child category
 router.post('/create_child_category',childController.create_child_category);
-router.delete('/delete_child_category',childController.delete_child_category);
+router.post('/delete_child_category',childController.delete_child_category);
 router.post('/status_update',childController.statusUpdate);
 
 
@@ -31,4 +31,7 @@ router.post('/document/download',childController.download);
 router.post('/document/files',childController.getFiles);
 router.post('/document/files/delete',childController.deleteFile);
 
+router.post('/image_upload',upload.single('file'),childController.imageUpload);
+router.post('/get_image',childController.getImage);
+router.post('/delete_image',childController.deleteImage)
 module.exports=router;

@@ -148,3 +148,45 @@ module.exports.getWorkerbyId = async function (req, res) {
 //     }
 // }
 
+
+module.exports.imageUpload=async function(req,res){
+    try{
+        let user = await User.findOne({ user_id: req.body.user_id });
+        if(!user)return res.status(200).send("user doesn't exists");
+        user.avatar=req.file.buffer;
+        user.save();
+        return res.status(200).send("file uploaded successfully");
+    }catch(err){
+        console.log(err);
+        return res.status(200).send("error in uploading image");
+        
+    }
+}
+module.exports.getImage=async function(req,res){
+    try{
+        let user = await User.findOne({ user_id: req.body.user_id });
+        if(user.avatar){
+            return res.status(200).json({
+                response:user.avatar
+            })
+        }
+        else{
+            return res.status(200).send("avatar is not uploaded yet");
+        }
+    }catch(err)
+    {
+        console.log(err);
+        return res.status(200).send("error in getting image");
+    }
+}
+
+module.exports.deleteImage=async function(req,res){
+    try{
+        let user = await User.findOne({ user_id: req.body.user_id });
+        user.avatar=null;
+        user.save();
+        return res.status(200).send("profile image deleted successfully");
+    }catch(err){
+        return res.status(200).send("error in deleting the image");
+    }
+}

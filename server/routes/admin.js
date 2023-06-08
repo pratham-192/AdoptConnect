@@ -9,5 +9,5 @@ router.get('/all_child',adminController.getAllChild);
 // router.get('./all_managers',adminController.getAllCaseManagers);
 router.use('/adoption_flow',require('./adoptionflow'));
 router.post('/addchildtoworker',adminController.addChildtoWorker);
-router.delete('/deletechildfromworker',adminController.deleteChildfromWorker);
+router.post('/deletechildfromworker',adminController.deleteChildfromWorker);
 module.exports=router;

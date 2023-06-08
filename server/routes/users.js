@@ -1,7 +1,9 @@
 const express=require('express');
 const passport=require('passport');
 const router=express.Router();
-
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 const userController=require('../controllers/user_controller');
 
 router.get('/signupadmin',userController.signupadmin);
@@ -27,5 +29,8 @@ router.get('/loggedin_user',userController.getLoggedInUser);
 //get worker details
 router.post('/getworker',userController.getWorkerbyId);
 // router.get('/getmanager',userController.getManagerbyId);
+
+router.post('/image_upload',upload.single('file'),userController.imageUpload);
+router.post('/get_image',userController.getImage);
 
 module.exports=router;

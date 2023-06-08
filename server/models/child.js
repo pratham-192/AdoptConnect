@@ -100,7 +100,7 @@ const childSchema = mongoose.Schema({
         ref: 'User'
     },
     avatar: {
-        type: String
+        type: Buffer
     },
     childNote:{
         type:String

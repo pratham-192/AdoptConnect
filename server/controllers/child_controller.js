@@ -253,6 +253,10 @@ module.exports.getChildbyId = async function (req, res) {
         return res.status(200).send("error in getting child by id");
     }
 }
+
+
+
+
 module.exports.upload = async function (req, res) {
     try {
         let child = await Child.findOne({ child_id: req.body.child_id });
@@ -336,4 +340,47 @@ module.exports.deleteFile = async function (req, res) {
         return res.status(200).send("error in deleting the file");
     }
 
+}
+
+module.exports.imageUpload=async function(req,res){
+    try{
+        let child = await Child.findOne({ child_id: req.body.child_id });
+        if(!child)return res.status(200).send("child doesn't exists");
+        child.avatar=req.file.buffer;
+        child.save();
+        return res.status(200).send("file uploaded successfully");
+    }catch(err){
+        console.log(err);
+        return res.status(200).send("error in uploading image");
+        
+    }
+}
+module.exports.getImage=async function(req,res){
+    try{
+        let child = await Child.findOne({ child_id: req.body.child_id });
+        if(child.avatar){
+            return res.status(200).json({
+                response:child.avatar
+            })
+        }
+        else{
+            return res.status(200).send("avatar is not uploaded yet");
+        }
+    }catch(err)
+    {
+        console.log(err);
+        return res.status(200).send("error in getting image");
+    }
+}
+
+module.exports.deleteImage=async function(req,res){
+    try{
+        let child = await Child.findOne({ child_id: req.body.child_id });
+        child.avatar=null;
+        child.save();
+        return res.status(200).send("profile image deleted successfully");
+    }catch(err){
+        console.log(err);
+        return res.status(200).send("error in deleting the image");
+    }
 }
