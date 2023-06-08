@@ -50,41 +50,52 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
     setdateLFA_CSR_MERUploadedINCARINGS,
   ] = useState(childDetails.dateLFA_CSR_MERUploadedINCARINGS);
   const [contactNo, setcontactNo] = useState(childDetails.contactNo);
+  const [avatar, setavatar] = useState();
+  const [extraDocument, setextraDocument] = useState();
   const { t } = useTranslation();
 
   const updatechildHandler = async () => {
-    const response = await axios.post(
-      "http://localhost:3000/child/update_child",
-      {
-        ...childDetails,
-        child_id: child_id,
-        childName: childName,
-        age: age,
-        gender: gender,
-        dateOfBirth: dateOfBirth,
-        state: state,
-        district: district,
-        shelterHome: shelterHome,
-        linkedWithSAA: linkedWithSAA,
-        childClassification: childClassification,
-        inquiryDateOfAdmission: inquiryDateOfAdmission,
-        reasonForAdmission: reasonForAdmission,
-        lastVisit: lastVisit,
-        lastCall: lastCall,
-        caseHistory: caseHistory,
-        caseStatus: caseStatus,
-        guardianListed: guardianListed,
-        familyVisitPhoneCall: familyVisitPhoneCall,
-        siblings: siblings,
-        lastDateOfCWCOrder: lastDateOfCWCOrder,
-        Lastcwcorder: Lastcwcorder,
-        lengthOfStayInShelter: lengthOfStayInShelter,
-        caringsRegistrationNumber: caringsRegistrationNumber,
-        dateLFA_CSR_MERUploadedINCARINGS: dateLFA_CSR_MERUploadedINCARINGS,
-        contact_no: contactNo,
-      }
-    );
+    await axios.post("http://localhost:3000/child/update_child", {
+      ...childDetails,
+      child_id: child_id,
+      childName: childName,
+      age: age,
+      gender: gender,
+      dateOfBirth: dateOfBirth,
+      state: state,
+      district: district,
+      shelterHome: shelterHome,
+      linkedWithSAA: linkedWithSAA,
+      childClassification: childClassification,
+      inquiryDateOfAdmission: inquiryDateOfAdmission,
+      reasonForAdmission: reasonForAdmission,
+      lastVisit: lastVisit,
+      lastCall: lastCall,
+      caseHistory: caseHistory,
+      caseStatus: caseStatus,
+      guardianListed: guardianListed,
+      familyVisitPhoneCall: familyVisitPhoneCall,
+      siblings: siblings,
+      lastDateOfCWCOrder: lastDateOfCWCOrder,
+      Lastcwcorder: Lastcwcorder,
+      lengthOfStayInShelter: lengthOfStayInShelter,
+      caringsRegistrationNumber: caringsRegistrationNumber,
+      dateLFA_CSR_MERUploadedINCARINGS: dateLFA_CSR_MERUploadedINCARINGS,
+      contact_no: contactNo,
+    });
     setopenEditDetails(false);
+    if (avatar) {
+      const formData = new FormData();
+      formData.append("file", avatar);
+      formData.append("child_id", childDetails.child_id);
+      await axios.post("http://localhost:3000/child/image_upload", formData);
+    }
+    if (extraDocument) {
+      const formData = new FormData();
+      formData.append("file", extraDocument);
+      formData.append("child_id", childDetails.child_id);
+      await axios.post("http://localhost:3000/child/document/upload", formData);
+    }
   };
 
   return (
@@ -93,7 +104,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
         <div className="h-full container max-w-screen-lg mx-auto">
           <div>
             <h2 className="font-semibold text-xl flex justify-between items-center text-gray-600 mb-5">
-              <div>{t("Add New Case")}</div>
+              <div>{t("Update Child Details")}</div>
               <div>
                 <button
                   className="hover:text-slate-500"
@@ -112,6 +123,23 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
 
                 <div className="lg:col-span-2">
                   <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                    <div className="md:col-span-5 flex flex-col mb-2">
+                      <label htmlFor="full_name" className="pb-2">
+                        {t("Child Image")}
+                      </label>
+                      {avatar ? (
+                        <img
+                          src={URL.createObjectURL(avatar)}
+                          className="h-40 w-40 mb-2"
+                        />
+                      ) : (
+                        ""
+                      )}
+                      <input
+                        type="file"
+                        onChange={(e) => setavatar(e.target.files[0])}
+                      />
+                    </div>
                     <div className="md:col-span-5">
                       <label htmlFor="full_name">{t("Child Id")}</label>
                       <input
@@ -383,6 +411,15 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                         value={contactNo}
                         onChange={(e) => setcontactNo(String(e.target.value))}
+                      />
+                    </div>
+                    <div className="md:col-span-5 flex flex-col mb-2">
+                      <label htmlFor="full_name" className="pb-2">
+                        {t("Documents")}
+                      </label>
+                      <input
+                        type="file"
+                        onChange={(e) => setextraDocument(e.target.files[0])}
                       />
                     </div>
                     <div className="md:col-span-5 text-right">

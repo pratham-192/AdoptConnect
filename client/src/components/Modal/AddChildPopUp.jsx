@@ -105,7 +105,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
 
     const docformData = new FormData();
     docformData.append("file", extraDocument);
-    docformData.append("child_id", "123");
+    docformData.append("child_id", child_id);
     await axios.post(
       "http://localhost:3000/child/document/upload",
       docformData
