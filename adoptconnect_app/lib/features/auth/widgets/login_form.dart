@@ -17,8 +17,8 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final authService = AuthService();
 
-  final String _userIdErrorText = "";
-  final String _passwordErrorText = ""; 
+  String _userIdErrorText = "";
+  String _passwordErrorText = ""; 
 
   @override
   void dispose() {
@@ -33,7 +33,7 @@ class _LoginFormState extends State<LoginForm> {
     authService.signInUser(
         userId: _userIdController.text,
         password: _passwordController.text,
-        category: 'worker',
+        category: 'admin',
         context: context);
   }
 

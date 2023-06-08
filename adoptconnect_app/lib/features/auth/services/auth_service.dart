@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:adoptconnect_app/constants/error_handling.dart';
 import 'package:adoptconnect_app/constants/global_variables.dart';
 import 'package:adoptconnect_app/constants/utils.dart';
@@ -24,10 +23,8 @@ class AuthService {
           response: res,
           context: context,
           onSuccess: () async {
-            var user = jsonDecode(res.body);
-            user["alloted_children"] = [];
             SharedPreferences prefs = await SharedPreferences.getInstance();
-            Provider.of<UserProvider>(context, listen: false).setUser(jsonEncode(user));
+            Provider.of<UserProvider>(context, listen: false).setUser(res.body);
             await prefs.setString('user', res.body);
             Navigator.pushNamedAndRemoveUntil(
                 context, BottomBar.routeName, (route) => false);
@@ -46,10 +43,6 @@ class AuthService {
       prefs.setString('user', '');
       return;
     }
-
-    var userObj = jsonDecode(user);
-    userObj["alloted_children"] = [];
-    user = jsonEncode(userObj);
 
     if (context.mounted) {
       Provider.of<UserProvider>(context, listen: false)
