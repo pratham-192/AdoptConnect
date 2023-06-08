@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:adoptconnect_app/constants/global_variables.dart';
 import 'package:adoptconnect_app/features/child_cases/services/child_service.dart';
-import 'package:adoptconnect_app/providers/cases_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:adoptconnect_app/features/child_cases/widgets/child_list.dart';
 
 class ChildCasesScreen extends StatefulWidget {
   static const String routeName = "/home";
@@ -25,7 +22,6 @@ class _ChildCasesScreenState extends State<ChildCasesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final cases = Provider.of<CasesProvider>(context).cases;
     return Scaffold(
       backgroundColor: GlobalVariables.secondaryColor,
       appBar: AppBar(
@@ -41,18 +37,7 @@ class _ChildCasesScreenState extends State<ChildCasesScreen> {
           ),
         ),
       ),
-      body: cases.isEmpty
-          ? const Center(
-              child: CircularProgressIndicator.adaptive(),
-            )
-          : ListView.separated(
-              separatorBuilder: (_, __) => const SizedBox(
-                    height: 20,
-                  ),
-              itemCount: cases.length,
-              itemBuilder: (context, index) {
-                return Text(cases[index].childId);
-              }),
+      body: const ChildList(),
       extendBodyBehindAppBar: true,
     );
   }
