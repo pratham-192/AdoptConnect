@@ -2,6 +2,7 @@ const Child = require('../models/child');
 const ChildCategory = require('../models/child_category');
 const AdoptionFlow = require('../models/adoption_flow');
 const User = require('../models/user');
+const { Readable } = require('stream');
 module.exports.create = async function (req, res) {
 
     // console.log(req.body);
@@ -172,13 +173,13 @@ module.exports.delete_child_category = function (req, res) {
 
 }
 
-module.exports.get_child_category=async function(req,res){
-    try{
-        let child_category=await ChildCategory.find({});
+module.exports.get_child_category = async function (req, res) {
+    try {
+        let child_category = await ChildCategory.find({});
         return res.status(200).json({
-            response:child_category
+            response: child_category
         })
-    }catch(err){
+    } catch (err) {
         return res.status(200).send("error in getting child category");
     }
 }
@@ -210,28 +211,28 @@ module.exports.statusUpdate = async function (req, res) {
         // })
         let status_object = req.body.statusObject;
         let curr_major = 0;
-        let curr_flag=0;
+        let curr_flag = 0;
         for (let u of status_object) {
             let curr_minor = 0;
-            let flag=0;
-            if (u.minorTask.length==0)break;
+            let flag = 0;
+            if (u.minorTask.length == 0) break;
             for (let minor of u.minorTask) {
                 if (minor.minorTaskStatus == 1) {
-                    curr_minor=curr_minor+1;
+                    curr_minor = curr_minor + 1;
                 }
                 if (minor.minorTaskStatus == 0 || minor.minorTaskStatus == 1) {
                     flag = 1;
                 }
             }
-            u.currMinorTask=curr_minor;
+            u.currMinorTask = curr_minor;
             u.save();
             if (!flag) {
-                curr_major=curr_major+1;
-            }else break;
+                curr_major = curr_major + 1;
+            } else break;
         }
         status_object.save();
-        child.individualAdoptionFlow.currMajorTask=curr_major;
-        child.individualAdoptionFlow.majorTask=status_object;
+        child.individualAdoptionFlow.currMajorTask = curr_major;
+        child.individualAdoptionFlow.majorTask = status_object;
         child.save();
         return res.status(200).send(
             "successfully updated"
@@ -250,5 +251,53 @@ module.exports.getChildbyId = async function (req, res) {
         })
     } catch (err) {
         return res.status(200).send("error in getting child by id");
+    }
+}
+module.exports.upload = async function (req, res) {
+    try {
+        let child = await Child.findOne({ child_id: req.body.child_id });
+        child.uploaded_documents.name = req.file.originalname;
+        child.uploaded_documents.data = req.file.buffer;
+        child.save();
+        return res.status(200).send("file uploaded successfully");
+    } catch (err) {
+        console.log(err);
+        return res.status(200).send("error in uploading files");
+    }
+}
+module.exports.getFiles = async function (req, res) {
+    try {
+        // console.log(req.body.child_id);
+        let child = await Child.findOne({ child_id: req.body.child_id });
+        // console.log(child)
+        // console.log(child.uploaded_documents);
+        return res.status(200).json({
+            response: child.uploaded_documents
+        })
+    } catch (err) {
+        console.log(err);
+        return res.status(200).send("error in getting all files");
+    }
+}
+module.exports.download = async function (req, res) {
+    try {
+        let child = await Child.findOne({ child_id: req.body.child_id });
+        let file = child.uploaded_documents;
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="${file.name}"`);
+        const fileStream = new Readable();
+        fileStream.push(file.data);
+        fileStream.push(null);
+
+        // Pipe the file stream to the response stream
+        fileStream.on('error', (err) => {
+            console.error('Error reading file stream:', err);
+            res.status(500).json({ error: 'Failed to read file stream' });
+        });
+        fileStream.pipe(res);
+
+    } catch (err) {
+        console.log(err);
+        return res.status(200).send("error in downloading files");
     }
 }

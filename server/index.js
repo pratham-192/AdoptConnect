@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const multer = require('multer');
 const app = express();
 const port = 3000;
 const db = require('./config/mongoose');
