@@ -14,7 +14,6 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
   const [userAadhar, setuserAadhar] = useState("");
   const [userContact, setuserContact] = useState("");
   const [avatar, setavatar] = useState();
-  const [avatarURL, setavatarURL] = useState();
   const [err, seterr] = useState("");
   const { t } = useTranslation();
 
@@ -28,12 +27,13 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
       !userZone ||
       !userAddress ||
       !userAadhar ||
-      !userContact
+      !userContact ||
+      !avatar
     ) {
       seterr("Please fill all the details");
       return;
     }
-    const response = await axios.post("http://localhost:3000/users/create", {
+    await axios.post("http://localhost:3000/users/create", {
       user_id: userId,
       name: userName,
       email: userEmail,
@@ -44,23 +44,13 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
       aadharCardNo: userAadhar,
       contactNo: userContact,
     });
-    setopenAddWorker(false);
-  };
 
-  const readFileDataAsBase64 = (e) => {
-    const file = e.target.files[0];
-    setavatarURL(URL.createObjectURL(e.target.files[0]));
-    // const reader = new FileReader();
-    // reader.readAsArrayBuffer(file);
-    // reader.onload = () => {
-    //   const buffer = Buffer.from(reader.result, "base64");
-    //   console.log(buffer);
-    //   setavatar(reader.result);
-    //   console.log(reader.result);
-    // };
-    // reader.onerror = (err) => {
-    //   console.log(err);
-    // };
+    const formData = new FormData();
+    formData.append("file", avatar);
+    formData.append("user_id", userId);
+    await axios.post("http://localhost:3000/users/image_upload", formData);
+
+    setopenAddWorker(false);
   };
 
   return (
@@ -92,14 +82,17 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                       <label htmlFor="full_name" className="pb-2">
                         {t("Worker Image")}
                       </label>
-                      {avatarURL ? (
-                        <img src={avatarURL} className="h-40 w-40 mb-2" />
+                      {avatar ? (
+                        <img
+                          src={URL.createObjectURL(avatar)}
+                          className="h-40 w-40 mb-2"
+                        />
                       ) : (
                         ""
                       )}
                       <input
                         type="file"
-                        onChange={(e) => console.log(e.target.files[0])}
+                        onChange={(e) => setavatar(e.target.files[0])}
                       />
                     </div>
                     <div className="md:col-span-5">

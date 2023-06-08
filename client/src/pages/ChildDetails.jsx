@@ -22,10 +22,10 @@ const ChildDetails = () => {
   const [popUpDetails, setpopUpDetails] = useState({});
   const [openEditDetails, setopenEditDetails] = useState(false);
   const [imageUrl, setimageUrl] = useState("");
-  const { t } = useTranslation();
   const [allDocuments, setallDocuments] = useState({});
   const [openConfirmPopUp, setopenConfirmPopUp] = useState(0);
   const [dltDocId, setdltDocId] = useState();
+  const { t } = useTranslation();
 
   const updatementorHandler = async () => {
     const response = await axios.post(
@@ -64,13 +64,10 @@ const ChildDetails = () => {
 
   useEffect(async () => {
     if (openConfirmPopUp === 1) {
-      const response5 = await axios.post(
-        "http://localhost:3000/child/document/files/delete",
-        {
-          child_id: childId,
-          docId: dltDocId,
-        }
-      );
+      await axios.post("http://localhost:3000/child/document/files/delete", {
+        child_id: childId,
+        docId: dltDocId,
+      });
       setopenConfirmPopUp(0);
     } else {
       const response = await axios.post(
@@ -79,9 +76,11 @@ const ChildDetails = () => {
           child_id: childId,
         }
       );
-      const uint8Array = new Uint8Array(response.data.response.data);
-      const blob = new Blob([uint8Array]);
-      setimageUrl(URL.createObjectURL(blob));
+      if (response.data && response.data.response) {
+        const uint8Array = new Uint8Array(response.data.response.data);
+        const blob = new Blob([uint8Array]);
+        setimageUrl(URL.createObjectURL(blob));
+      }
       const response2 = await axios.get(
         "http://localhost:3000/admin/all_workers"
       );

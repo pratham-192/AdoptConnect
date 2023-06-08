@@ -63,7 +63,8 @@ export default function AddChildPopUp({ setopenAddchild }) {
       !lengthOfStayInShelter ||
       !caringsRegistrationNumber ||
       !dateLFA_CSR_MERUploadedINCARINGS ||
-      !contactNo
+      !contactNo ||
+      !avatar
     ) {
       seterr("Please fill all the details");
       return;
