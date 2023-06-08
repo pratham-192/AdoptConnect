@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:adoptconnect_app/models/child.dart';
 
 class User {
   final String id;
@@ -7,7 +8,7 @@ class User {
   final String email;
   final String password;
   final String category;
-  final List<dynamic> allotedChildren;
+  final List<Child> allotedChildren;
   final String zone;
   final String address;
   final String aadharCardNo;
@@ -51,7 +52,7 @@ class User {
       email: map['email'] ?? '',
       password: map['password'] ?? '',
       category: map['category'] ?? '',
-      allotedChildren: List<dynamic>.from(map['alloted_children']),
+      allotedChildren: List<Child>.from(map['alloted_children']),
       zone: map['zone'] ?? '',
       address: map['address'] ?? '',
       aadharCardNo: map['aadharCardNo'] ?? '',
@@ -70,7 +71,7 @@ class User {
     String? email,
     String? password,
     String? category,
-    List<dynamic>? allotedChildren,
+    List<Child>? allotedChildren,
     String? zone,
     String? address,
     String? aadharCardNo,

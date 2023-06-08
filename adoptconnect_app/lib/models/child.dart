@@ -3,6 +3,7 @@ import 'package:adoptconnect_app/models/adoption_flow.dart';
 import 'package:adoptconnect_app/models/user.dart';
 
 class Child {
+  final String id;
   final String childId;
   final String state;
   final String district;
@@ -38,6 +39,7 @@ class Child {
   final AdoptionFlow individualAdoptionFlow;
 
   Child({
+    required this.id,
     required this.childId,
     required this.state,
     required this.district,
@@ -75,6 +77,7 @@ class Child {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'child_id': childId,
       'state': state,
       'district': district,
@@ -113,6 +116,7 @@ class Child {
 
   factory Child.fromMap(Map<String, dynamic> map) {
     return Child(
+      id: map['_id'] ?? '',
       childId: map['child_id'] ?? '',
       state: map['state'] ?? '',
       district: map['district'] ?? '',
@@ -157,6 +161,7 @@ class Child {
   factory Child.fromJson(String source) => Child.fromMap(json.decode(source));
 
   Child copyWith({
+    String? id,
     String? childId,
     String? state,
     String? district,
@@ -192,6 +197,7 @@ class Child {
     AdoptionFlow? individualAdoptionFlow,
   }) {
     return Child(
+      id: id ?? this.id,
       childId: childId ?? this.childId,
       state: state ?? this.state,
       district: district ?? this.district,
