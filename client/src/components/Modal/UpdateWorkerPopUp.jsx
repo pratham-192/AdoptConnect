@@ -28,7 +28,6 @@ export default function UpdateWorkerPopUp({
       aadharCardNo: userAadhar,
       contactNo: userContact,
     });
-    console.log(response.data);
     setopenupdateWorker(false);
   };
 

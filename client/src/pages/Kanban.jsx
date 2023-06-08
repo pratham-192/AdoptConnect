@@ -11,7 +11,7 @@ const Kanban = () => {
   let grid;
   const getData = () => {
     if (grid) {
-      console.log(grid.kanbanData);
+      // console.log(grid.kanbanData);
       // const selectedrowindex = grid.getSelectedRowIndexes();
       // const selectedrecords = grid.getSelectedRecords();
       // console.log(selectedrecords);

@@ -64,7 +64,6 @@ const Cases = () => {
 
   useEffect(async () => {
     const response = await axios.get("http://localhost:3000/admin/all_child");
-    console.log(response.data);
     setchildData(response.data.response);
   }, [openAddChild, openchildDetails, openEditDetails]);
 
@@ -72,7 +71,6 @@ const Cases = () => {
   const rowSelected = () => {
     if (grid) {
       const selectedrecords = grid.getSelectedRecords();
-      console.log(selectedrecords);
       setchildDetails(selectedrecords[0]);
       navigate(`/child-details?id=${selectedrecords[0].child_id}`);
       // setopenchildDetails(true);
