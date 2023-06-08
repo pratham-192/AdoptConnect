@@ -256,8 +256,11 @@ module.exports.getChildbyId = async function (req, res) {
 module.exports.upload = async function (req, res) {
     try {
         let child = await Child.findOne({ child_id: req.body.child_id });
-        child.uploaded_documents.name = req.file.originalname;
-        child.uploaded_documents.data = req.file.buffer;
+        let docData = {
+            name: req.file.originalname,
+            data: req.file.buffer
+        }
+        child.uploaded_documents.push(docData);
         child.save();
         return res.status(200).send("file uploaded successfully");
     } catch (err) {
@@ -282,7 +285,16 @@ module.exports.getFiles = async function (req, res) {
 module.exports.download = async function (req, res) {
     try {
         let child = await Child.findOne({ child_id: req.body.child_id });
-        let file = child.uploaded_documents;
+        let docId = req.body.docId;
+        // let file = child.uploaded_documents;
+        // console.log(child);
+        let file;
+        for (let u of child.uploaded_documents) {
+            if (u._id == docId) {
+                file = u;
+                break;
+            }
+        }
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename="${file.name}"`);
         const fileStream = new Readable();
@@ -292,7 +304,7 @@ module.exports.download = async function (req, res) {
         // Pipe the file stream to the response stream
         fileStream.on('error', (err) => {
             console.error('Error reading file stream:', err);
-            res.status(500).json({ error: 'Failed to read file stream' });
+            res.status(200).json({ error: 'Failed to read file stream' });
         });
         fileStream.pipe(res);
 
@@ -300,4 +312,28 @@ module.exports.download = async function (req, res) {
         console.log(err);
         return res.status(200).send("error in downloading files");
     }
+}
+module.exports.deleteFile = async function (req, res) {
+    try{
+        let child = await Child.findOne({ child_id: req.body.child_id });
+        let docId = req.body.docId;
+        if(child.uploaded_documents.length==0){
+            return res.status(200).send("there is no file to delete");
+        }
+        let file;
+        for (let u of child.uploaded_documents) {
+            if (u._id == docId) {
+                file = u;
+                break;
+            }
+        }
+        if(file==null)return res.status(200).send("not able to fetch the file");
+        child.uploaded_documents.pull(file);
+        child.save();
+        return res.status(200).send("document deleted successfuly");
+    }catch(err){
+        console.log(err);
+        return res.status(200).send("error in deleting the file");
+    }
+
 }

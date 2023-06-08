@@ -147,10 +147,11 @@ const childSchema = mongoose.Schema({
             }
         ]
     },
-    uploaded_documents:{
+    uploaded_documents:[
+        {
         name: String,
         data: Buffer
-    }
+    }]
 
 }, {
     timestamps: true

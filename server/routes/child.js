@@ -26,7 +26,9 @@ router.post('/getchild',childController.getChildbyId);
 
 router.get('/get_child_category',childController.get_child_category);
 
-router.post('/upload',upload.single('file'),childController.upload);
-router.get('/download',childController.download);
-router.post('/files',childController.getFiles);
+router.post('/document/upload',upload.single('file'),childController.upload);
+router.post('/document/download',childController.download);
+router.post('/document/files',childController.getFiles);
+router.post('/document/files/delete',childController.deleteFile);
+
 module.exports=router;
