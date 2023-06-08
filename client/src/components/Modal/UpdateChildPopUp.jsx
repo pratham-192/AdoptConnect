@@ -83,18 +83,22 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
       dateLFA_CSR_MERUploadedINCARINGS: dateLFA_CSR_MERUploadedINCARINGS,
       contact_no: contactNo,
     });
-    setopenEditDetails(false);
     if (avatar) {
       const formData = new FormData();
       formData.append("file", avatar);
       formData.append("child_id", childDetails.child_id);
       await axios.post("http://localhost:3000/child/image_upload", formData);
+      setopenEditDetails(false);
     }
     if (extraDocument) {
       const formData = new FormData();
       formData.append("file", extraDocument);
       formData.append("child_id", childDetails.child_id);
       await axios.post("http://localhost:3000/child/document/upload", formData);
+      setopenEditDetails(false);
+    }
+    if (!avatar && !extraDocument) {
+      setopenEditDetails(false);
     }
   };
 
