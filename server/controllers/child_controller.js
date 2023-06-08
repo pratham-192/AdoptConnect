@@ -73,7 +73,7 @@ module.exports.update_details_child = async function (req, res) {
         //     return res.status(200).send("you are not accessed to update child");
         // }
         const childclass = req.body.childClassification.toLowerCase();
-        let child = await Child.findOne({ child_id: req.body.child_id });
+        let child = await Child.findOne({ child_id: req.body.child_id }).select('-uploaded_documents');
         let childcategory = await ChildCategory.findOne({ childClassification: childclass })
 
         if (!childcategory) return res.status(200).send(`${req.body.childClassification} category doesn't exist`);
@@ -245,7 +245,7 @@ module.exports.statusUpdate = async function (req, res) {
 }
 module.exports.getChildbyId = async function (req, res) {
     try {
-        let child = await Child.findOne({ child_id: req.body.child_id }).populate('worker_alloted');
+        let child = await Child.findOne({ child_id: req.body.child_id }).populate('worker_alloted').select('-uploaded_documents');
         res.status(200).json({
             response: child
         })
@@ -382,5 +382,16 @@ module.exports.deleteImage=async function(req,res){
     }catch(err){
         console.log(err);
         return res.status(200).send("error in deleting the image");
+    }
+}
+
+module.exports.getDocuments=async function(req,res){
+    try{
+        let child=await Child.findOne({child_id:req.body.child_id});
+        if(child){return res.status(200).json({
+            response:child.uploaded_documents
+        })}else return res.status(200).send("child doesn't exists");
+    }catch(err){
+        return res.status(200).send("error in getting documents");
     }
 }

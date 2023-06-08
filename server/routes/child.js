@@ -31,6 +31,8 @@ router.post('/document/download',childController.download);
 router.post('/document/files',childController.getFiles);
 router.post('/document/files/delete',childController.deleteFile);
 
+router.post('/document/getbychildid',childController.getDocuments);
+
 router.post('/image_upload',upload.single('file'),childController.imageUpload);
 router.post('/get_image',childController.getImage);
 router.post('/delete_image',childController.deleteImage)
