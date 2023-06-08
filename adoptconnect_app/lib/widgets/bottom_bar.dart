@@ -1,7 +1,9 @@
 import 'package:adoptconnect_app/constants/global_variables.dart';
-import 'package:adoptconnect_app/features/child_cases/child_cases_screen.dart';
+import 'package:adoptconnect_app/features/child_cases/screens/child_cases_screen.dart';
+import 'package:adoptconnect_app/providers/cases_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
 
 class BottomBar extends StatefulWidget {
   static const String routeName = 'actual-home';
@@ -13,7 +15,6 @@ class BottomBar extends StatefulWidget {
 
 class _BottomBarState extends State<BottomBar> {
   int _page = 0;
-  int _casesCount = 10;
 
   List<Widget> pages = [
     const ChildCasesScreen(),
@@ -28,6 +29,8 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    int casesCount = Provider.of<CasesProvider>(context).cases.length;
+
     return Scaffold(
       body: pages[_page],
       bottomNavigationBar: BottomNavigationBar(
@@ -43,7 +46,7 @@ class _BottomBarState extends State<BottomBar> {
           BottomNavigationBarItem(
               icon: badges.Badge(
                 badgeContent: Text(
-                  '$_casesCount',
+                  '$casesCount',
                   style: const TextStyle(color: Colors.white, fontSize: 12),
                 ),
                 badgeStyle: const badges.BadgeStyle(
@@ -53,7 +56,7 @@ class _BottomBarState extends State<BottomBar> {
               ),
               activeIcon: badges.Badge(
                   badgeContent: Text(
-                    '$_casesCount',
+                    '$casesCount',
                     style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
                   badgeStyle: const badges.BadgeStyle(
