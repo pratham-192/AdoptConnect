@@ -1,4 +1,5 @@
 import 'package:adoptconnect_app/features/auth/services/auth_service.dart';
+import 'package:adoptconnect_app/providers/cases_provider.dart';
 import 'package:adoptconnect_app/providers/user_provider.dart';
 import 'package:adoptconnect_app/router.dart';
 import 'package:adoptconnect_app/widgets/bottom_bar.dart';
@@ -10,7 +11,10 @@ import 'features/auth/screens/auth_screen.dart';
 void main() {
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => CasesProvider())
+        ],
       child: const MyApp(),
     ),
   );
