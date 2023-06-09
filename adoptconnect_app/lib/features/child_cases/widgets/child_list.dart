@@ -13,11 +13,11 @@ class ChildList extends StatefulWidget {
 class _ChildListState extends State<ChildList> {
   @override
   Widget build(BuildContext context) {
-    final cases = Provider.of<CasesProvider>(context).cases +
-        Provider.of<CasesProvider>(context).cases +
-        Provider.of<CasesProvider>(context).cases +
-        Provider.of<CasesProvider>(context).cases +
-        Provider.of<CasesProvider>(context).cases;
+    final cases = Provider.of<CasesProvider>(context).cases;
+        // Provider.of<CasesProvider>(context).cases +
+        // Provider.of<CasesProvider>(context).cases +
+        // Provider.of<CasesProvider>(context).cases +
+        // Provider.of<CasesProvider>(context).cases;
     return cases.isEmpty
         ? const Center(
             child: CircularProgressIndicator.adaptive(),

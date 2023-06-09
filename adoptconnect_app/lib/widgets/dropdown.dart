@@ -6,13 +6,15 @@ class Dropdown extends StatefulWidget {
   final List<dynamic> items;
   final dynamic dropdownValue;
   final Function updateDropdownValue;
-  
+  final bool enabled;
+
   const Dropdown(
       {Key? key,
       required this.labelText,
       required this.items,
       required this.dropdownValue,
-      required this.updateDropdownValue})
+      required this.updateDropdownValue,
+      this.enabled = true})
       : super(key: key);
 
   @override
@@ -24,9 +26,12 @@ class _DropdownState extends State<Dropdown> {
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
       value: widget.dropdownValue,
-      onChanged: (value) => widget.updateDropdownValue(value),
+      onChanged: widget.enabled
+          ? (value) => widget.updateDropdownValue(value)
+          : null,
       hint: Text(widget.labelText),
       decoration: InputDecoration(
+        enabled: widget.enabled,
         labelText: widget.labelText,
         filled: true,
         fillColor: Colors.white,

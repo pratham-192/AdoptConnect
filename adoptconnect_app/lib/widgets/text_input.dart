@@ -10,7 +10,8 @@ class InputText extends StatefulWidget {
       this.isDate = false,
       this.validate = false,
       this.errorText = "",
-      this.keyboardType = TextInputType.text})
+      this.keyboardType = TextInputType.text,
+      this.enabled = true})
       : super(key: key);
 
   final String labelText;
@@ -20,6 +21,7 @@ class InputText extends StatefulWidget {
   final bool validate;
   final String errorText;
   final TextInputType keyboardType;
+  final bool enabled;
 
   @override
   State<InputText> createState() => _InputTextState();
@@ -56,6 +58,7 @@ class _InputTextState extends State<InputText> {
   Widget build(BuildContext context) {
     return Material(
       child: TextFormField(
+        enabled: widget.enabled,
         readOnly: widget.isDate,
         showCursor: widget.isDate ? true : null,
         textInputAction: TextInputAction.next,
@@ -86,7 +89,7 @@ class _InputTextState extends State<InputText> {
                 )
               : null,
         ),
-        onTap: widget.isDate ? updateDate : null,
+        onTap: (widget.enabled && widget.isDate) ? updateDate : null,
         obscureText: widget.isPassword && !_passwordVisible,
         controller: widget.controller,
         validator: (value) {
