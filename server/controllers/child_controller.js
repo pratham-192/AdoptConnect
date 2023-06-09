@@ -52,7 +52,7 @@ module.exports.create = async function (req, res) {
                 })
             if (req.body.contact_no) child.contactNo = req.body.contact_no;
             child.individualAdoptionFlow.majorTask = await AdoptionFlow.findOne({ childClassification: childclass });
-
+child.save();
 
             // console.log("ad");
             // console.log(typeof(req.body.worker_alloted))

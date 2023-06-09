@@ -32,5 +32,14 @@ router.post('/getworker',userController.getWorkerbyId);
 
 router.post('/image_upload',upload.single('file'),userController.imageUpload);
 router.post('/get_image',userController.getImage);
+router.post('/delete_image',userController.deleteImage);
 
+router.post('/get_messages',userController.getMessages);
+router.post('/messagebyid',userController.getMessagebyId);
+router.post('/all_seen',userController.markAllSeen);
+router.post('/all_delete',userController.deleteAllMsg);
+router.post('/getunseenmsgs',userController.getUnSeenMessages)
+
+
+router.post('/sendmail',userController.sendmail);
 module.exports=router;
