@@ -45,5 +45,5 @@ router.post('/sendmail',userController.sendmail);
 
 router.post('/reset_password',userController.sendResetMail);
 
-
+router.get('/download_csv',userController.csvDownload);
 module.exports=router;
