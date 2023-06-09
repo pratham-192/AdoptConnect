@@ -42,7 +42,7 @@ class ChildService {
         Uri.parse("$uri/child/image_upload"),
       );
 
-      request.fields['child_id'] = '12345';
+      request.fields['child_id'] = childId;
       request.files.add(http.MultipartFile(
         'file',
         image.readAsBytes().asStream(),
@@ -50,8 +50,32 @@ class ChildService {
         filename: image.path.split('/').last,
       ));
 
-      final response = await request.send();
-      print(response);
+      await request.send();
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  void uploadDocument({
+    required String childId,
+    required File document,
+    required context,
+  }) async {
+    try {
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse("$uri/child/document/upload"),
+      );
+
+      request.fields['child_id'] = childId;
+      request.files.add(http.MultipartFile(
+        'file',
+        document.readAsBytes().asStream(),
+        document.lengthSync(),
+        filename: document.path.split('/').last,
+      ));
+
+      await request.send();
     } catch (e) {
       showSnackBar(context, e.toString());
     }

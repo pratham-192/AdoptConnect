@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'package:adoptconnect_app/constants/global_variables.dart';
+import 'package:adoptconnect_app/features/child_cases/services/child_service.dart';
 import 'package:adoptconnect_app/features/child_cases/widgets/child_avatar.dart';
 import 'package:adoptconnect_app/widgets/dropdown.dart';
 import 'package:adoptconnect_app/widgets/text_input.dart';
 import 'package:flutter/material.dart';
-
+import 'package:dotted_border/dotted_border.dart';
 import '../../../constants/utils.dart';
 
 class AddChildScreen extends StatefulWidget {
@@ -16,7 +17,9 @@ class AddChildScreen extends StatefulWidget {
 }
 
 class _AddChildScreenState extends State<AddChildScreen> {
+  final _childService = ChildService();
   File? avatarImage;
+  List<File> documents = [];
 
   final _childIdController = TextEditingController();
   final _fullNameController = TextEditingController();
@@ -93,6 +96,20 @@ class _AddChildScreenState extends State<AddChildScreen> {
         avatarImage = res;
       }
     });
+  }
+
+  void selectDocuments() async {
+    var res = await pickDocuments();
+    // print(res);
+    setState(() => documents.addAll(res));
+  }
+
+  void submitForm() {
+    // if (avatarImage == null) return;
+    if (documents.isEmpty) return;
+    // _childService.uploadAvatar(
+    //     childId: '', image: avatarImage!, context: context);
+    _childService.uploadDocument(childId: 'CLD_123', document: documents[0], context: context);
   }
 
   @override
@@ -272,16 +289,52 @@ class _AddChildScreenState extends State<AddChildScreen> {
                     labelText: "Contact Number",
                     controller: _contactNumberController,
                   ),
+                  const SizedBox(height: 15),
+                  GestureDetector(
+                    onTap: selectDocuments,
+                    child: DottedBorder(
+                      borderType: BorderType.RRect,
+                      radius: const Radius.circular(10),
+                      dashPattern: const [10, 4],
+                      strokeCap: StrokeCap.round,
+                      child: Container(
+                        width: double.infinity,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.folder_open,
+                              size: 40,
+                            ),
+                            const SizedBox(height: 15),
+                            Text(
+                              'Add Documents',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.grey.shade500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 30),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: submitForm,
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 40),
                         padding: const EdgeInsets.symmetric(vertical: 14)),
                     child: const Text(
                       "Submit",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],

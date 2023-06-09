@@ -20,10 +20,29 @@ Future<File?> pickImage() async {
     if (file != null && file.files.isNotEmpty) {
       image = File(file.files.single.path!);
     }
-
   } catch (e) {
     debugPrint(e.toString());
   }
-  
+
   return image;
+}
+
+Future<List<File>> pickDocuments() async {
+  List<File> documents = [];
+  try {
+    var files = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+        allowMultiple: true);
+
+    if (files != null && files.files.isNotEmpty) {
+      for (var file in files.files) {
+        documents.add(File(file.path!));
+      }
+    }
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+
+  return documents;
 }
