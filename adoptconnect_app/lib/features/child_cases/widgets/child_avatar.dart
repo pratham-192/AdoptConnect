@@ -17,14 +17,18 @@ class ChildAvatar extends StatelessWidget {
     List<int> buffer = [];
 
     if (avatar["data"] != null) {
-      bufferDynamic = avatar["data"];
-      buffer = bufferDynamic.map((e) => e as int).toList();
+      if (avatar["data"].runtimeType != Uint8List) {
+        bufferDynamic = avatar["data"];
+        buffer = bufferDynamic.map((e) => e as int).toList();
+      }
     }
 
     return CircleAvatar(
       radius: isProfile ? 45 : 30,
       backgroundImage: avatar["data"] != null
-          ? MemoryImage(Uint8List.fromList(buffer))
+          ? MemoryImage(avatar["data"].runtimeType == Uint8List
+              ? avatar["data"]
+              : Uint8List.fromList(buffer))
           : null,
       backgroundColor: Colors.black12,
       child: avatar["data"] == null

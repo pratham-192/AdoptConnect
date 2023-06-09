@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:adoptconnect_app/constants/error_handling.dart';
 import 'package:adoptconnect_app/constants/global_variables.dart';
 import 'package:adoptconnect_app/constants/utils.dart';
@@ -19,10 +20,62 @@ class ChildService {
           response: res,
           context: context,
           onSuccess: () {
-            var allotedChildren = jsonDecode(res.body)["response"]["alloted_children"];
-            Provider.of<CasesProvider>(context, listen: false).setCases(jsonEncode(allotedChildren));
+            var allotedChildren =
+                jsonDecode(res.body)["response"]["alloted_children"];
+            Provider.of<CasesProvider>(context, listen: false)
+                .setCases(jsonEncode(allotedChildren));
           },
           errorText: "Error in getting worker's child cases");
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  void uploadAvatar({
+    required String childId,
+    required File image,
+    required context,
+  }) async {
+    try {
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse("$uri/child/image_upload"),
+      );
+
+      request.fields['child_id'] = childId;
+      request.files.add(http.MultipartFile(
+        'file',
+        image.readAsBytes().asStream(),
+        image.lengthSync(),
+        filename: image.path.split('/').last,
+      ));
+
+      await request.send();
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  void uploadDocument({
+    required String childId,
+    required File document,
+    required context,
+  }) async {
+    try {
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse("$uri/child/document/upload"),
+      );
+
+      request.fields['child_id'] = childId;
+      request.files.add(http.MultipartFile(
+        'file',
+        document.readAsBytes().asStream(),
+        document.lengthSync(),
+        filename: document.path.split('/').last,
+      ));
+
+      await request.send();
     } catch (e) {
       showSnackBar(context, e.toString());
     }
