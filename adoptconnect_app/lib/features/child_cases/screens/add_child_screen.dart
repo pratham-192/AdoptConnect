@@ -7,6 +7,7 @@ import 'package:adoptconnect_app/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import '../../../constants/utils.dart';
+import '../widgets/document_list.dart';
 
 class AddChildScreen extends StatefulWidget {
   static const routeName = "/add-child";
@@ -109,7 +110,8 @@ class _AddChildScreenState extends State<AddChildScreen> {
     if (documents.isEmpty) return;
     // _childService.uploadAvatar(
     //     childId: '', image: avatarImage!, context: context);
-    _childService.uploadDocument(childId: 'CLD_123', document: documents[0], context: context);
+    _childService.uploadDocument(
+        childId: 'CLD_123', document: documents[0], context: context);
   }
 
   @override
@@ -288,6 +290,12 @@ class _AddChildScreenState extends State<AddChildScreen> {
                   InputText(
                     labelText: "Contact Number",
                     controller: _contactNumberController,
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                    child: documents.isEmpty
+                        ? null
+                        : DocumentsList(documents: documents),
                   ),
                   const SizedBox(height: 15),
                   GestureDetector(
