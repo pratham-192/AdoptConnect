@@ -51,8 +51,13 @@ module.exports.create = async function (req, res) {
                     childNote: req.body.childNote
                 })
             if (req.body.contact_no) child.contactNo = req.body.contact_no;
-            child.individualAdoptionFlow.majorTask = await AdoptionFlow.findOne({ childClassification: childclass });
-child.save();
+            let flow= await AdoptionFlow.findOne({ childClassification: childclass });
+            // console.log(flow);
+            child.individualAdoptionFlow.majorTask =flow.majorTask;
+            // console.log(await AdoptionFlow.findOne({ childClassification: childclass }))
+            // console.log(child.individualAdoptionFlow);
+            child.save();
+            // console.log(child);
 
             // console.log("ad");
             // console.log(typeof(req.body.worker_alloted))
@@ -304,10 +309,10 @@ module.exports.download = async function (req, res) {
     }
 }
 module.exports.deleteFile = async function (req, res) {
-    try{
+    try {
         let child = await Child.findOne({ child_id: req.body.child_id });
         let docId = req.body.docId;
-        if(child.uploaded_documents.length==0){
+        if (child.uploaded_documents.length == 0) {
             return res.status(200).send("there is no file to delete");
         }
         let file;
@@ -317,73 +322,74 @@ module.exports.deleteFile = async function (req, res) {
                 break;
             }
         }
-        if(file==null)return res.status(200).send("not able to fetch the file");
+        if (file == null) return res.status(200).send("not able to fetch the file");
         child.uploaded_documents.pull(file);
         child.save();
         return res.status(200).send("document deleted successfuly");
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in deleting the file");
     }
 
 }
 
-module.exports.imageUpload=async function(req,res){
-    try{
+module.exports.imageUpload = async function (req, res) {
+    try {
         let child = await Child.findOne({ child_id: req.body.child_id });
-        if(!child)return res.status(200).send("child doesn't exists");
-        child.avatar=req.file.buffer;
+        if (!child) return res.status(200).send("child doesn't exists");
+        child.avatar = req.file.buffer;
         child.save();
         return res.status(200).send("file uploaded successfully");
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in uploading image");
-        
+
     }
 }
-module.exports.getImage=async function(req,res){
-    try{
+module.exports.getImage = async function (req, res) {
+    try {
         let child = await Child.findOne({ child_id: req.body.child_id });
-        if(child.avatar){
+        if (child.avatar) {
             return res.status(200).json({
-                response:child.avatar
+                response: child.avatar
             })
         }
-        else{
+        else {
             return res.status(200).send("avatar is not uploaded yet");
         }
-    }catch(err)
-    {
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in getting image");
     }
 }
 
-module.exports.deleteImage=async function(req,res){
-    try{
+module.exports.deleteImage = async function (req, res) {
+    try {
         let child = await Child.findOne({ child_id: req.body.child_id });
-        child.avatar=null;
+        child.avatar = null;
         child.save();
         return res.status(200).send("profile image deleted successfully");
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in deleting the image");
     }
 }
 
-module.exports.getDocuments=async function(req,res){
-    try{
-        let child=await Child.findOne({child_id:req.body.child_id});
+module.exports.getDocuments = async function (req, res) {
+    try {
+        let child = await Child.findOne({ child_id: req.body.child_id });
         const modifiedResponse = child.uploaded_documents.map((item) => {
             return {
-              name: item.name,
-              docId: item._id,
+                name: item.name,
+                docId: item._id,
             };
-          });
-        if(child){return res.status(200).json({
-            response:modifiedResponse
-        })}else return res.status(200).send("child doesn't exists");
-    }catch(err){
+        });
+        if (child) {
+            return res.status(200).json({
+                response: modifiedResponse
+            })
+        } else return res.status(200).send("child doesn't exists");
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in getting documents");
     }
