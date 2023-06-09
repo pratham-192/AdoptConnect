@@ -3,6 +3,8 @@ const ChildCategory = require('../models/child_category');
 const AdoptionFlow = require('../models/adoption_flow');
 const User = require('../models/user');
 const { Readable } = require('stream');
+const csv = require('csvtojson');
+const fs = require('fs');
 module.exports.create = async function (req, res) {
 
     // console.log(req.body);
@@ -51,9 +53,9 @@ module.exports.create = async function (req, res) {
                     childNote: req.body.childNote
                 })
             if (req.body.contact_no) child.contactNo = req.body.contact_no;
-            let flow= await AdoptionFlow.findOne({ childClassification: childclass });
+            let flow = await AdoptionFlow.findOne({ childClassification: childclass });
             // console.log(flow);
-            child.individualAdoptionFlow.majorTask =flow.majorTask;
+            child.individualAdoptionFlow.majorTask = flow.majorTask;
             // console.log(await AdoptionFlow.findOne({ childClassification: childclass }))
             // console.log(child.individualAdoptionFlow);
             child.save();
@@ -228,8 +230,8 @@ module.exports.statusUpdate = async function (req, res) {
                     flag = 1;
                 }
             }
-            if(curr_minor>0){
-                child.caseStatus="inprogress"
+            if (curr_minor > 0) {
+                child.caseStatus = "inprogress"
             }
             u.currMinorTask = curr_minor;
             // u.save();
@@ -240,12 +242,12 @@ module.exports.statusUpdate = async function (req, res) {
         // status_object.save();
         child.individualAdoptionFlow.currMajorTask = curr_major;
         child.individualAdoptionFlow.majorTask = status_object;
-        if(curr_major==status_object.length)child.caseStatus="completed";
-        else if(curr_major!=0)
-        child.save();
-        return res.status(200).send(
-            "successfully updated"
-        )
+        if (curr_major == status_object.length) child.caseStatus = "completed";
+        else if (curr_major != 0)
+            child.save();
+        return res.status(200).json({
+            response: child
+        })
 
     } catch (err) {
         return res.status(200).send("error in updating the status")
@@ -299,16 +301,17 @@ module.exports.download = async function (req, res) {
         }
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename="${file.name}"`);
-        const fileStream = new Readable();
-        fileStream.push(file.data);
-        fileStream.push(null);
+        return res.status(200).send(file);
+        // const fileStream = new Readable();
+        // fileStream.push(file.data);
+        // fileStream.push(null);
 
-        // Pipe the file stream to the response stream
-        fileStream.on('error', (err) => {
-            console.error('Error reading file stream:', err);
-            res.status(200).json({ error: 'Failed to read file stream' });
-        });
-        fileStream.pipe(res);
+        // // Pipe the file stream to the response stream
+        // fileStream.on('error', (err) => {
+        //     console.error('Error reading file stream:', err);
+        //     res.status(200).json({ error: 'Failed to read file stream' });
+        // });
+        // fileStream.pipe(res);
 
     } catch (err) {
         console.log(err);
@@ -407,3 +410,98 @@ module.exports.getDocuments = async function (req, res) {
         return res.status(200).send("error in getting documents");
     }
 }
+
+const columnMappings = {
+    csvChildId: 'Case Number',
+    csvState: 'State',
+    csvDistrict: 'District',
+    csvShelterHome: 'Shelter Home',
+    csvChildName: 'Child Name',
+    csvLinkedWithSAA: 'Linked with SAA',
+    csvGender: 'Gender',
+    csvDateOfBirth: 'Date of Birth',
+    csvAge: 'Age',
+    csvChildClassification: 'Child Classification',
+    csvRecommendedForAdoption: 'Recommended For Adoption Inquiry',
+    csvInquiryDateOfAdmission: 'Date of Admission',
+    csvReasonForAdmission: 'Reason for Admission',
+    csvReasonForFlagging: 'Reason for Flagging',
+    csvLastVisit: 'Last Visit Since',
+    csvLastCall: 'Last Call Since',
+    csvCaseHistory: 'Case History',
+    csvGuardianListed: 'Guardian listed',
+    csvFamilyVisitsPhoneCall: 'Family Visits /Phone Call',
+    csvSiblings: 'Siblings',
+    csvLastDateOfCWCOrder: 'Last Date of CWC Order or Review',
+    csvLastcwcorder: 'Last CWC Order',
+    csvLengthOfStayInShelter: 'Length of stay in the shelter',
+    csvCaringsRegistrationNumber: 'CARINGS Registration Number',
+    csvDateLFA_CSR_MERUploadedInCARINGS: 'Date the LFA,CSR,MER Uploaded in CARINGS',
+    csvCreatedByUser: 'Created by User',
+    csvCreatedDate: 'Created Date'
+};
+
+
+
+module.exports.bulkUpload = async function (req, res) {
+    try {
+        const results = [];
+        const fileBuffer = req.file.buffer;
+        const fileContents = fileBuffer.toString(); // Convert file buffer to string
+
+        const csvData = await csv({
+            delimiter: ',',
+            noheader: false, // Indicates that the CSV file has a header row
+            trim: true, // Trim whitespace from values
+        }).fromString(fileContents);
+
+        for (const row of csvData) {
+            // Extract the necessary fields from the row and create a Child document
+            const childData = {
+                child_id: row['Case Number'] || undefined,
+                state: row[columnMappings.csvState] || undefined,
+                district: row[columnMappings.csvDistrict] || undefined,
+                shelterHome: row[columnMappings.csvShelterHome] || undefined,
+                childName: row[columnMappings.csvChildName] || undefined,
+                linkedWithSAA: row[columnMappings.csvLinkedWithSAA] || undefined,
+                gender: row[columnMappings.csvGender] || undefined,
+                dateOfBirth: row[columnMappings.csvDateOfBirth] || undefined,
+                age: row[columnMappings.csvAge] || undefined,
+                childClassification: row[columnMappings.csvChildClassification] || undefined,
+                recommendedForAdoption: row[columnMappings.csvRecommendedForAdoption] || undefined,
+                inquiryDateOfAdmission: row[columnMappings.csvInquiryDateOfAdmission] || undefined,
+                reasonForAdmission: row[columnMappings.csvReasonForAdmission] || undefined,
+                reasonForFlagging: row[columnMappings.csvReasonForFlagging] || undefined,
+                lastVisit: row[columnMappings.csvLastVisit] || undefined,
+                lastCall: row[columnMappings.csvLastCall] || undefined,
+                caseHistory: row[columnMappings.csvCaseHistory] || undefined,
+                guardianListed: row[columnMappings.csvGuardianListed] || undefined,
+                familyVisitsPhoneCall: row[columnMappings.csvFamilyVisitsPhoneCall] || undefined,
+                siblings: row[columnMappings.csvSiblings] || undefined,
+                lastDateOfCWCOrder: row[columnMappings.csvLastDateOfCWCOrder] || undefined,
+                Lastcwcorder: row[columnMappings.csvLastcwcorder] || undefined,
+                lengthOfStayInShelter: row[columnMappings.csvLengthOfStayInShelter] || undefined,
+                caringsRegistrationNumber: row[columnMappings.csvCaringsRegistrationNumber] || undefined,
+                dateLFA_CSR_MERUploadedInCARINGS: row[columnMappings.csvDateLFA_CSR_MERUploadedInCARINGS] || undefined,
+                createdByUser: row[columnMappings.csvCreatedByUser] || undefined,
+                createdDate: row[columnMappings.csvCreatedDate] || undefined,
+            };
+
+            //   console.log(childData);
+
+            const child = await Child.create(childData)
+            if (req.body.contact_no) child.contactNo = req.body.contact_no;
+            let flow = await AdoptionFlow.findOne({ childClassification: childData.childClassification });
+            // console.log(flow);
+            child.individualAdoptionFlow.majorTask = flow.majorTask;
+            // console.log(await AdoptionFlow.findOne({ childClassification: childclass }))
+            // console.log(child.individualAdoptionFlow);
+            child.save();
+        }
+
+        res.status(200).json({ message: 'Bulk upload completed' });
+    } catch (err) {
+        console.log(err);
+        return res.status(200).send('Error in bulk uploading');
+    }
+};

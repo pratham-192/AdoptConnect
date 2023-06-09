@@ -5,7 +5,6 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const axios = require('axios');
 
-
 module.exports.profile = function (req, res) {
     // return res.render('user_profile', {
     //     title: 'User Profile'
@@ -297,7 +296,7 @@ module.exports.sendResetMail = async (req, res) => {
     try {
         let user = await User.findOne({ user_id: req.body.user_id });
         if (user) {
-            if(!user.email)return res.status(200).send("email doesn't exists");
+            if (!user.email) return res.status(200).send("email doesn't exists");
             console.log(user.email);
             const newPassword = crypto.randomBytes(4).toString("hex");
             // console.log(newPassword);
@@ -316,7 +315,6 @@ module.exports.sendResetMail = async (req, res) => {
                 subject: "Reset Password",
                 text: `Hello ${user.name},\n\nYou have your new password .\n\nYour login credentials:\nUser-Id: ${user.user_id}\nPassword: ${user.password}\n\nThank you!`,
             };
-// console.log(mailOptions)
             await transporter.sendMail(mailOptions);
             res.status(200).json({ message: "User created and email sent successfully" });
         }
