@@ -4,7 +4,7 @@ const Message = require('../models/message');
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const axios = require('axios');
-
+const fastcsv = require('fast-csv');
 module.exports.profile = function (req, res) {
     // return res.render('user_profile', {
     //     title: 'User Profile'
@@ -327,3 +327,58 @@ module.exports.sendResetMail = async (req, res) => {
         res.status(200).json({ error: "Failed to send email" });
     }
 };
+
+module.exports.csvDownload = async function (req, res) {
+    try {
+      let users = await User.find({})
+      .populate({
+        path: 'alloted_children',
+        select: 'childName'
+      })
+      .select('-password -avatar')
+//   console.log(users);
+      const csvData = [];
+      const header = [
+        'User Id',
+        'Name',
+        'Email',
+        'category',
+        'Allocated Children',
+        'Zone',
+        'Address',
+        'Aadhar Card No.',
+        'contact No'
+      ];
+      csvData.push(header);
+  
+      users.forEach(user => {
+        const allocatedChildren = user.alloted_children.map(child => child.childName).join(', ');
+        const record = [
+            user.user_id,
+            user.name,
+            user.email,
+            user.category,
+            allocatedChildren,
+            user.zone,
+            user.address,
+            user.aadharCardNo,
+            user.contactNo
+        ];
+        csvData.push(record);
+      });
+  
+      const csvStream = fastcsv.format({ headers: true }).transform(row => row.map(value => value === undefined ? '' : value));
+  
+      res.setHeader('Content-Disposition', 'attachment; filename=user_details.csv');
+      res.set('Content-Type', 'text/csv');
+  
+      csvStream.pipe(res);
+      csvData.forEach(data => csvStream.write(data));
+      csvStream.end();
+  
+    } catch (err) {
+      console.log(err);
+      return res.status(200).send('Error in downloading CSV file of user');
+    }
+  };
+  
