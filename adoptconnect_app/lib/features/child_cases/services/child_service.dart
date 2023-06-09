@@ -126,6 +126,92 @@ class ChildService {
     }
   }
 
+  void editChild(
+      {required Child child, required context}) async {
+    try {
+      Map<String, dynamic> body = {
+        "child_id": child.childId,
+        "childName": child.childName,
+        "age": child.age.toString(),
+        "gender": child.gender,
+        "dateOfBirth": child.dateOfBirth,
+        "state": child.state,
+        "district": child.district,
+        "shelterHome": child.shelterHome,
+        "linkedWithSAA": child.linkedWithSAA,
+        "childClassification": child.childClassification,
+        "inquiryDateOfAdmission": child.inquiryDateOfAdmission,
+        "reasonForAdmission": child.reasonForAdmission,
+        "lastVisit": child.lastVisit,
+        "lastCall": child.lastCall,
+        "caseHistory": child.caseHistory,
+        "caseStatus": child.caseStatus,
+        "guardianListed": child.guardianListed,
+        "familyVisitPhoneCall": child.familyVisitsPhoneCall,
+        "siblings": child.siblings,
+        "lastDateOfCWCOrder": child.lastDateOfCWCOrder.toIso8601String(),
+        "Lastcwcorder": child.lastCWCOrder,
+        "lengthOfStayInShelter": child.lengthOfStayInShelter,
+        "caringsRegistrationNumber": child.caringsRegistrationNumber,
+        "dateLFA_CSR_MERUploadedINCARINGS":
+            child.dateLFACSRMERUploadedInCARINGS,
+        "contact_no": child.contactNo.toString(),
+        "createdByUser": child.createdByUser,
+        "createdDate": child.createdDate
+      };
+
+      http.Response childRes =
+          await http.post(Uri.parse("$uri/child/update_child"), body: body);
+
+      var childObj = jsonDecode(childRes.body)["response"];
+      print(child.avatar["data"].runtimeType);
+      if (child.avatar["data"] != null) {
+        try {
+          childObj["avatar"] = {"data": child.avatar["data"].readAsBytesSync()};
+        } catch(e) {
+          childObj["avatar"] = child.avatar;
+
+        }
+        // if (child.avatar["data"].runtimeType == File) {
+        //   childObj["avatar"] = {"data": child.avatar["data"].readAsBytesSync()};
+        // } else {
+        //   childObj["avatar"] = child.avatar;
+        // }
+      }
+      childObj["uploaded_documents"] = [];
+      Child newChild = Child.fromJson(jsonEncode(childObj));
+
+      httpErrorHandle(
+          response: childRes,
+          context: context,
+          onSuccess: () async {
+            if (child.avatar["data"] != null && child.avatar["data"] is File) {
+              await uploadAvatar(
+                  childId: child.childId,
+                  image: child.avatar["data"],
+                  context: context);
+            }
+
+            List<Future<void>> uploadTasks = [];
+            for (File document in child.uploadedDocuments) {
+              uploadTasks.add(uploadDocument(
+                childId: child.childId,
+                document: document,
+                context: context,
+              ));
+            }
+
+            await Future.wait(uploadTasks);
+            Provider.of<CasesProvider>(context, listen: false)
+                .editChild(child.childId, newChild);
+            Navigator.pop(context);
+          },
+          errorText: "Error in Editing Child");
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
   Future<void> uploadAvatar({
     required String childId,
     required File image,
@@ -237,7 +323,7 @@ class ChildService {
           }
 
           List<File?> docs = await Future.wait(downloadTasks);
-          for(File? doc in docs) {
+          for (File? doc in docs) {
             if (doc != null) documents.add(doc);
           }
         },
