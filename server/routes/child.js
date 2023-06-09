@@ -38,4 +38,6 @@ router.post('/get_image',childController.getImage);
 router.post('/delete_image',childController.deleteImage)
 
 router.post('/bulk_upload',upload.single('file'),childController.bulkUpload);
+
+router.get('/download_csv',childController.csvDownload);
 module.exports=router;

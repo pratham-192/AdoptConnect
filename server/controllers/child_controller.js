@@ -5,6 +5,8 @@ const User = require('../models/user');
 const { Readable } = require('stream');
 const csv = require('csvtojson');
 const fs = require('fs');
+const createCsvStringifier = require('csv-writer').createObjectCsvStringifier;
+const fastcsv = require('fast-csv');
 module.exports.create = async function (req, res) {
 
     // console.log(req.body);
@@ -447,12 +449,12 @@ module.exports.bulkUpload = async function (req, res) {
     try {
         const results = [];
         const fileBuffer = req.file.buffer;
-        const fileContents = fileBuffer.toString(); 
+        const fileContents = fileBuffer.toString();
 
         const csvData = await csv({
             delimiter: ',',
-            noheader: false, 
-            trim: true, 
+            noheader: false,
+            trim: true,
         }).fromString(fileContents);
 
         for (const row of csvData) {
@@ -504,4 +506,101 @@ module.exports.bulkUpload = async function (req, res) {
         console.log(err);
         return res.status(200).send('Error in bulk uploading');
     }
+};
+
+
+
+module.exports.csvDownload = async function (req, res) {
+  try {
+    let children = await Child.find({})
+      .populate({
+        path: 'worker_alloted',
+        select: 'name'
+      })
+      .select('-avatar -individualAdoptionFlow -childNote -uploaded_documents');
+
+    const csvData = [];
+    const header = [
+      'Case Number',
+      'State',
+      'District',
+      'Shelter Home',
+      'Child Name',
+      'Linked with SAA',
+      'Gender',
+      'Date of Birth',
+      'Age',
+      'Child Classification',
+      'Recommended for Adoption',
+      'Inquiry Date of Admission',
+      'Reason for Admission',
+      'Reason for Flagging',
+      'Last Visit',
+      'Last Call',
+      'Case History',
+      'Case Status',
+      'Guardian Listed',
+      'Family Visits Phone Call',
+      'Siblings',
+      'Last Date of CWC Order',
+      'Last CWC Order',
+      'Length of Stay in Shelter',
+      'CARINGS Registration Number',
+      'Date the LFA,CSR,MER Uploaded in CARINGS',
+      'Created By User',
+      'Created Date',
+      'Contact No',
+      'Worker Allotted'
+    ];
+    csvData.push(header);
+
+    children.forEach(child => {
+      const record = [
+        child.child_id,
+        child.state,
+        child.district,
+        child.shelterHome,
+        child.childName,
+        child.linkedWithSAA,
+        child.gender,
+        child.dateOfBirth,
+        child.age,
+        child.childClassification,
+        child.recommendedForAdoption,
+        child.inquiryDateOfAdmission,
+        child.reasonForAdmission,
+        child.reasonForFlagging,
+        child.lastVisit,
+        child.lastCall,
+        child.caseHistory,
+        child.caseStatus,
+        child.guardianListed,
+        child.familyVisitsPhoneCall,
+        child.siblings,
+        child.lastDateOfCWCOrder,
+        child.Lastcwcorder,
+        child.lengthOfStayInShelter,
+        child.caringsRegistrationNumber,
+        child.dateLFA_CSR_MERUploadedInCARINGS,
+        child.createdByUser,
+        child.createdDate,
+        child.contactNo,
+        child.worker_alloted ? child.worker_alloted.name : ''
+      ];
+      csvData.push(record);
+    });
+
+    const csvStream = fastcsv.format({ headers: true }).transform(row => row.map(value => value === undefined ? '' : value));
+
+    res.setHeader('Content-Disposition', 'attachment; filename=child_details.csv');
+    res.set('Content-Type', 'text/csv');
+
+    csvStream.pipe(res);
+    csvData.forEach(data => csvStream.write(data));
+    csvStream.end();
+
+  } catch (err) {
+    console.log(err);
+    return res.status(200).send('Error in downloading CSV file of children');
+  }
 };
