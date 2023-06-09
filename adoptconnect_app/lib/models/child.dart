@@ -151,7 +151,7 @@ class Child {
         createdByUser: map['createdByUser'] ?? '',
         createdDate: map['createdDate'] ?? '',
         contactNo: map['contactNo']?.toInt() ?? 0,
-        workerAlloted: map['worker_alloted'],
+        workerAlloted: map['worker_alloted'] ?? '',
         avatar: map['avatar'] ?? {},
         childNote: map['childNote'] ?? '',
         individualAdoptionFlow:

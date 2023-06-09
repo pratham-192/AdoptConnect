@@ -13,4 +13,9 @@ class CasesProvider extends ChangeNotifier {
         casesList.map((childCase) => Child.fromJson(jsonEncode(childCase))));
     notifyListeners();
   }
+
+  void addChild(Child child) {
+    _cases.add(child);
+    notifyListeners();
+  }
 }

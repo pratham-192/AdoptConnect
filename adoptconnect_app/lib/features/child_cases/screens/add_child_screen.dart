@@ -2,11 +2,16 @@ import 'dart:io';
 import 'package:adoptconnect_app/constants/global_variables.dart';
 import 'package:adoptconnect_app/features/child_cases/services/child_service.dart';
 import 'package:adoptconnect_app/features/child_cases/widgets/child_avatar.dart';
+import 'package:adoptconnect_app/models/adoption_flow.dart';
+import 'package:adoptconnect_app/models/child.dart';
+import 'package:adoptconnect_app/providers/user_provider.dart';
 import 'package:adoptconnect_app/widgets/dropdown.dart';
 import 'package:adoptconnect_app/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:provider/provider.dart';
 import '../../../constants/utils.dart';
+import '../widgets/document_list.dart';
 
 class AddChildScreen extends StatefulWidget {
   static const routeName = "/add-child";
@@ -21,6 +26,7 @@ class _AddChildScreenState extends State<AddChildScreen> {
   File? avatarImage;
   List<File> documents = [];
 
+  final _formKey = GlobalKey<FormState>();
   final _childIdController = TextEditingController();
   final _fullNameController = TextEditingController();
   String _genderValue = "Male";
@@ -104,12 +110,55 @@ class _AddChildScreenState extends State<AddChildScreen> {
     setState(() => documents.addAll(res));
   }
 
-  void submitForm() {
+  void addChild() {
+    if (!_formKey.currentState!.validate()) return;
+    var user = Provider.of<UserProvider>(context, listen: false).user;
+    Child child = Child(
+      id: '',
+      childId: _childIdController.text,
+      state: _streetController.text,
+      district: _cityController.text,
+      shelterHome: _shelterHomeController.text,
+      childName: _fullNameController.text,
+      linkedWithSAA: _linkedWithSAAValue,
+      gender: _genderValue,
+      dateOfBirth: _dateOfBirthController.text,
+      age: int.parse(_ageController.text),
+      childClassification: _childClassificationValue,
+      recommendedForAdoption: '',
+      inquiryDateOfAdmission: _inquiryDateOfAdmissionController.text,
+      reasonForAdmission: _reasonForAdmissionController.text,
+      reasonForFlagging: '',
+      lastVisit: _lastVisitController.text,
+      lastCall: _lastCallController.text,
+      caseHistory: _caseHistoryController.text,
+      caseStatus: _caseStatusValue,
+      guardianListed: _guardianListedController.text,
+      familyVisitsPhoneCall: _familyPhoneCallController.text,
+      siblings: _noOfSiblingsController.text,
+      lastDateOfCWCOrder: DateTime.parse(_lastDateOfCWCOrderController.text),
+      lastCWCOrder: _lastCWCOrderController.text,
+      lengthOfStayInShelter: _lengthOfStayInShelterController.text,
+      caringsRegistrationNumber: _regNoCARINGSController.text,
+      dateLFACSRMERUploadedInCARINGS: _uploadDateFACSRMERController.text,
+      createdByUser: user.id,
+      createdDate: DateTime.now().toIso8601String().substring(0, 10),
+      contactNo: int.parse(_contactNumberController.text),
+      workerAlloted: user.id,
+      avatar: {"data": avatarImage},
+      childNote: '',
+      individualAdoptionFlow: AdoptionFlow(currMajorTask: 0, majorTask: []),
+      uploadedDocuments: documents,
+    );
+
+    _childService.addChild(child: child, context: context);
+
     // if (avatarImage == null) return;
-    if (documents.isEmpty) return;
+    // if (documents.isEmpty) return;
     // _childService.uploadAvatar(
     //     childId: '', image: avatarImage!, context: context);
-    _childService.uploadDocument(childId: 'CLD_123', document: documents[0], context: context);
+    // _childService.uploadDocument(
+    //     childId: 'CLD_123', document: documents[0], context: context);
   }
 
   @override
@@ -125,6 +174,7 @@ class _AddChildScreenState extends State<AddChildScreen> {
           child: Padding(
             padding: const EdgeInsets.all(35),
             child: Form(
+              key: _formKey,
               child: Column(
                 children: [
                   Row(
@@ -147,11 +197,13 @@ class _AddChildScreenState extends State<AddChildScreen> {
                   InputText(
                     labelText: "Child Id",
                     controller: _childIdController,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Full Name",
                     controller: _fullNameController,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   Dropdown(
@@ -164,27 +216,33 @@ class _AddChildScreenState extends State<AddChildScreen> {
                   InputText(
                     labelText: "Age",
                     controller: _ageController,
+                    keyboardType: TextInputType.number,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Date of Birth",
                     controller: _dateOfBirthController,
+                    validate: true,
                     isDate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Shelter Home",
                     controller: _shelterHomeController,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Address / Street",
                     controller: _streetController,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "City",
                     controller: _cityController,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   Dropdown(
@@ -198,7 +256,7 @@ class _AddChildScreenState extends State<AddChildScreen> {
                     labelText: "Child Classification",
                     items: const [
                       "Abandoned",
-                      "Orphanded",
+                      "Orphaned",
                       "Surrendered",
                       "Untraceable"
                     ],
@@ -209,6 +267,7 @@ class _AddChildScreenState extends State<AddChildScreen> {
                   InputText(
                     labelText: "Inquiry Date of Admission",
                     controller: _inquiryDateOfAdmissionController,
+                    validate: true,
                     isDate: true,
                   ),
                   const SizedBox(height: 15),
@@ -222,22 +281,26 @@ class _AddChildScreenState extends State<AddChildScreen> {
                   InputText(
                     labelText: "Reason For Admission",
                     controller: _reasonForAdmissionController,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Case History",
                     controller: _caseHistoryController,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Last Visit",
                     controller: _lastVisitController,
+                    validate: true,
                     isDate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Last Call",
                     controller: _lastCallController,
+                    validate: true,
                     isDate: true,
                   ),
                   const SizedBox(
@@ -246,48 +309,64 @@ class _AddChildScreenState extends State<AddChildScreen> {
                   InputText(
                     labelText: "Guardian Listed",
                     controller: _guardianListedController,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Family Phone Call",
                     controller: _familyPhoneCallController,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Number of Siblings",
                     controller: _noOfSiblingsController,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Last Date of CWC Order",
                     controller: _lastDateOfCWCOrderController,
+                    validate: true,
                     isDate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Last CWC Order",
                     controller: _lastCWCOrderController,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Length of Stay in Shelter",
                     controller: _lengthOfStayInShelterController,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "CARINGS Registration Number",
                     controller: _regNoCARINGSController,
+                    validate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "FA CSR MER Upload Date",
                     controller: _uploadDateFACSRMERController,
+                    validate: true,
                     isDate: true,
                   ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Contact Number",
                     controller: _contactNumberController,
+                    keyboardType: TextInputType.phone,
+                    validate: true,
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                    child: documents.isEmpty
+                        ? null
+                        : DocumentsList(documents: documents),
                   ),
                   const SizedBox(height: 15),
                   GestureDetector(
@@ -325,7 +404,7 @@ class _AddChildScreenState extends State<AddChildScreen> {
                   ),
                   const SizedBox(height: 30),
                   ElevatedButton(
-                    onPressed: submitForm,
+                    onPressed: addChild,
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 40),
                         padding: const EdgeInsets.symmetric(vertical: 14)),
