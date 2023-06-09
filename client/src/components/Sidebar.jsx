@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import mail_logo from "../assets/mail_logo.png";
 import { MdOutlineCancel } from "react-icons/md";
@@ -11,6 +11,10 @@ const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize, currentColor } =
     useStateContext();
   const { t } = useTranslation();
+  const user = JSON.parse(localStorage.getItem("userDetails"));
+  if (!user) {
+    setActiveMenu(false);
+  }
 
   const handleCloseSidebar = () => {
     if (activeMenu && screenSize <= 900) {
@@ -47,29 +51,50 @@ const Sidebar = () => {
             </TooltipComponent>
           </div>
           <div className="mt-10 ">
-            {links.map((item) => (
-              <div key={item.title}>
-                <p className="text-gray-400 dark:text-gray-400 m-3 mt-4 uppercase">
-                  {t(`${item.title}`)}
-                </p>
-                {item.links.map((link) => (
-                  <NavLink
-                    to={`/${link.name}`}
-                    key={link.name}
-                    onClick={handleCloseSidebar}
-                    style={({ isActive }) => ({
-                      backgroundColor: isActive ? currentColor : "",
+            {links.map((item) => {
+              if (
+                item.title === "Dashboard" &&
+                user &&
+                user.category !== "admin"
+              )
+                return "";
+              else
+                return (
+                  <div key={item.title}>
+                    <p className="text-gray-400 dark:text-gray-400 m-3 mt-4 uppercase">
+                      {t(`${item.title}`)}
+                    </p>
+                    {item.links.map((link) => {
+                      if (
+                        user &&
+                        user.category &&
+                        link.allowed.includes(user.category)
+                      ) {
+                        return (
+                          <NavLink
+                            to={`/${link.name}`}
+                            key={link.name}
+                            onClick={handleCloseSidebar}
+                            style={({ isActive }) => ({
+                              backgroundColor: isActive ? currentColor : "",
+                            })}
+                            className={({ isActive }) =>
+                              isActive ? activeLink : normalLink
+                            }
+                          >
+                            {link.icon}
+                            <span className="capitalize ">
+                              {t(`${link.name}`)}
+                            </span>
+                          </NavLink>
+                        );
+                      } else {
+                        return "";
+                      }
                     })}
-                    className={({ isActive }) =>
-                      isActive ? activeLink : normalLink
-                    }
-                  >
-                    {link.icon}
-                    <span className="capitalize ">{t(`${link.name}`)}</span>
-                  </NavLink>
-                ))}
-              </div>
-            ))}
+                  </div>
+                );
+            })}
           </div>
         </>
       )}

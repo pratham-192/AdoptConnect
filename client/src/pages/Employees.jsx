@@ -13,16 +13,25 @@ import axios from "axios";
 import { Header } from "../components";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { managerRoute } from "../Contexts/ProtectedRoute";
 
 const Employees = () => {
   const [workerData, setworkerData] = useState([]);
   const [openAddWorker, setopenAddWorker] = useState(false);
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("userDetails"));
   const { t } = useTranslation();
 
   useEffect(async () => {
-    const response = await axios.get("http://localhost:3000/admin/all_admin");
-    setworkerData(response.data.response);
+    if (user && user.category === "admin") {
+      const response = await axios.get("http://localhost:3000/admin/all_admin");
+      setworkerData(response.data.response);
+    } else {
+      const response = await axios.get(
+        "http://localhost:3000/admin/all_workers"
+      );
+      setworkerData(response.data.response);
+    }
   }, [openAddWorker]);
 
   let grid;
@@ -86,4 +95,4 @@ const Employees = () => {
     </div>
   );
 };
-export default Employees;
+export default managerRoute(Employees);

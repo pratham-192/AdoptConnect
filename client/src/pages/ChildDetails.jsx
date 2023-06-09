@@ -87,6 +87,7 @@ const ChildDetails = () => {
           child_id: childId,
         }
       );
+      console.log(response.data);
       if (response.data && response.data.response) {
         const uint8Array = new Uint8Array(response.data.response.data);
         const blob = new Blob([uint8Array]);
@@ -202,12 +203,12 @@ const ChildDetails = () => {
               <p className="text-gray-400">{t("Classification")}</p>
             </div>
           </div>
-          <div className="flex justify-between mt-32 md:mt-0 md:justify-center">
+          <div className="flex justify-between text-md mt-32 md:mt-0 md:justify-center">
             <button
               className="text-white py-2 px-4 mr-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 capitalize"
               onClick={() => setshowMissingReport(true)}
             >
-              {t("Get Missing Report")}
+              {t("Generate Missing Report")}
             </button>
             <button
               className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 capitalize"
@@ -289,79 +290,79 @@ const ChildDetails = () => {
           </p>
           <p>
             <span className="text-slate-600 font-light lg:mx-16  border-b-2 py-2 pb-5 p-1">
-              {childDetails.caseHistory}
+              {childDetails && childDetails.caseHistory}
             </span>
           </p>
           <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
             {t("Inquiry Date Of Admission")} :{" "}
             <span className="text-slate-600 font-light">
-              {childDetails.inquiryDateOfAdmission}
+              {childDetails && childDetails.inquiryDateOfAdmission}
             </span>
           </p>
           <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
             {t("Reason For Admission")} :{" "}
             <span className="text-slate-600 font-light">
-              {childDetails.reasonForAdmission}
+              {childDetails && childDetails.reasonForAdmission}
             </span>
           </p>
           <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
             {t("Last Visit")} :{" "}
             <span className="text-slate-600 font-light">
-              {childDetails.lastVisit}
+              {childDetails && childDetails.lastVisit}
             </span>
           </p>
           <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
             {t("Last Call")} :{" "}
             <span className="text-slate-600 font-light">
-              {childDetails.lastCall}
+              {childDetails && childDetails.lastCall}
             </span>
           </p>
           <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
             {t("Guardian")} :{" "}
             <span className="text-slate-600 font-light">
-              {childDetails.guardianListed}
+              {childDetails && childDetails.guardianListed}
             </span>
           </p>
           <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
             {t("Last Family Visit Phone Call")} :{" "}
             <span className="text-slate-600 font-light">
-              {childDetails.familyVisitPhoneCall}
+              {childDetails && childDetails.familyVisitPhoneCall}
             </span>
           </p>
           <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
             {t("Number Of Siblings")} :{" "}
             <span className="text-slate-600 font-light">
-              {childDetails.siblings}
+              {childDetails && childDetails.siblings}
             </span>
           </p>
           <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
             {t("Last Date Of CWC Order")} :{" "}
             <span className="text-slate-600 font-light">
-              {childDetails.lastDateOfCWCOrder}
+              {childDetails && childDetails.lastDateOfCWCOrder}
             </span>
           </p>
           <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
             {t("Last CWC Order")} :{" "}
             <span className="text-slate-600 font-light">
-              {childDetails.Lastcwcorder}
+              {childDetails && childDetails.Lastcwcorder}
             </span>
           </p>
           <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
             {t("Time of stay in shelter")} :{" "}
             <span className="text-slate-600 font-light">
-              {childDetails.lengthOfStayInShelter}
+              {childDetails && childDetails.lengthOfStayInShelter}
             </span>
           </p>
           <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
             {t("CARINGS Registration Number")} :{" "}
             <span className="text-slate-600 font-light">
-              {childDetails.caringsRegistrationNumber}
+              {childDetails && childDetails.caringsRegistrationNumber}
             </span>
           </p>
           <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
             {t("Date LFA, CSR, MERU uploaded in CARINGS")} :{" "}
             <span className="text-slate-600 font-light">
-              {childDetails.dateLFA_CSR_MERUUploadedINCARINGS}
+              {childDetails && childDetails.dateLFA_CSR_MERUUploadedINCARINGS}
             </span>
           </p>
           <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">

@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { MdOutlineCancel } from "react-icons/md";
 import { Button } from ".";
-import { chatData } from "../Data/dummy";
 import { useStateContext } from "../Contexts/ContextProvider";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Notification = () => {
-  const { currentColor, close, setClose } = useStateContext();
+  const { currentColor } = useStateContext();
   const { t } = useTranslation();
+  const [messages, setmessages] = useState();
+  const navigate = useNavigate();
+
+  const seeAllMessageHandler = async () => {
+    navigate("/messages");
+  };
+
+  useEffect(async () => {
+    const response = await axios.post(
+      "http://localhost:3000/users/getunseenmsgs",
+      {
+        to_user_id: JSON.parse(localStorage.getItem("userDetails"))._id,
+      }
+    );
+    setmessages(response.data.response);
+  }, []);
 
   return (
     <div className="nav-item absolute right-5 md:right-40 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
@@ -21,7 +38,7 @@ const Notification = () => {
             className="text-white text-xs rounded p-1 px-2 bg-orange-theme "
           >
             {" "}
-            5 New
+            {messages ? messages.length : "0"} New
           </button>
         </div>
         <Button
@@ -33,26 +50,30 @@ const Notification = () => {
         />
       </div>
       <div className="mt-5 ">
-        {chatData?.map((item, index) => (
-          <div
-            key={index}
-            className="flex items-center leading-8 gap-5 border-b-1 border-color p-3"
-          >
-            <img
-              className="rounded-full h-10 w-10"
-              src={item.image}
-              alt={item.message}
-            />
-            <div>
-              <p className="font-semibold dark:text-gray-200">{item.message}</p>
-              <p className="text-gray-500 text-sm dark:text-gray-400">
-                {" "}
-                {item.desc}{" "}
-              </p>
+        {messages?.map((message, index) => {
+          return (
+            <div
+              key={index}
+              className="flex items-center leading-8 gap-5 border-b-1 border-color p-3"
+            >
+              <div>
+                <p className="font-semibold dark:text-gray-200">
+                  {message.content}
+                </p>
+                <p className="text-gray-500 text-sm dark:text-gray-400">
+                  {message.from_user.name}
+                </p>
+                <p className="text-gray-500 text-sm dark:text-gray-400">
+                  {new Date(message.createdAt).toLocaleTimeString("en-GB", {
+                    hour: "numeric",
+                    minute: "numeric",
+                  })}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
-        <div className="mt-5">
+          );
+        })}
+        <div className="mt-5" onClick={() => seeAllMessageHandler()}>
           <Button
             color="white"
             bgColor={currentColor}
