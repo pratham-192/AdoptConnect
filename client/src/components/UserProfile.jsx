@@ -4,7 +4,6 @@ import { Button } from ".";
 import { FiUser } from "react-icons/fi";
 import { BsFillInboxesFill } from "react-icons/bs";
 import { useStateContext } from "../Contexts/ContextProvider";
-import avatar from "../Data/avatar.jpg";
 // import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -40,7 +39,16 @@ const UserProfile = () => {
       <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
         <img
           className="rounded-full h-24 w-24"
-          src={avatar}
+          src={
+            JSON.parse(localStorage.getItem("userDetails")).avatar &&
+            URL.createObjectURL(
+              new Blob([
+                new Uint8Array(
+                  JSON.parse(localStorage.getItem("userDetails")).avatar.data
+                ),
+              ])
+            )
+          }
           alt="user-profile"
         />
         <div>
