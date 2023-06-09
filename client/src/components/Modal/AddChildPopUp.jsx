@@ -19,7 +19,6 @@ export default function AddChildPopUp({ setopenAddchild }) {
   const [lastVisit, setlastVisit] = useState();
   const [lastCall, setlastCall] = useState();
   const [caseHistory, setcaseHistory] = useState();
-  const [caseStatus, setcaseStatus] = useState("active");
   const [guardianListed, setguardianListed] = useState();
   const [familyVisitPhoneCall, setfamilyVisitPhoneCall] = useState();
   const [siblings, setsiblings] = useState();
@@ -38,34 +37,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
   const { t } = useTranslation();
 
   const addchildHandler = async () => {
-    if (
-      !child_id ||
-      !childName ||
-      !age ||
-      !gender ||
-      !dateOfBirth ||
-      !state ||
-      !district ||
-      !shelterHome ||
-      !linkedWithSAA ||
-      !childClassification ||
-      !inquiryDateOfAdmission ||
-      !reasonForAdmission ||
-      !lastVisit ||
-      !lastCall ||
-      !caseHistory ||
-      !caseStatus ||
-      !guardianListed ||
-      !familyVisitPhoneCall ||
-      !siblings ||
-      !lastDateOfCWCOrder ||
-      !Lastcwcorder ||
-      !lengthOfStayInShelter ||
-      !caringsRegistrationNumber ||
-      !dateLFA_CSR_MERUploadedINCARINGS ||
-      !contactNo ||
-      !avatar
-    ) {
+    if (!child_id || !childName || !shelterHome || !childClassification) {
       seterr("Please fill all the details");
       return;
     }
@@ -85,7 +57,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
       lastVisit: lastVisit,
       lastCall: lastCall,
       caseHistory: caseHistory,
-      caseStatus: caseStatus,
+      caseStatus: "inactive",
       guardianListed: guardianListed,
       familyVisitPhoneCall: familyVisitPhoneCall,
       siblings: siblings,
@@ -274,17 +246,6 @@ export default function AddChildPopUp({ setopenAddchild }) {
                           setinquiryDateOfAdmission(String(e.target.value))
                         }
                       />
-                    </div>
-                    <div className="md:col-span-3">
-                      <label htmlFor="email">{t("Case Status")}</label>
-                      <select
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        onChange={(e) => setcaseStatus(e.target.value)}
-                      >
-                        <option value="active">Active</option>
-                        <option value="on-hold">On Hold</option>
-                        <option value="adopted">Adopted</option>
-                      </select>
                     </div>
                     <div className="md:col-span-5">
                       <label htmlFor="email">{t("Reason for admission")}</label>

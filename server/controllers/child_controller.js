@@ -3,6 +3,8 @@ const ChildCategory = require('../models/child_category');
 const AdoptionFlow = require('../models/adoption_flow');
 const User = require('../models/user');
 const { Readable } = require('stream');
+const csv = require('csvtojson');
+const fs = require('fs');
 module.exports.create = async function (req, res) {
 
     // console.log(req.body);
@@ -51,8 +53,13 @@ module.exports.create = async function (req, res) {
                     childNote: req.body.childNote
                 })
             if (req.body.contact_no) child.contactNo = req.body.contact_no;
-            child.individualAdoptionFlow.majorTask = await AdoptionFlow.findOne({ childClassification: childclass });
-child.save();
+            let flow = await AdoptionFlow.findOne({ childClassification: childclass });
+            // console.log(flow);
+            child.individualAdoptionFlow.majorTask = flow.majorTask;
+            // console.log(await AdoptionFlow.findOne({ childClassification: childclass }))
+            // console.log(child.individualAdoptionFlow);
+            child.save();
+            // console.log(child);
 
             // console.log("ad");
             // console.log(typeof(req.body.worker_alloted))
@@ -211,38 +218,43 @@ module.exports.statusUpdate = async function (req, res) {
         // })
         let status_object = req.body.statusObject;
         let curr_major = 0;
-        let curr_flag = 0;
         for (let u of status_object) {
             let curr_minor = 0;
             let flag = 0;
             if (u.minorTask.length == 0) break;
             for (let minor of u.minorTask) {
-                if (minor.minorTaskStatus == 1) {
+                if (minor.minorTaskStatus == 2) {
                     curr_minor = curr_minor + 1;
                 }
                 if (minor.minorTaskStatus == 0 || minor.minorTaskStatus == 1) {
                     flag = 1;
                 }
             }
+            if (curr_minor > 0) {
+                child.caseStatus = "inprogress"
+            }
             u.currMinorTask = curr_minor;
-            u.save();
+            // u.save();
             if (!flag) {
                 curr_major = curr_major + 1;
             } else break;
         }
-        status_object.save();
+        // status_object.save();
         child.individualAdoptionFlow.currMajorTask = curr_major;
         child.individualAdoptionFlow.majorTask = status_object;
-        child.save();
-        return res.status(200).send(
-            "successfully updated"
-        )
+        if (curr_major == status_object.length) child.caseStatus = "completed";
+        else if (curr_major != 0)
+            child.save();
+        return res.status(200).json({
+            response: child
+        })
 
     } catch (err) {
         return res.status(200).send("error in updating the status")
     }
 
 }
+
 module.exports.getChildbyId = async function (req, res) {
     try {
         let child = await Child.findOne({ child_id: req.body.child_id }).populate('worker_alloted').select('-uploaded_documents');
@@ -272,6 +284,8 @@ module.exports.upload = async function (req, res) {
         return res.status(200).send("error in uploading files");
     }
 }
+
+
 module.exports.download = async function (req, res) {
     try {
         let child = await Child.findOne({ child_id: req.body.child_id });
@@ -287,27 +301,30 @@ module.exports.download = async function (req, res) {
         }
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename="${file.name}"`);
-        const fileStream = new Readable();
-        fileStream.push(file.data);
-        fileStream.push(null);
+        return res.status(200).send(file);
+        // const fileStream = new Readable();
+        // fileStream.push(file.data);
+        // fileStream.push(null);
 
-        // Pipe the file stream to the response stream
-        fileStream.on('error', (err) => {
-            console.error('Error reading file stream:', err);
-            res.status(200).json({ error: 'Failed to read file stream' });
-        });
-        fileStream.pipe(res);
+        // // Pipe the file stream to the response stream
+        // fileStream.on('error', (err) => {
+        //     console.error('Error reading file stream:', err);
+        //     res.status(200).json({ error: 'Failed to read file stream' });
+        // });
+        // fileStream.pipe(res);
 
     } catch (err) {
         console.log(err);
         return res.status(200).send("error in downloading files");
     }
 }
+
+
 module.exports.deleteFile = async function (req, res) {
-    try{
+    try {
         let child = await Child.findOne({ child_id: req.body.child_id });
         let docId = req.body.docId;
-        if(child.uploaded_documents.length==0){
+        if (child.uploaded_documents.length == 0) {
             return res.status(200).send("there is no file to delete");
         }
         let file;
@@ -317,74 +334,174 @@ module.exports.deleteFile = async function (req, res) {
                 break;
             }
         }
-        if(file==null)return res.status(200).send("not able to fetch the file");
+        if (file == null) return res.status(200).send("not able to fetch the file");
         child.uploaded_documents.pull(file);
         child.save();
         return res.status(200).send("document deleted successfuly");
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in deleting the file");
     }
 
 }
 
-module.exports.imageUpload=async function(req,res){
-    try{
+module.exports.imageUpload = async function (req, res) {
+    try {
         let child = await Child.findOne({ child_id: req.body.child_id });
-        if(!child)return res.status(200).send("child doesn't exists");
-        child.avatar=req.file.buffer;
+        if (!child) return res.status(200).send("child doesn't exists");
+        child.avatar = req.file.buffer;
         child.save();
         return res.status(200).send("file uploaded successfully");
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in uploading image");
-        
+
     }
 }
-module.exports.getImage=async function(req,res){
-    try{
+
+
+module.exports.getImage = async function (req, res) {
+    try {
         let child = await Child.findOne({ child_id: req.body.child_id });
-        if(child.avatar){
+        if (child.avatar) {
             return res.status(200).json({
-                response:child.avatar
+                response: child.avatar
             })
         }
-        else{
+        else {
             return res.status(200).send("avatar is not uploaded yet");
         }
-    }catch(err)
-    {
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in getting image");
     }
 }
 
-module.exports.deleteImage=async function(req,res){
-    try{
+
+module.exports.deleteImage = async function (req, res) {
+    try {
         let child = await Child.findOne({ child_id: req.body.child_id });
-        child.avatar=null;
+        child.avatar = null;
         child.save();
         return res.status(200).send("profile image deleted successfully");
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in deleting the image");
     }
 }
 
-module.exports.getDocuments=async function(req,res){
-    try{
-        let child=await Child.findOne({child_id:req.body.child_id});
+
+module.exports.getDocuments = async function (req, res) {
+    try {
+        let child = await Child.findOne({ child_id: req.body.child_id });
         const modifiedResponse = child.uploaded_documents.map((item) => {
             return {
-              name: item.name,
-              docId: item._id,
+                name: item.name,
+                docId: item._id,
             };
-          });
-        if(child){return res.status(200).json({
-            response:modifiedResponse
-        })}else return res.status(200).send("child doesn't exists");
-    }catch(err){
+        });
+        if (child) {
+            return res.status(200).json({
+                response: modifiedResponse
+            })
+        } else return res.status(200).send("child doesn't exists");
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in getting documents");
     }
 }
+
+const columnMappings = {
+    csvChildId: 'Case Number',
+    csvState: 'State',
+    csvDistrict: 'District',
+    csvShelterHome: 'Shelter Home',
+    csvChildName: 'Child Name',
+    csvLinkedWithSAA: 'Linked with SAA',
+    csvGender: 'Gender',
+    csvDateOfBirth: 'Date of Birth',
+    csvAge: 'Age',
+    csvChildClassification: 'Child Classification',
+    csvRecommendedForAdoption: 'Recommended For Adoption Inquiry',
+    csvInquiryDateOfAdmission: 'Date of Admission',
+    csvReasonForAdmission: 'Reason for Admission',
+    csvReasonForFlagging: 'Reason for Flagging',
+    csvLastVisit: 'Last Visit Since',
+    csvLastCall: 'Last Call Since',
+    csvCaseHistory: 'Case History',
+    csvGuardianListed: 'Guardian listed',
+    csvFamilyVisitsPhoneCall: 'Family Visits /Phone Call',
+    csvSiblings: 'Siblings',
+    csvLastDateOfCWCOrder: 'Last Date of CWC Order or Review',
+    csvLastcwcorder: 'Last CWC Order',
+    csvLengthOfStayInShelter: 'Length of stay in the shelter',
+    csvCaringsRegistrationNumber: 'CARINGS Registration Number',
+    csvDateLFA_CSR_MERUploadedInCARINGS: 'Date the LFA,CSR,MER Uploaded in CARINGS',
+    csvCreatedByUser: 'Created by User',
+    csvCreatedDate: 'Created Date'
+};
+
+
+
+module.exports.bulkUpload = async function (req, res) {
+    try {
+        const results = [];
+        const fileBuffer = req.file.buffer;
+        const fileContents = fileBuffer.toString(); 
+
+        const csvData = await csv({
+            delimiter: ',',
+            noheader: false, 
+            trim: true, 
+        }).fromString(fileContents);
+
+        for (const row of csvData) {
+            // Extract the necessary fields from the row and create a Child document
+            const childData = {
+                child_id: row['Case Number'] || undefined,
+                state: row[columnMappings.csvState] || undefined,
+                district: row[columnMappings.csvDistrict] || undefined,
+                shelterHome: row[columnMappings.csvShelterHome] || undefined,
+                childName: row[columnMappings.csvChildName] || undefined,
+                linkedWithSAA: row[columnMappings.csvLinkedWithSAA] || undefined,
+                gender: row[columnMappings.csvGender] || undefined,
+                dateOfBirth: row[columnMappings.csvDateOfBirth] || undefined,
+                age: row[columnMappings.csvAge] || undefined,
+                childClassification: row[columnMappings.csvChildClassification] || undefined,
+                recommendedForAdoption: row[columnMappings.csvRecommendedForAdoption] || undefined,
+                inquiryDateOfAdmission: row[columnMappings.csvInquiryDateOfAdmission] || undefined,
+                reasonForAdmission: row[columnMappings.csvReasonForAdmission] || undefined,
+                reasonForFlagging: row[columnMappings.csvReasonForFlagging] || undefined,
+                lastVisit: row[columnMappings.csvLastVisit] || undefined,
+                lastCall: row[columnMappings.csvLastCall] || undefined,
+                caseHistory: row[columnMappings.csvCaseHistory] || undefined,
+                guardianListed: row[columnMappings.csvGuardianListed] || undefined,
+                familyVisitsPhoneCall: row[columnMappings.csvFamilyVisitsPhoneCall] || undefined,
+                siblings: row[columnMappings.csvSiblings] || undefined,
+                lastDateOfCWCOrder: row[columnMappings.csvLastDateOfCWCOrder] || undefined,
+                Lastcwcorder: row[columnMappings.csvLastcwcorder] || undefined,
+                lengthOfStayInShelter: row[columnMappings.csvLengthOfStayInShelter] || undefined,
+                caringsRegistrationNumber: row[columnMappings.csvCaringsRegistrationNumber] || undefined,
+                dateLFA_CSR_MERUploadedInCARINGS: row[columnMappings.csvDateLFA_CSR_MERUploadedInCARINGS] || undefined,
+                createdByUser: row[columnMappings.csvCreatedByUser] || undefined,
+                createdDate: row[columnMappings.csvCreatedDate] || undefined,
+            };
+
+            //   console.log(childData);
+
+            const child = await Child.create(childData)
+            if (req.body.contact_no) child.contactNo = req.body.contact_no;
+            let flow = await AdoptionFlow.findOne({ childClassification: childData.childClassification });
+            // console.log(flow);
+            child.individualAdoptionFlow.majorTask = flow.majorTask;
+            // console.log(await AdoptionFlow.findOne({ childClassification: childclass }))
+            // console.log(child.individualAdoptionFlow);
+            child.save();
+        }
+
+        res.status(200).json({ message: 'Bulk upload completed' });
+    } catch (err) {
+        console.log(err);
+        return res.status(200).send('Error in bulk uploading');
+    }
+};

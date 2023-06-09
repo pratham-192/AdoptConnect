@@ -17,7 +17,8 @@ function Login() {
         category: "admin",
       }
     );
-    if (response.data.name) {
+    console.log(response.data);
+    if (response.data.user_id) {
       localStorage.setItem("userDetails", JSON.stringify(response.data));
       navigate("/");
     } else {

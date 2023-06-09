@@ -1,8 +1,10 @@
 const User = require('../models/user');
 const Child = require('../models/child');
-const Message=require('../models/message');
+const Message = require('../models/message');
 const nodemailer = require("nodemailer");
-const axios=require('axios')
+const crypto = require("crypto");
+const axios = require('axios');
+
 module.exports.profile = function (req, res) {
     // return res.render('user_profile', {
     //     title: 'User Profile'
@@ -12,62 +14,62 @@ module.exports.profile = function (req, res) {
 
 
 module.exports.sendmail = async (req, res) => {
-  const {password, name, email,user_id  } = req.body;
+    const { password, name, email, user_id } = req.body;
 
-  const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: "prathammehtani23@gmail.com",
-      pass: "iqavnovejfbaogjl"
+    const transporter = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+            user: "prathammehtani23@gmail.com",
+            pass: "iqavnovejfbaogjl"
+        }
+    });
+    const mailOptions = {
+        from: "prathammehtani23@gmail.com",
+        to: email,
+        subject: "Welcome to Our Application",
+        text: `Hello ${name},\n\nWelcome to our application! Your account has been created successfully.\n\nYour login credentials:\nUser-Id: ${user_id}\nPassword: ${password}\n\nThank you!`,
+    };
+    try {
+        await transporter.sendMail(mailOptions);
+        res.status(201).json({ message: "User created and email sent successfully" });
+    } catch (error) {
+        console.log("Error sending email: ", error);
+        res.status(500).json({ error: "Failed to send email" });
     }
-  });
-  const mailOptions = {
-    from: "prathammehtani23@gmail.com",
-    to: email,
-    subject: "Welcome to Our Application",
-    text: `Hello ${name},\n\nWelcome to our application! Your account has been created successfully.\n\nYour login credentials:\nUser-Id: ${user_id}\nPassword: ${password}\n\nThank you!`,
-  };
-  try {
-    await transporter.sendMail(mailOptions);
-    res.status(201).json({ message: "User created and email sent successfully" });
-  } catch (error) {
-    console.log("Error sending email: ", error);
-    res.status(500).json({ error: "Failed to send email" });
-  }
 };
 
 
 module.exports.create = async function (req, res) {
-  try {
-    let user = await User.findOne({ user_id: req.body.user_id });
-    if (!user) {
-      let newuser = await User.create({
-        user_id: req.body.user_id,
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        category: req.body.category,
-        zone: req.body.zone,
-        address: req.body.address,
-        aadharCardNo: req.body.aadharCardNo,
-        contactNo: req.body.contactNo
-      });
+    try {
+        let user = await User.findOne({ user_id: req.body.user_id });
+        if (!user) {
+            let newuser = await User.create({
+                user_id: req.body.user_id,
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password,
+                category: req.body.category,
+                zone: req.body.zone,
+                address: req.body.address,
+                aadharCardNo: req.body.aadharCardNo,
+                contactNo: req.body.contactNo
+            });
 
-      await axios.post('http://localhost:3000/users/sendmail', {
-        password: req.body.password,
-        name: req.body.name,
-        email: req.body.email,
-        user_id:req.body.user_id
-      });
+            await axios.post('http://localhost:3000/users/sendmail', {
+                password: req.body.password,
+                name: req.body.name,
+                email: req.body.email,
+                user_id: req.body.user_id
+            });
 
-      return res.status(200).json({ response: newuser });
-    } else {
-      return res.status(200).send("User already exists");
+            return res.status(200).json({ response: newuser });
+        } else {
+            return res.status(200).send("User already exists");
+        }
+    } catch (err) {
+        console.log("Error creating user: ", err);
+        return res.status(500).send("Error in creating user");
     }
-  } catch (err) {
-    console.log("Error creating user: ", err);
-    return res.status(500).send("Error in creating user");
-  }
 };
 
 
@@ -164,7 +166,7 @@ module.exports.update = async function (req, res) {
 module.exports.getWorkerbyId = async function (req, res) {
     try {
         let worker = await User.findOne({ user_id: req.body.user_id }).populate({
-            path:'alloted_children',
+            path: 'alloted_children',
             select: '-uploaded_documents'
         });
         res.status(200).json({
@@ -186,107 +188,142 @@ module.exports.getWorkerbyId = async function (req, res) {
 // }
 
 
-module.exports.imageUpload=async function(req,res){
-    try{
+module.exports.imageUpload = async function (req, res) {
+    try {
         let user = await User.findOne({ user_id: req.body.user_id });
-        if(!user)return res.status(200).send("user doesn't exists");
-        user.avatar=req.file.buffer;
+        if (!user) return res.status(200).send("user doesn't exists");
+        user.avatar = req.file.buffer;
         user.save();
         return res.status(200).send("file uploaded successfully");
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in uploading image");
-        
+
     }
 }
-module.exports.getImage=async function(req,res){
-    try{
+module.exports.getImage = async function (req, res) {
+    try {
         let user = await User.findOne({ user_id: req.body.user_id });
-        if(user.avatar){
+        if (user.avatar) {
             return res.status(200).json({
-                response:user.avatar
+                response: user.avatar
             })
         }
-        else{
+        else {
             return res.status(200).send("avatar is not uploaded yet");
         }
-    }catch(err)
-    {
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in getting image");
     }
 }
 
-module.exports.deleteImage=async function(req,res){
-    try{
+module.exports.deleteImage = async function (req, res) {
+    try {
         let user = await User.findOne({ user_id: req.body.user_id });
-        user.avatar=null;
+        user.avatar = null;
         user.save();
         return res.status(200).send("profile image deleted successfully");
-    }catch(err){
+    } catch (err) {
         return res.status(200).send("error in deleting the image");
     }
 }
 
-module.exports.getUnSeenMessages=async function(req,res){
-    try{
-        let messages=await Message.find({to_user:req.body.to_user_id , seen:0});
+module.exports.getUnSeenMessages = async function (req, res) {
+    try {
+        let messages = await Message.find({ to_user: req.body.to_user_id, seen: 0 });
         return res.status(200).json({
-            response:messages
+            response: messages
         })
-    }catch(err){
+    } catch (err) {
         return res.status(200).send("error in gettng seen messages");
     }
 }
-module.exports.getMessages=async function(req,res){
-    try{
-        let messages=await Message.find({to_user:req.body.to_user_id}).populate({
-            path:'from_user to_user',
-            select:'name category'
+module.exports.getMessages = async function (req, res) {
+    try {
+        let messages = await Message.find({ to_user: req.body.to_user_id }).populate({
+            path: 'from_user to_user',
+            select: 'name category'
         });
         return res.status(200).json({
-            response:messages
+            response: messages
         })
-    }catch(err){
+    } catch (err) {
         return res.status(200).send("error in getting messages");
     }
 }
-module.exports.getMessagebyId=async function(req,res){
-    try{
-        let message=await Message.findById(req.body.messageId).populate({
-            path:'from_user to_user',
-            select:'name category'
+module.exports.getMessagebyId = async function (req, res) {
+    try {
+        let message = await Message.findById(req.body.messageId).populate({
+            path: 'from_user to_user',
+            select: 'name category'
         });
-        message.seen=1;
+        message.seen = 1;
         message.save();
         return res.status(200).json({
-            response:message
+            response: message
         })
-    }catch(err){
+    } catch (err) {
         return res.status(200).send("error in getting messages by id");
     }
 }
-module.exports.markAllSeen=async function(req,res){
-    try{
-        let messages=await Message.find({to_user:req.body.to_user_id});
-        console.log(messages);
-        for(let u of messages){
-            u.seen=1;
+module.exports.markAllSeen = async function (req, res) {
+    try {
+        let messages = await Message.find({ to_user: req.body.to_user_id });
+        // console.log(messages);
+        for (let u of messages) {
+            u.seen = 1;
             u.save();
         }
         return res.status(200).json({
-            response:messages
+            response: messages
         })
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in marking all messages as seen");
     }
 }
-module.exports.deleteAllMsg=async function(req,res){
-    try{
-        let messages=await Message.deleteMany({to_user:req.body.to_user_id});
+module.exports.deleteAllMsg = async function (req, res) {
+    try {
+        let messages = await Message.deleteMany({ to_user: req.body.to_user_id });
         return res.status(200).send("all messages are deleted");
-    }catch(err){
+    } catch (err) {
         return res.status(200).send("error in deleting all messages");
     }
 }
+
+module.exports.sendResetMail = async (req, res) => {
+    try {
+        let user = await User.findOne({ user_id: req.body.user_id });
+        if (user) {
+            if (!user.email) return res.status(200).send("email doesn't exists");
+            // console.log(user.email);
+            const newPassword = crypto.randomBytes(4).toString("hex");
+            // console.log(newPassword);
+            user.password = newPassword;
+            user.save();
+            const transporter = nodemailer.createTransport({
+                service: "Gmail",
+                auth: {
+                    user: "prathammehtani23@gmail.com",
+                    pass: "iqavnovejfbaogjl"
+                }
+            });
+            const mailOptions = {
+                from: "prathammehtani23@gmail.com",
+                to: user.email,
+                subject: "Reset Password",
+                text: `Hello ${user.name},\n\nYou have your new password .\n\nYour login credentials:\nUser-Id: ${user.user_id}\nPassword: ${user.password}\n\nThank you!`,
+            };
+            await transporter.sendMail(mailOptions);
+            res.status(200).json({ message: "User created and email sent successfully" });
+        }
+        else {
+            return res.status("user doesn't exists")
+        }
+
+    } catch (error) {
+        console.log("Error sending email: ", error);
+        res.status(200).json({ error: "Failed to send email" });
+    }
+};

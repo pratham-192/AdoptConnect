@@ -15,5 +15,6 @@ router.post('/deletechildfromworker',adminController.deleteChildfromWorker);
 router.post('/message/create',adminController.createMessage);
 router.post('/message/update',adminController.updateMessage);
 router.post('/message/delete',adminController.deleteMessage);
+router.post('/message/get_message',adminController.getMessagebyAdmin);
 
 module.exports=router;

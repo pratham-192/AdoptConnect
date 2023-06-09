@@ -42,4 +42,8 @@ router.post('/getunseenmsgs',userController.getUnSeenMessages)
 
 
 router.post('/sendmail',userController.sendmail);
+
+router.post('/reset_password',userController.sendResetMail);
+
+
 module.exports=router;

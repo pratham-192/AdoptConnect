@@ -15,28 +15,54 @@ const EditProfile = () => {
   const [userAddress, setuserAddress] = useState(currentuser.address);
   const [userAadhar, setuserAadhar] = useState(currentuser.aadharCardNo);
   const [userContact, setuserContact] = useState(currentuser.contactNo);
+  const [avatar, setavatar] = useState();
   const { t } = useTranslation();
 
   const [openPopUp, setopenPopUp] = useState(false);
 
   const updateProfileHandler = async () => {
-    const response = await axios.post("http://localhost:3000/users/update", {
-      user_id: userId,
-      name: userName,
-      email: userEmail,
-      category: userCat,
-      password: userPass,
-      zone: userZone,
-      address: userAddress,
-      aadharCardNo: userAadhar,
-      contactNo: userContact,
-    });
-    if (response.data.response) {
-      localStorage.setItem(
-        "userDetails",
-        JSON.stringify(response.data.response)
-      );
-      setopenPopUp(true);
+    if (avatar) {
+      const formData = new FormData();
+      formData.append("file", avatar);
+      formData.append("user_id", userId);
+      await axios.post("http://localhost:3000/users/image_upload", formData);
+      const response = await axios.post("http://localhost:3000/users/update", {
+        user_id: userId,
+        name: userName,
+        email: userEmail,
+        category: userCat,
+        password: userPass,
+        zone: userZone,
+        address: userAddress,
+        aadharCardNo: userAadhar,
+        contactNo: userContact,
+      });
+      if (response.data.response) {
+        localStorage.setItem(
+          "userDetails",
+          JSON.stringify(response.data.response)
+        );
+        setopenPopUp(true);
+      }
+    } else {
+      const response = await axios.post("http://localhost:3000/users/update", {
+        user_id: userId,
+        name: userName,
+        email: userEmail,
+        category: userCat,
+        password: userPass,
+        zone: userZone,
+        address: userAddress,
+        aadharCardNo: userAadhar,
+        contactNo: userContact,
+      });
+      if (response.data.response) {
+        localStorage.setItem(
+          "userDetails",
+          JSON.stringify(response.data.response)
+        );
+        setopenPopUp(true);
+      }
     }
   };
 
@@ -60,6 +86,23 @@ const EditProfile = () => {
               <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
                 <div className="lg:col-span-3">
                   <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                    <div className="md:col-span-5 flex flex-col mb-2">
+                      <label htmlFor="full_name" className="pb-2">
+                        {t("User Image")}
+                      </label>
+                      {avatar ? (
+                        <img
+                          src={URL.createObjectURL(avatar)}
+                          className="h-40 w-40 mb-2"
+                        />
+                      ) : (
+                        ""
+                      )}
+                      <input
+                        type="file"
+                        onChange={(e) => setavatar(e.target.files[0])}
+                      />
+                    </div>
                     <div className="md:col-span-5">
                       <label htmlFor="user_id">{t("User Id")}</label>
                       <input

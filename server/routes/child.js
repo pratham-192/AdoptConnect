@@ -36,4 +36,6 @@ router.post('/document/getbychildid',childController.getDocuments);
 router.post('/image_upload',upload.single('file'),childController.imageUpload);
 router.post('/get_image',childController.getImage);
 router.post('/delete_image',childController.deleteImage)
+
+router.post('/bulk_upload',upload.single('file'),childController.bulkUpload);
 module.exports=router;

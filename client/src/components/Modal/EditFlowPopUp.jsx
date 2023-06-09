@@ -61,7 +61,7 @@ export default function EditFlowPopUp({
         "http://localhost:3000/admin/adoption_flow/major/delete",
         {
           childClassification: editTaskDetails.childClassification,
-          majorTaskPosition: editTaskDetails.majorIndex,
+          deletePosition: editTaskDetails.majorIndex,
         }
       );
       changeCategory(editTaskDetails.childClassification);

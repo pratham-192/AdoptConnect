@@ -28,13 +28,13 @@ const FlowManagement = () => {
   const [minorErr, setminorErr] = useState("");
 
   const addMajorTaskHandler = async () => {
-    if (!majorTaskNote || !majorTaskStatement || !majorTaskIteration) {
+    if (!majorTaskStatement || !majorTaskIteration) {
       setmajorErr("Please fill all the details");
       return;
     }
     await axios.post("http://localhost:3000/admin/adoption_flow/major/create", {
       childClassification: selectedCategory.childClassification,
-      majorTaskPosition: majorTaskPosition + 1,
+      majorTaskPosition: parseInt(majorTaskPosition) + 1,
       majorTaskNote: majorTaskNote,
       majorTaskStatement: majorTaskStatement,
       iterationMethod: majorTaskIteration,
@@ -46,20 +46,20 @@ const FlowManagement = () => {
     setmajorErr("");
   };
   const addMinorTaskHandler = async () => {
-    if (!minorTaskNote || !minorTaskStatement) {
+    if (!minorTaskStatement) {
       setminorErr("Please fill all the details");
       return;
     }
     await axios.post("http://localhost:3000/admin/adoption_flow/minor/create", {
       childClassification: selectedCategory.childClassification,
       majorTaskPosition: majorTaskPosition,
-      minorTaskPosition: minorTaskPosition + 1,
+      minorTaskPosition: parseInt(minorTaskPosition) + 1,
       minorTaskNote: minorTaskNote,
       minorTaskStatement: minorTaskStatement,
     });
     setminorTaskNote("");
-    setminorTaskPosition(0);
-    setmajorTaskPosition(0);
+    // setminorTaskPosition(0);
+    // setmajorTaskPosition(0);
     setminorTaskStatement("");
     changeCategory(selectedCategory.childClassification);
     setminorErr("");
@@ -196,6 +196,11 @@ const FlowManagement = () => {
                           {majorIndex + 1}.
                         </span>
                         {major.majorTaskStatement}
+                        <div className="text-sm flex items-center pl-2">
+                          {major.majorTaskNote
+                            ? `(${major.majorTaskNote})`
+                            : ""}
+                        </div>
                       </span>
                       <span
                         className="hover:text-slate-500 cursor-pointer p-1"
@@ -229,6 +234,11 @@ const FlowManagement = () => {
                                   <RxDot size={20} />
                                 </span>
                                 {minor.minorTaskStatement}
+                                <span className="text-sm">
+                                  {minor.minorTaskNote
+                                    ? `(${minor.minorTaskNote})`
+                                    : ""}
+                                </span>
                               </span>
                               <span
                                 className="hover:text-slate-500 cursor-pointer p-1"
@@ -268,7 +278,9 @@ const FlowManagement = () => {
                 </div>
                 <select
                   className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                  onChange={(e) => setmajorTaskPosition(e.target.value)}
+                  onChange={(e) => {
+                    setmajorTaskPosition(e.target.value);
+                  }}
                 >
                   {flowDetails.map((majorTask, index) => {
                     return (

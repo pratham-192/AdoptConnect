@@ -148,3 +148,18 @@ module.exports.deleteMessage=async function(req,res){
         return res.status(200).send("error in deleting the messages");
     }
 }
+
+module.exports.getMessagebyAdmin=async function(req,res){
+    try{
+        let messages = await Message.find({ from_user: req.body.from_user_id }).populate({
+            path: 'from_user to_user',
+            select: 'name category'
+        });
+        return res.status(200).json({
+            response: messages
+        })
+    }catch(err){
+        console.log(err);
+        return res.status(200).send("error in getting messages of admin");
+    }
+}

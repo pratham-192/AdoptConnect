@@ -21,6 +21,7 @@ import product5 from './product5.jpg';
 import product6 from './product6.jpg';
 import product7 from './product7.jpg';
 import product8 from './product8.jpg';
+import { AiOutlineMessage } from 'react-icons/ai';
 
 export const gridOrderImage = (props) => (
   <div>
@@ -45,22 +46,23 @@ export const gridOrderStatus = (props) => (
 export const kanbanGrid = [
   {
     headerText: 'To Do',
-    keyField: 'Open',
+    keyField: 0,
     allowToggle: true,
     allowDragAndDrop: true
   },
 
   {
     headerText: 'In Progress',
-    keyField: 'InProgress',
-    allowToggle: true
+    keyField: 1,
+    allowToggle: true,
+    allowDragAndDrop: true
   },
 
   {
     headerText: 'Done',
-    keyField: 'Close',
+    keyField: 2,
     allowToggle: true,
-    allowDragAndDrop: false
+    allowDragAndDrop: true
   },
 ];
 const gridEmployeeProfile = (props) => (
@@ -540,6 +542,10 @@ export const links = [
       {
         name: 'flow-management',
         icon: <TiFlowChildren />,
+      },
+      {
+        name: 'messages',
+        icon: <AiOutlineMessage />
       },
       {
         name: 'edit-profile',
@@ -3224,7 +3230,7 @@ export const kanbanData = [
   {
     Id: 'Task 1',
     Title: 'Task - 29001',
-    Status: 'Open',
+    Status: '0',
     Summary: 'Analyze the new requirements gathered from the customer.',
     Type: 'Story',
     Priority: 'Low',
