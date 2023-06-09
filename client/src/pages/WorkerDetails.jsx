@@ -7,6 +7,7 @@ import axios from "axios";
 import UpdateWorkerPopUp from "../components/Modal/UpdateWorkerPopUp";
 import { useTranslation } from "react-i18next";
 import MessagePopUp from "../components/Modal/MessagePopUp";
+import PopUp from "../components/Modal/PopUp";
 
 const WorkerDetails = () => {
   const location = useLocation();
@@ -16,6 +17,7 @@ const WorkerDetails = () => {
   const [openupdateWorker, setopenupdateWorker] = useState(false);
   const [imageUrl, setimageUrl] = useState("");
   const [openMessagePopUp, setopenMessagePopUp] = useState(false);
+  const [openPopUp, setopenPopUp] = useState(false);
   const { t } = useTranslation();
 
   useEffect(async () => {
@@ -59,6 +61,17 @@ const WorkerDetails = () => {
           setopenMessagePopUp={setopenMessagePopUp}
           to_user_id={workerDetails._id}
           to_user_name={workerDetails.name}
+          setopenPopUp={setopenPopUp}
+        />
+      ) : (
+        ""
+      )}
+      {openPopUp ? (
+        <PopUp
+          status={true}
+          heading="Success"
+          message="Message sent succesfully"
+          setopenPopUp={setopenPopUp}
         />
       ) : (
         ""

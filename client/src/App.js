@@ -12,6 +12,7 @@ import ChildDetails from './pages/ChildDetails';
 import WorkerDetails from './pages/WorkerDetails';
 import FlowManagement from './pages/FlowManagement';
 import { Calendar } from './pages';
+import Messages from './pages/Messages';
 
 const App = () => {
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
@@ -81,6 +82,7 @@ const App = () => {
                 <Route path="/child-alloted" element={<ChildAlloted />} />
                 <Route path="/child-details" element={<ChildDetails />} />
                 <Route path="/flow-management" element={<FlowManagement />} />
+                <Route path="/messages" element={<Messages />} />
               </Routes>
             </div>
             <Footer />

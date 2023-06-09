@@ -29,7 +29,6 @@ const Kanban = () => {
           statusObject: currAdoptionflow,
         }
       );
-      console.log(response.data);
       setcurrentChild(response.data.response.individualAdoptionFlow);
     }
   };
@@ -38,11 +37,8 @@ const Kanban = () => {
     const newmajorAdoptionFlow =
       currentChild.majorTask[currentChild.currMajorTask];
     newmajorAdoptionFlow.minorTask[minorIndex].minorTaskStatus = 2;
-    console.log(newmajorAdoptionFlow);
     const majorAdoptionFlow = currentChild.majorTask;
     majorAdoptionFlow[currentChild.currMajorTask] = newmajorAdoptionFlow;
-    console.log(majorAdoptionFlow);
-    console.log(selectedChild);
     const response = await axios.post(
       "http://localhost:3000/child/status_update",
       {
@@ -71,7 +67,6 @@ const Kanban = () => {
             } else {
               setselectedChild(childData[e.target.value].child_id);
               setcurrentChild(childData[e.target.value].individualAdoptionFlow);
-              console.log(childData[e.target.value].individualAdoptionFlow);
             }
           }}
         >
@@ -108,7 +103,6 @@ const Kanban = () => {
                       ? currentChild.majorTask[
                           currentChild.currMajorTask
                         ].minorTask.map((minor, index) => {
-                          console.log(minor);
                           if (
                             index ==
                               currentChild.majorTask[currentChild.currMajorTask]

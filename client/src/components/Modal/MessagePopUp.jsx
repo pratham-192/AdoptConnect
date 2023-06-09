@@ -7,14 +7,17 @@ export default function MessagePopUp({
   setopenMessagePopUp,
   to_user_id,
   to_user_name,
+  setopenPopUp,
 }) {
   const [message, setmessage] = useState("");
+
   const sendMessageHandler = async () => {
     await axios.post("http://localhost:3000/admin/message/create", {
       to_user_id: to_user_id,
       content: message,
       from_user_id: JSON.parse(localStorage.getItem("userDetails"))._id,
     });
+    setopenPopUp(true);
     setopenMessagePopUp(false);
   };
   return (

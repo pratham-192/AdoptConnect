@@ -82,6 +82,7 @@ const Navbar = () => {
             <img
               className="rounded-full w-8 h-8"
               src={
+                localStorage.getItem("userDetails") &&
                 JSON.parse(localStorage.getItem("userDetails")).avatar &&
                 URL.createObjectURL(
                   new Blob([

@@ -32,7 +32,6 @@ const FlowManagement = () => {
       setmajorErr("Please fill all the details");
       return;
     }
-    console.log(majorTaskPosition);
     await axios.post("http://localhost:3000/admin/adoption_flow/major/create", {
       childClassification: selectedCategory.childClassification,
       majorTaskPosition: parseInt(majorTaskPosition) + 1,
@@ -280,7 +279,6 @@ const FlowManagement = () => {
                 <select
                   className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                   onChange={(e) => {
-                    console.log(e.target.value);
                     setmajorTaskPosition(e.target.value);
                   }}
                 >
