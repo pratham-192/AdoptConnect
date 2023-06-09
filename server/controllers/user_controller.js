@@ -270,7 +270,7 @@ module.exports.getMessagebyId = async function (req, res) {
 module.exports.markAllSeen = async function (req, res) {
     try {
         let messages = await Message.find({ to_user: req.body.to_user_id });
-        console.log(messages);
+        // console.log(messages);
         for (let u of messages) {
             u.seen = 1;
             u.save();
@@ -297,7 +297,7 @@ module.exports.sendResetMail = async (req, res) => {
         let user = await User.findOne({ user_id: req.body.user_id });
         if (user) {
             if (!user.email) return res.status(200).send("email doesn't exists");
-            console.log(user.email);
+            // console.log(user.email);
             const newPassword = crypto.randomBytes(4).toString("hex");
             // console.log(newPassword);
             user.password = newPassword;

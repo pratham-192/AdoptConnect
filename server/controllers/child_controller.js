@@ -447,12 +447,12 @@ module.exports.bulkUpload = async function (req, res) {
     try {
         const results = [];
         const fileBuffer = req.file.buffer;
-        const fileContents = fileBuffer.toString(); // Convert file buffer to string
+        const fileContents = fileBuffer.toString(); 
 
         const csvData = await csv({
             delimiter: ',',
-            noheader: false, // Indicates that the CSV file has a header row
-            trim: true, // Trim whitespace from values
+            noheader: false, 
+            trim: true, 
         }).fromString(fileContents);
 
         for (const row of csvData) {
