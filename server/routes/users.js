@@ -40,4 +40,6 @@ router.post('/all_seen',userController.markAllSeen);
 router.post('/all_delete',userController.deleteAllMsg);
 router.post('/getunseenmsgs',userController.getUnSeenMessages)
 
+
+router.post('/sendmail',userController.sendmail);
 module.exports=router;

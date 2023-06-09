@@ -1,6 +1,8 @@
 const User = require('../models/user');
 const Child = require('../models/child');
 const Message=require('../models/message');
+const nodemailer = require("nodemailer");
+const axios=require('axios')
 module.exports.profile = function (req, res) {
     // return res.render('user_profile', {
     //     title: 'User Profile'
@@ -8,36 +10,67 @@ module.exports.profile = function (req, res) {
     return res.status(200).send("profile page");
 }
 
-module.exports.create = async function (req, res) {
-    // console.log(req.body)
-    // if(req.body.password!=req.body.confirmpassword)
-    // {
-    // return res.status(404).send("password doesn't matches");
-    // }
-    try {
-        let user = await User.findOne({ user_id: req.body.user_id });
-        if (!user) {
-            let newuser = await User.create({
-                user_id: req.body.user_id,
-                name: req.body.name,
-                email: req.body.email,
-                password: req.body.password,
-                category: req.body.category,
-                zone: req.body.zone,
-                address: req.body.address,
-                aadharCardNo: req.body.aadharCardNo,
-                contactNo: req.body.contactNo
-            })
-            // return res.redirect('/users/signup')
-            return res.status(200).json({ "response": newuser });
-        } else {
-            return res.status(200).send("user already exists");
 
-        }
-    } catch (err) {
-        res.status(200).send("error in creating user");
+module.exports.sendmail = async (req, res) => {
+  const {password, name, email,user_id  } = req.body;
+
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: "prathammehtani23@gmail.com",
+      pass: "iqavnovejfbaogjl"
     }
-}
+  });
+  const mailOptions = {
+    from: "prathammehtani23@gmail.com",
+    to: email,
+    subject: "Welcome to Our Application",
+    text: `Hello ${name},\n\nWelcome to our application! Your account has been created successfully.\n\nYour login credentials:\nUser-Id: ${user_id}\nPassword: ${password}\n\nThank you!`,
+  };
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(201).json({ message: "User created and email sent successfully" });
+  } catch (error) {
+    console.log("Error sending email: ", error);
+    res.status(500).json({ error: "Failed to send email" });
+  }
+};
+
+
+module.exports.create = async function (req, res) {
+  try {
+    let user = await User.findOne({ user_id: req.body.user_id });
+    if (!user) {
+      let newuser = await User.create({
+        user_id: req.body.user_id,
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        category: req.body.category,
+        zone: req.body.zone,
+        address: req.body.address,
+        aadharCardNo: req.body.aadharCardNo,
+        contactNo: req.body.contactNo
+      });
+
+      await axios.post('http://localhost:3000/users/sendmail', {
+        password: req.body.password,
+        name: req.body.name,
+        email: req.body.email,
+        user_id:req.body.user_id
+      });
+
+      return res.status(200).json({ response: newuser });
+    } else {
+      return res.status(200).send("User already exists");
+    }
+  } catch (err) {
+    console.log("Error creating user: ", err);
+    return res.status(500).send("Error in creating user");
+  }
+};
+
+
 
 module.exports.signIn = function (req, res) {
     if (req.isAuthenticated()) {
