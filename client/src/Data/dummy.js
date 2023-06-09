@@ -45,22 +45,23 @@ export const gridOrderStatus = (props) => (
 export const kanbanGrid = [
   {
     headerText: 'To Do',
-    keyField: 'Open',
+    keyField: 0,
     allowToggle: true,
     allowDragAndDrop: true
   },
 
   {
     headerText: 'In Progress',
-    keyField: 'InProgress',
-    allowToggle: true
+    keyField: 1,
+    allowToggle: true,
+    allowDragAndDrop: true
   },
 
   {
     headerText: 'Done',
-    keyField: 'Close',
+    keyField: 2,
     allowToggle: true,
-    allowDragAndDrop: false
+    allowDragAndDrop: true
   },
 ];
 const gridEmployeeProfile = (props) => (
@@ -3224,7 +3225,7 @@ export const kanbanData = [
   {
     Id: 'Task 1',
     Title: 'Task - 29001',
-    Status: 'Open',
+    Status: '0',
     Summary: 'Analyze the new requirements gathered from the customer.',
     Type: 'Story',
     Priority: 'Low',
