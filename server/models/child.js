@@ -57,7 +57,8 @@ const childSchema = mongoose.Schema({
         type: String
     },
     caseStatus: {
-        type: String
+        type: String,
+        default:'inactive'
     },
     guardianListed: {
         type: String
@@ -69,7 +70,7 @@ const childSchema = mongoose.Schema({
         type: String
     },
     lastDateOfCWCOrder: {
-        type: Date
+        type: String
     },
     Lastcwcorder: {
         type: String
