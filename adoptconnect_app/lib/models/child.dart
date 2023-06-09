@@ -140,8 +140,9 @@ class Child {
         guardianListed: map['guardianListed'] ?? '',
         familyVisitsPhoneCall: map['familyVisitsPhoneCall'] ?? '',
         siblings: map['siblings'] ?? '',
-        lastDateOfCWCOrder:
-            DateTime.fromMillisecondsSinceEpoch(map['lastDateOfCWCOrder']?.toInt() ?? 0),
+        lastDateOfCWCOrder: map['lastDateOfCWCOrder'] != null
+            ? DateTime.parse(map['lastDateOfCWCOrder'])
+            : DateTime.now(),
         lastCWCOrder: map['Lastcwcorder'] ?? '',
         lengthOfStayInShelter: map['lengthOfStayInShelter'] ?? '',
         caringsRegistrationNumber: map['caringsRegistrationNumber'] ?? '',

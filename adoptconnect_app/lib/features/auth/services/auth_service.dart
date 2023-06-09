@@ -43,7 +43,7 @@ class AuthService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user = prefs.getString('user');
 
-    if (user == null) {
+    if (user == null || user == '') {
       prefs.setString('user', '');
       return;
     }
