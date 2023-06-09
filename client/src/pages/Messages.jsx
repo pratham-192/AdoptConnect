@@ -14,16 +14,23 @@ const Messages = () => {
       const response = await axios.post(
         "http://localhost:3000/admin/message/get_message",
         {
-          from_user_id: JSON.parse(localStorage.getItem("userDetails"))._id,
+          from_user_id: user._id,
         }
       );
       console.log(response.data);
       setallMessages(response.data.response);
     } else {
+      const response2 = await axios.post(
+        "http://localhost:3000/users/all_seen",
+        {
+          to_user_id: user._id,
+        }
+      );
+      console.log(response2.data);
       const response = await axios.post(
         "http://localhost:3000/users/get_messages",
         {
-          to_user_id: JSON.parse(localStorage.getItem("userDetails"))._id,
+          to_user_id: user._id,
         }
       );
       console.log(response.data);
@@ -45,7 +52,9 @@ const Messages = () => {
                 <li className="py-2 sm:py-4" key={index}>
                   <div
                     className={`flex sm:py-2 px-3 rounded py-1 items-center space-x-4 capitalize ${
-                      message.seen ? "bg-slate-50" : ""
+                      message.seen && message.from_user._id === user._id
+                        ? "bg-slate-50"
+                        : ""
                     }`}
                   >
                     <div className="flex-1 min-w-0">
@@ -59,13 +68,17 @@ const Messages = () => {
                       </p>
                     </div>
                     <div className="inline-flex items-center text-sm text-base text-gray-900 dark:text-white">
-                      <span
-                        className={`pr-3 ${
-                          message.seen ? "text-blue-500" : "text-slate-700"
-                        }`}
-                      >
-                        <TiTick size={22} />
-                      </span>
+                      {message.from_user._id === user._id ? (
+                        <span
+                          className={`pr-3 ${
+                            message.seen ? "text-blue-500" : "text-slate-700"
+                          }`}
+                        >
+                          <TiTick size={22} />
+                        </span>
+                      ) : (
+                        ""
+                      )}
                       {new Date(message.createdAt).toLocaleTimeString("en-GB", {
                         hour: "numeric",
                         minute: "numeric",

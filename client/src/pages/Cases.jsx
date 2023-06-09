@@ -38,12 +38,12 @@ const childGenderTemplate = (props) => (
 const caseStatusTemplate = (props) => (
   <div className="flex gap-2 justify-center items-center text-gray-700 capitalize">
     <p>
-      {props.caseStatus == "active" ? (
+      {props.caseStatus == "completed" ? (
         <p className="h-3 w-3 rounded-full bg-green-400"></p>
       ) : (
         <p>
-          {props.caseStatus == "on-hold" ? (
-            <p className="h-3 w-3 rounded-full bg-yellow-600"></p>
+          {props.caseStatus == "inprogress" ? (
+            <p className="h-3 w-3 rounded-full bg-yellow-400"></p>
           ) : (
             <p className="h-3 w-3 rounded-full bg-red-600"></p>
           )}
