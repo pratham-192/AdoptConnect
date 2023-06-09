@@ -13,6 +13,7 @@ import axios from "axios";
 import { Header } from "../components";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { managerRoute } from "../Contexts/ProtectedRoute";
 
 const Employees = () => {
   const [workerData, setworkerData] = useState([]);
@@ -86,4 +87,4 @@ const Employees = () => {
     </div>
   );
 };
-export default Employees;
+export default managerRoute(Employees);

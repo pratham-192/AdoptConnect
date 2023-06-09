@@ -33,6 +33,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
   const [contactNo, setcontactNo] = useState();
   const [avatar, setavatar] = useState();
   const [extraDocument, setextraDocument] = useState();
+  const [createdByUser, setcreatedByUser] = useState("Bal Asha Trust");
   const [err, seterr] = useState("");
   const { t } = useTranslation();
 
@@ -67,7 +68,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
       caringsRegistrationNumber: caringsRegistrationNumber,
       dateLFA_CSR_MERUploadedINCARINGS: dateLFA_CSR_MERUploadedINCARINGS,
       contact_no: contactNo,
-      createdByUser: JSON.parse(localStorage.getItem("userDetails"))._id,
+      createdByUser: createdByUser,
       createdDate: new Date().toISOString().slice(0, 10),
     });
 
@@ -189,6 +190,29 @@ export default function AddChildPopUp({ setopenAddchild }) {
                       />
                     </div>
                     <div className="md:col-span-3">
+                      <label htmlFor="email">{t("Created by Trust")}</label>
+                      <select
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        onChange={(e) => setcreatedByUser(e.target.value)}
+                      >
+                        <option value="Bal Asha Trust">Bal Asha Trust</option>
+                        <option value="WAIC SU">WAIC SU</option>
+                      </select>
+                    </div>
+                    <div className="md:col-span-2">
+                      <label htmlFor="email">
+                        {t("Inquiry Date of Admission")}
+                      </label>
+                      <input
+                        type="date"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        value={inquiryDateOfAdmission}
+                        onChange={(e) =>
+                          setinquiryDateOfAdmission(String(e.target.value))
+                        }
+                      />
+                    </div>
+                    <div className="md:col-span-3">
                       <label htmlFor="address">{t("Address / Street")}</label>
                       <input
                         type="text"
@@ -233,19 +257,6 @@ export default function AddChildPopUp({ setopenAddchild }) {
                           Abandoned by guardian
                         </option>
                       </select>
-                    </div>
-                    <div className="md:col-span-2">
-                      <label htmlFor="email">
-                        {t("Inquiry Date of Admission")}
-                      </label>
-                      <input
-                        type="date"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        value={inquiryDateOfAdmission}
-                        onChange={(e) =>
-                          setinquiryDateOfAdmission(String(e.target.value))
-                        }
-                      />
                     </div>
                     <div className="md:col-span-5">
                       <label htmlFor="email">{t("Reason for admission")}</label>

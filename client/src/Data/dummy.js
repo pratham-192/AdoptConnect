@@ -503,6 +503,7 @@ export const links = [
       {
         name: 'analytics',
         icon: <TbDeviceDesktopAnalytics />,
+        allowed: ["admin"]
       },
     ],
   },
@@ -517,14 +518,17 @@ export const links = [
       {
         name: 'workers',
         icon: <IoMdContacts />,
+        allowed: ["admin", "case-manager"]
       },
       {
         name: 'cases',
         icon: <RiContactsLine />,
+        allowed: ["admin", "case-manager"]
       },
       {
         name: 'child-alloted',
         icon: <FaChild />,
+        allowed: ["worker"]
       },
     ],
   },
@@ -538,18 +542,22 @@ export const links = [
       {
         name: 'progress',
         icon: <BsKanban />,
+        allowed: ["admin", "case-manager", "worker"]
       },
       {
         name: 'flow-management',
         icon: <TiFlowChildren />,
+        allowed: ["admin", "case-manager"]
       },
       {
         name: 'messages',
-        icon: <AiOutlineMessage />
+        icon: <AiOutlineMessage />,
+        allowed: ["admin", "case-manager", "worker"]
       },
       {
         name: 'edit-profile',
         icon: <FiUser />,
+        allowed: ["admin", "case-manager", "worker"]
       },
     ],
   },

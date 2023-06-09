@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Header } from "../components";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
+import { TiTick } from "react-icons/ti";
 
 const Messages = () => {
   const [allMessages, setallMessages] = useState({});
@@ -37,23 +38,34 @@ const Messages = () => {
       ) : (
         <Header category={t("Apps")} title={t("Messages Received")} />
       )}
-      <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <ul className="w-full divide-y divide-gray-200 dark:divide-gray-700">
         {allMessages && allMessages.length
-          ? allMessages.map((message) => {
+          ? allMessages.map((message, index) => {
               return (
-                <li class="py-4 sm:py-6">
-                  <div class="flex items-center space-x-4 capitalize">
-                    <div class="flex-1 min-w-0">
-                      <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                <li className="py-2 sm:py-4" key={index}>
+                  <div
+                    className={`flex sm:py-2 px-3 rounded py-1 items-center space-x-4 capitalize ${
+                      message.seen ? "bg-slate-50" : ""
+                    }`}
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
                         {message.content}
                       </p>
-                      <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">
                         {user.category === "admin"
                           ? message.to_user.name
                           : message.from_user.name}
                       </p>
                     </div>
-                    <div class="inline-flex items-center text-sm text-base text-gray-900 dark:text-white">
+                    <div className="inline-flex items-center text-sm text-base text-gray-900 dark:text-white">
+                      <span
+                        className={`pr-3 ${
+                          message.seen ? "text-blue-500" : "text-slate-700"
+                        }`}
+                      >
+                        <TiTick size={22} />
+                      </span>
                       {new Date(message.createdAt).toLocaleTimeString("en-GB", {
                         hour: "numeric",
                         minute: "numeric",

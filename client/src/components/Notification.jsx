@@ -12,14 +12,21 @@ const Notification = () => {
   const [messages, setmessages] = useState();
   const navigate = useNavigate();
 
+  const seeAllMessageHandler = async () => {
+    const response = await axios.post("http://localhost:3000/users/all_seen", {
+      to_user_id: JSON.parse(localStorage.getItem("userDetails"))._id,
+    });
+    console.log(response.data);
+    navigate("/messages");
+  };
+
   useEffect(async () => {
     const response = await axios.post(
-      "http://localhost:3000/users/get_messages",
+      "http://localhost:3000/users/getunseenmsgs",
       {
         to_user_id: JSON.parse(localStorage.getItem("userDetails"))._id,
       }
     );
-    console.log(response.data);
     setmessages(response.data.response);
   }, []);
 
@@ -47,35 +54,36 @@ const Notification = () => {
         />
       </div>
       <div className="mt-5 ">
-        {messages?.map((message, index) => (
-          <div
-            key={index}
-            className="flex items-center leading-8 gap-5 border-b-1 border-color p-3"
-          >
-            {/* <img
-              className="rounded-full h-10 w-10"
-              src={item.image}
-              alt={item.message}
-            /> */}
-            <div>
-              <p className="font-semibold dark:text-gray-200">
-                {message.content}
-              </p>
-              <p className="text-gray-500 text-sm dark:text-gray-400">
-                {" "}
-                {message.from_user.name}{" "}
-              </p>
+        {messages?.map((message, index) => {
+          return (
+            <div
+              key={index}
+              className="flex items-center leading-8 gap-5 border-b-1 border-color p-3"
+            >
+              <div>
+                <p className="font-semibold dark:text-gray-200">
+                  {message.content}
+                </p>
+                <p className="text-gray-500 text-sm dark:text-gray-400">
+                  {message.from_user.name}
+                </p>
+                <p className="text-gray-500 text-sm dark:text-gray-400">
+                  {new Date(message.createdAt).toLocaleTimeString("en-GB", {
+                    hour: "numeric",
+                    minute: "numeric",
+                  })}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
-        <div className="mt-5" onClick={() => navigate("/messages")}>
+          );
+        })}
+        <div className="mt-5" onClick={() => seeAllMessageHandler()}>
           <Button
             color="white"
             bgColor={currentColor}
             text={t("See all notifications")}
             borderRadius="10px"
             width="full"
-            onClick={() => navigate("/messages")}
           />
         </div>
       </div>

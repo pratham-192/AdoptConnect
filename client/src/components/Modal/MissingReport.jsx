@@ -82,10 +82,10 @@ const MissingReport = ({ childDetails, setshowMissingReport, imageUrl }) => {
           </div>
         </div>
         <button
-          className="text-white py-2 px-4 mr-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 capitalize"
+          className="text-white py-2 px-4 mb-7 mr-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 capitalize"
           onClick={() => generatePDF()}
         >
-          Get Missing Report
+          Download Missing Report
         </button>
       </div>
     </div>

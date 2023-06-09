@@ -14,9 +14,7 @@ const ChildAlloted = () => {
         <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
           <li class="py-4 sm:py-6">
             <div class="flex items-center space-x-4 capitalize">
-              <div class="flex-shrink-0">
-                {/* <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-1.jpg" alt="Neil image" /> */}
-              </div>
+              <div class="flex-shrink-0"></div>
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                   Neil Sims
