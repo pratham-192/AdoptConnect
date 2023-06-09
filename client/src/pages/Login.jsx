@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import mail_logo from "../assets/mail_logo.png";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { publicRoute } from "../Contexts/ProtectedRoute";
 
 function Login() {
@@ -9,21 +9,53 @@ function Login() {
   const [pass, setpass] = useState("");
   const [err, seterr] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const loginHandler = async () => {
-    const response = await axios.post(
-      `http://localhost:3000/users/createSession?user_id=${userid}&password=${pass}`,
-      {
-        category: "admin",
+    const category = location.pathname.slice(7);
+    console.log(category);
+    if (category === "admin") {
+      const response = await axios.post(
+        `http://localhost:3000/users/createSession?user_id=${userid}&password=${pass}`,
+        {
+          category: "admin",
+        }
+      );
+      console.log(response.data);
+      if (response.data.user_id) {
+        localStorage.setItem("userDetails", JSON.stringify(response.data));
+        navigate("/");
+      } else {
+        seterr("User id and password doesn't match");
       }
-    );
-    console.log(response.data);
-    if (response.data.user_id) {
-      localStorage.setItem("userDetails", JSON.stringify(response.data));
-      navigate("/");
     } else {
-      seterr("User id and password doesn't match");
-      return;
+      const response = await axios.post(
+        `http://localhost:3000/users/createSession?user_id=${userid}&password=${pass}`,
+        {
+          category: "worker",
+        }
+      );
+      console.log(response.data);
+      if (response.data.user_id) {
+        localStorage.setItem("userDetails", JSON.stringify(response.data));
+        navigate("/");
+      } else {
+        seterr("User id and password doesn't match");
+      }
+      const response2 = await axios.post(
+        `http://localhost:3000/users/createSession?user_id=${userid}&password=${pass}`,
+        {
+          category: "case-manager",
+        }
+      );
+      console.log(response2.data);
+      if (response2.data.user_id) {
+        localStorage.setItem("userDetails", JSON.stringify(response2.data));
+        navigate("/");
+      } else {
+        seterr("User id and password doesn't match");
+        return;
+      }
     }
   };
 
