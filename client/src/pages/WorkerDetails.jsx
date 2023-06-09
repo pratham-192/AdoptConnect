@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import UpdateWorkerPopUp from "../components/Modal/UpdateWorkerPopUp";
 import { useTranslation } from "react-i18next";
+import MessagePopUp from "../components/Modal/MessagePopUp";
 
 const WorkerDetails = () => {
   const location = useLocation();
@@ -14,6 +15,7 @@ const WorkerDetails = () => {
   const [workerDetails, setworkerDetails] = useState({});
   const [openupdateWorker, setopenupdateWorker] = useState(false);
   const [imageUrl, setimageUrl] = useState("");
+  const [openMessagePopUp, setopenMessagePopUp] = useState(false);
   const { t } = useTranslation();
 
   useEffect(async () => {
@@ -33,6 +35,7 @@ const WorkerDetails = () => {
       setimageUrl(URL.createObjectURL(blob));
     }
   }, [openupdateWorker]);
+
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl ">
       <div className="flex justify-start items-center mb-7">
@@ -47,6 +50,15 @@ const WorkerDetails = () => {
         <UpdateWorkerPopUp
           setopenupdateWorker={setopenupdateWorker}
           workerDetails={workerDetails}
+        />
+      ) : (
+        ""
+      )}
+      {openMessagePopUp ? (
+        <MessagePopUp
+          setopenMessagePopUp={setopenMessagePopUp}
+          to_user_id={workerDetails._id}
+          to_user_name={workerDetails.name}
         />
       ) : (
         ""
@@ -93,7 +105,10 @@ const WorkerDetails = () => {
             </div>
           </div>
           <div className="space-x-8 flex justify-around mt-32 md:mt-0 md:justify-center">
-            <button className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+            <button
+              className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+              onClick={() => setopenMessagePopUp(true)}
+            >
               {t("Message")}
             </button>
             <button
