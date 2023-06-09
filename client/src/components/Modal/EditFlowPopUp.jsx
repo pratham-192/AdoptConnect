@@ -8,7 +8,6 @@ export default function EditFlowPopUp({
   changeCategory,
   setopenEditPopUp,
 }) {
-  console.log(editTaskDetails);
   const [taskStatement, settaskStatement] = useState(editTaskDetails.statement);
   const [taskNote, settaskNote] = useState(editTaskDetails.note);
   const [iteration, setiteration] = useState(editTaskDetails.iterationMethod);
