@@ -162,8 +162,14 @@ class Child {
 
   static String getFormattedDate(String dateString) {
     dateString = dateString.replaceAll(" GMT+0530 (India Standard Time)", "");
-    DateFormat inputFormat = DateFormat("EEE MMM dd yyyy HH:mm:ss");
-    DateTime dateTime = inputFormat.parse(dateString);
+    DateFormat inputFormat;
+    DateTime dateTime;
+    try {
+      inputFormat = DateFormat("EEE MMM dd yyyy HH:mm:ss");
+      dateTime = inputFormat.parse(dateString);
+    } catch (e) {
+      dateTime = DateTime.parse(dateString);
+    }
     DateFormat outputFormat = DateFormat("yyyy-MM-dd");
     String formattedDate = outputFormat.format(dateTime);
     return formattedDate;

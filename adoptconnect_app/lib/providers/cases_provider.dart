@@ -18,4 +18,10 @@ class CasesProvider extends ChangeNotifier {
     _cases.add(child);
     notifyListeners();
   }
+
+  void editChild(String childId, Child child) {
+    int index = _cases.indexWhere((element) => element.childId == childId);
+    _cases[index] = child;
+    notifyListeners();
+  }
 }

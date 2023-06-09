@@ -122,13 +122,16 @@ class _ChildProfileScreenState extends State<ChildProfileScreen> {
       createdDate: DateTime.now().toIso8601String().substring(0, 10),
       contactNo: int.parse(_contactNumberController.text),
       workerAlloted: user.id,
-      avatar: {"data": avatarImage},
+      avatar: avatarImage == null ? _child.avatar :  {"data": avatarImage},
       childNote: '',
       individualAdoptionFlow: AdoptionFlow(currMajorTask: 0, majorTask: []),
       uploadedDocuments: documents,
     );
+    print("AVA IMAG");
+    print(avatarImage);
+    print(avatarImage.runtimeType);
 
-    _childService.addChild(child: child, context: context);
+    _childService.editChild(child: child, context: context);
   }
 
   late Future<List<File>> docs;
@@ -249,7 +252,7 @@ class _ChildProfileScreenState extends State<ChildProfileScreen> {
                     labelText: "Child Id",
                     controller: _childIdController,
                     validate: true,
-                    enabled: _isEditMode,
+                    enabled: false,
                   ),
                   const SizedBox(height: 15),
                   InputText(
