@@ -6,6 +6,7 @@ import ConfirmPopUp from "../components/Modal/ConfirmPopUp";
 import EditFlowPopUp from "../components/Modal/EditFlowPopUp";
 import { FiEdit } from "react-icons/fi";
 import { RxDot } from "react-icons/rx";
+import { managerRoute } from "../Contexts/ProtectedRoute";
 
 const FlowManagement = () => {
   const [category, setcategory] = useState({});
@@ -448,4 +449,4 @@ const FlowManagement = () => {
   );
 };
 
-export default FlowManagement;
+export default managerRoute(FlowManagement);

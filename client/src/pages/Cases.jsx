@@ -16,6 +16,7 @@ import { FaMale, FaFemale } from "react-icons/fa";
 import AddChildPopUp from "../components/Modal/AddChildPopUp";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { managerRoute } from "../Contexts/ProtectedRoute";
 
 const childGenderTemplate = (props) => (
   <div className="flex gap-2 justify-center items-center text-gray-700 capitalize">
@@ -139,4 +140,4 @@ const Cases = () => {
   );
 };
 
-export default Cases;
+export default managerRoute(Cases);

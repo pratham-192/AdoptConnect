@@ -202,12 +202,12 @@ const ChildDetails = () => {
               <p className="text-gray-400">{t("Classification")}</p>
             </div>
           </div>
-          <div className="flex justify-between mt-32 md:mt-0 md:justify-center">
+          <div className="flex justify-between text-md mt-32 md:mt-0 md:justify-center">
             <button
               className="text-white py-2 px-4 mr-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 capitalize"
               onClick={() => setshowMissingReport(true)}
             >
-              {t("Get Missing Report")}
+              {t("Generate Missing Report")}
             </button>
             <button
               className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 capitalize"

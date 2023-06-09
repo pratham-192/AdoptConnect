@@ -8,6 +8,7 @@ import UpdateWorkerPopUp from "../components/Modal/UpdateWorkerPopUp";
 import { useTranslation } from "react-i18next";
 import MessagePopUp from "../components/Modal/MessagePopUp";
 import PopUp from "../components/Modal/PopUp";
+import { managerRoute } from "../Contexts/ProtectedRoute";
 
 const WorkerDetails = () => {
   const location = useLocation();
@@ -183,4 +184,4 @@ const WorkerDetails = () => {
   );
 };
 
-export default WorkerDetails;
+export default managerRoute(WorkerDetails);
