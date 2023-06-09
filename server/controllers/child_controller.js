@@ -216,7 +216,6 @@ module.exports.statusUpdate = async function (req, res) {
         // })
         let status_object = req.body.statusObject;
         let curr_major = 0;
-        let curr_flag = 0;
         for (let u of status_object) {
             let curr_minor = 0;
             let flag = 0;
@@ -229,6 +228,9 @@ module.exports.statusUpdate = async function (req, res) {
                     flag = 1;
                 }
             }
+            if(curr_minor>0){
+                child.caseStatus="inprogress"
+            }
             u.currMinorTask = curr_minor;
             // u.save();
             if (!flag) {
@@ -238,6 +240,8 @@ module.exports.statusUpdate = async function (req, res) {
         // status_object.save();
         child.individualAdoptionFlow.currMajorTask = curr_major;
         child.individualAdoptionFlow.majorTask = status_object;
+        if(curr_major==status_object.length)child.caseStatus="completed";
+        else if(curr_major!=0)
         child.save();
         return res.status(200).send(
             "successfully updated"
@@ -248,6 +252,7 @@ module.exports.statusUpdate = async function (req, res) {
     }
 
 }
+
 module.exports.getChildbyId = async function (req, res) {
     try {
         let child = await Child.findOne({ child_id: req.body.child_id }).populate('worker_alloted').select('-uploaded_documents');
@@ -277,6 +282,8 @@ module.exports.upload = async function (req, res) {
         return res.status(200).send("error in uploading files");
     }
 }
+
+
 module.exports.download = async function (req, res) {
     try {
         let child = await Child.findOne({ child_id: req.body.child_id });
@@ -308,6 +315,8 @@ module.exports.download = async function (req, res) {
         return res.status(200).send("error in downloading files");
     }
 }
+
+
 module.exports.deleteFile = async function (req, res) {
     try {
         let child = await Child.findOne({ child_id: req.body.child_id });
@@ -346,6 +355,8 @@ module.exports.imageUpload = async function (req, res) {
 
     }
 }
+
+
 module.exports.getImage = async function (req, res) {
     try {
         let child = await Child.findOne({ child_id: req.body.child_id });
@@ -363,6 +374,7 @@ module.exports.getImage = async function (req, res) {
     }
 }
 
+
 module.exports.deleteImage = async function (req, res) {
     try {
         let child = await Child.findOne({ child_id: req.body.child_id });
@@ -374,6 +386,7 @@ module.exports.deleteImage = async function (req, res) {
         return res.status(200).send("error in deleting the image");
     }
 }
+
 
 module.exports.getDocuments = async function (req, res) {
     try {
