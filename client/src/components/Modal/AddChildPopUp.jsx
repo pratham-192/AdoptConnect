@@ -38,37 +38,37 @@ export default function AddChildPopUp({ setopenAddchild }) {
   const { t } = useTranslation();
 
   const addchildHandler = async () => {
-    if (
-      !child_id ||
-      !childName ||
-      !age ||
-      !gender ||
-      !dateOfBirth ||
-      !state ||
-      !district ||
-      !shelterHome ||
-      !linkedWithSAA ||
-      !childClassification ||
-      !inquiryDateOfAdmission ||
-      !reasonForAdmission ||
-      !lastVisit ||
-      !lastCall ||
-      !caseHistory ||
-      !caseStatus ||
-      !guardianListed ||
-      !familyVisitPhoneCall ||
-      !siblings ||
-      !lastDateOfCWCOrder ||
-      !Lastcwcorder ||
-      !lengthOfStayInShelter ||
-      !caringsRegistrationNumber ||
-      !dateLFA_CSR_MERUploadedINCARINGS ||
-      !contactNo ||
-      !avatar
-    ) {
-      seterr("Please fill all the details");
-      return;
-    }
+    // if (
+    //   !child_id ||
+    //   !childName ||
+    //   !age ||
+    //   !gender ||
+    //   !dateOfBirth ||
+    //   !state ||
+    //   !district ||
+    //   !shelterHome ||
+    //   !linkedWithSAA ||
+    //   !childClassification ||
+    //   !inquiryDateOfAdmission ||
+    //   !reasonForAdmission ||
+    //   !lastVisit ||
+    //   !lastCall ||
+    //   !caseHistory ||
+    //   !caseStatus ||
+    //   !guardianListed ||
+    //   !familyVisitPhoneCall ||
+    //   !siblings ||
+    //   !lastDateOfCWCOrder ||
+    //   !Lastcwcorder ||
+    //   !lengthOfStayInShelter ||
+    //   !caringsRegistrationNumber ||
+    //   !dateLFA_CSR_MERUploadedINCARINGS ||
+    //   !contactNo ||
+    //   !avatar
+    // ) {
+    //   seterr("Please fill all the details");
+    //   return;
+    // }
     await axios.post("http://localhost:3000/child/create_child", {
       child_id: child_id,
       childName: childName,
