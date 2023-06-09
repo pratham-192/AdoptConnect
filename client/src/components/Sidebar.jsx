@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import mail_logo from "../assets/mail_logo.png";
 import { MdOutlineCancel } from "react-icons/md";
@@ -12,6 +12,9 @@ const Sidebar = () => {
     useStateContext();
   const { t } = useTranslation();
   const user = JSON.parse(localStorage.getItem("userDetails"));
+  if (!user) {
+    setActiveMenu(false);
+  }
 
   const handleCloseSidebar = () => {
     if (activeMenu && screenSize <= 900) {
@@ -49,7 +52,11 @@ const Sidebar = () => {
           </div>
           <div className="mt-10 ">
             {links.map((item) => {
-              if (item.title === "Dashboard" && user.category !== "admin")
+              if (
+                item.title === "Dashboard" &&
+                user &&
+                user.category !== "admin"
+              )
                 return "";
               else
                 return (
@@ -59,6 +66,7 @@ const Sidebar = () => {
                     </p>
                     {item.links.map((link) => {
                       if (
+                        user &&
                         user.category &&
                         link.allowed.includes(user.category)
                       ) {

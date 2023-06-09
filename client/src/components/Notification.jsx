@@ -13,10 +13,6 @@ const Notification = () => {
   const navigate = useNavigate();
 
   const seeAllMessageHandler = async () => {
-    const response = await axios.post("http://localhost:3000/users/all_seen", {
-      to_user_id: JSON.parse(localStorage.getItem("userDetails"))._id,
-    });
-    console.log(response.data);
     navigate("/messages");
   };
 
