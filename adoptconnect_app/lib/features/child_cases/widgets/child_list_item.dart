@@ -16,7 +16,7 @@ class _ChildListItemState extends State<ChildListItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 85,
+      height: 90,
       decoration: const BoxDecoration(
         color: GlobalVariables.backgroundColor,
         borderRadius: BorderRadius.all(Radius.circular(8)),
