@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'package:adoptconnect_app/constants/global_variables.dart';
 import 'package:adoptconnect_app/features/child_cases/widgets/child_avatar.dart';
 import 'package:adoptconnect_app/widgets/dropdown.dart';
 import 'package:adoptconnect_app/widgets/text_input.dart';
 import 'package:flutter/material.dart';
+
+import '../../../constants/utils.dart';
 
 class AddChildScreen extends StatefulWidget {
   static const routeName = "/add-child";
@@ -13,6 +16,8 @@ class AddChildScreen extends StatefulWidget {
 }
 
 class _AddChildScreenState extends State<AddChildScreen> {
+  File? avatarImage;
+
   final _childIdController = TextEditingController();
   final _fullNameController = TextEditingController();
   String _genderValue = "Male";
@@ -81,6 +86,15 @@ class _AddChildScreenState extends State<AddChildScreen> {
     super.dispose();
   }
 
+  void selectImage() async {
+    var res = await pickImage();
+    setState(() {
+      if (res != null) {
+        avatarImage = res;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,13 +113,15 @@ class _AddChildScreenState extends State<AddChildScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const ChildAvatar(
-                        avatar: {},
+                      ChildAvatar(
+                        avatar: avatarImage == null
+                            ? {}
+                            : {"data": avatarImage?.readAsBytesSync()},
                         isProfile: true,
                       ),
                       const SizedBox(width: 15),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: selectImage,
                         child: const Text("Upload Image"),
                       ),
                     ],
@@ -207,7 +223,9 @@ class _AddChildScreenState extends State<AddChildScreen> {
                     controller: _lastCallController,
                     isDate: true,
                   ),
-                  const SizedBox(height: 15,),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   InputText(
                     labelText: "Guardian Listed",
                     controller: _guardianListedController,
