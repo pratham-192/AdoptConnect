@@ -222,7 +222,7 @@ module.exports.statusUpdate = async function (req, res) {
             let flag = 0;
             if (u.minorTask.length == 0) break;
             for (let minor of u.minorTask) {
-                if (minor.minorTaskStatus == 1) {
+                if (minor.minorTaskStatus == 2) {
                     curr_minor = curr_minor + 1;
                 }
                 if (minor.minorTaskStatus == 0 || minor.minorTaskStatus == 1) {
@@ -230,12 +230,12 @@ module.exports.statusUpdate = async function (req, res) {
                 }
             }
             u.currMinorTask = curr_minor;
-            u.save();
+            // u.save();
             if (!flag) {
                 curr_major = curr_major + 1;
             } else break;
         }
-        status_object.save();
+        // status_object.save();
         child.individualAdoptionFlow.currMajorTask = curr_major;
         child.individualAdoptionFlow.majorTask = status_object;
         child.save();
