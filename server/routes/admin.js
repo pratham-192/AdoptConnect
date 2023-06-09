@@ -10,4 +10,10 @@ router.get('/all_child',adminController.getAllChild);
 router.use('/adoption_flow',require('./adoptionflow'));
 router.post('/addchildtoworker',adminController.addChildtoWorker);
 router.post('/deletechildfromworker',adminController.deleteChildfromWorker);
+
+
+router.post('/message/create',adminController.createMessage);
+router.post('/message/update',adminController.updateMessage);
+router.post('/message/delete',adminController.deleteMessage);
+
 module.exports=router;

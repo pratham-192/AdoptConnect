@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Child = require('../models/child');
+const Message=require('../models/message');
 module.exports.profile = function (req, res) {
     // return res.render('user_profile', {
     //     title: 'User Profile'
@@ -191,5 +192,68 @@ module.exports.deleteImage=async function(req,res){
         return res.status(200).send("profile image deleted successfully");
     }catch(err){
         return res.status(200).send("error in deleting the image");
+    }
+}
+
+module.exports.getUnSeenMessages=async function(req,res){
+    try{
+        let messages=await Message.find({to_user:req.body.to_user_id , seen:0});
+        return res.status(200).json({
+            response:messages
+        })
+    }catch(err){
+        return res.status(200).send("error in gettng seen messages");
+    }
+}
+module.exports.getMessages=async function(req,res){
+    try{
+        let messages=await Message.find({to_user:req.body.to_user_id}).populate({
+            path:'from_user to_user',
+            select:'name category'
+        });
+        return res.status(200).json({
+            response:messages
+        })
+    }catch(err){
+        return res.status(200).send("error in getting messages");
+    }
+}
+module.exports.getMessagebyId=async function(req,res){
+    try{
+        let message=await Message.findById(req.body.messageId).populate({
+            path:'from_user to_user',
+            select:'name category'
+        });
+        message.seen=1;
+        message.save();
+        return res.status(200).json({
+            response:message
+        })
+    }catch(err){
+        return res.status(200).send("error in getting messages by id");
+    }
+}
+module.exports.markAllSeen=async function(req,res){
+    try{
+        let messages=await Message.find({to_user:req.body.to_user_id});
+        console.log(messages);
+        for(let u of messages){
+            u.seen=1;
+            u.save();
+        }
+        return res.status(200).json({
+            response:messages
+        })
+    }catch(err){
+        console.log(err);
+        return res.status(200).send("error in marking all messages as seen");
+    }
+}
+module.exports.deleteAllMsg=async function(req,res){
+    try{
+        let messages=await Message.deleteMany({to_user:req.body.to_user_id});
+        return res.status(200).send("all messages are deleted");
+    }catch(err){
+        return res.status(200).send("error in deleting all messages");
     }
 }

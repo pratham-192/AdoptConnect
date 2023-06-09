@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Child = require('../models/child');
+const Message=require('../models/message');
 const mongoose = require('mongoose');
 
 module.exports.getAllAdmin = async function (req, res) {
@@ -102,5 +103,48 @@ module.exports.deleteChildfromWorker = async function (req, res) {
         console.log(err);
 
         return res.status(200).send("error in deleting child from worker");
+    }
+}
+
+
+module.exports.createMessage=async function(req,res){
+    try{
+        let message=await Message.create({
+            from_user:req.body.from_user_id,
+            to_user:req.body.to_user_id,
+            content:req.body.content
+        });
+        return res.status(200).send({
+            response:message
+        })
+    }catch(err){
+        return res.status(200).send("error in creating message");
+    }
+}
+
+module.exports.updateMessage=async function(req,res){
+    try{
+        let messageId=req.body.messageId;
+        let message=await Message.findById(messageId);
+        if(message.seen==1){
+            return res.status(200).send("message already seen");
+        }else{
+            message.content=req.body.content;
+            message.save();
+        }
+        return res.status(200).json({
+            response:message
+        })
+    }catch(err){
+        return res.status(200).send("error in updating message");
+    }
+}
+module.exports.deleteMessage=async function(req,res){
+    try{
+        let messageId=req.body.messageId;
+        let message=await Message.findByIdAndDelete(messageId);
+        return res.status(200).send("message deleted");
+    }catch(err){
+        return res.status(200).send("error in deleting the messages");
     }
 }
