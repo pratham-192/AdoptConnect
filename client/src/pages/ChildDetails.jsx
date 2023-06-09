@@ -10,6 +10,7 @@ import UpdateChildPopUp from "../components/Modal/UpdateChildPopUp";
 import { useTranslation } from "react-i18next";
 import { MdDelete } from "react-icons/md";
 import ConfirmPopUp from "../components/Modal/ConfirmPopUp";
+import MissingReport from "../components/Modal/MissingReport";
 
 const ChildDetails = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ const ChildDetails = () => {
   const [allDocuments, setallDocuments] = useState({});
   const [openConfirmPopUp, setopenConfirmPopUp] = useState(0);
   const [dltDocId, setdltDocId] = useState();
+  const [showMissingReport, setshowMissingReport] = useState(false);
   const { t } = useTranslation();
 
   const updatementorHandler = async () => {
@@ -122,6 +124,15 @@ const ChildDetails = () => {
       ) : (
         ""
       )}
+      {showMissingReport ? (
+        <MissingReport
+          childDetails={childDetails}
+          setshowMissingReport={setshowMissingReport}
+          imageUrl={imageUrl}
+        />
+      ) : (
+        ""
+      )}
       <div className="flex justify-start items-center mb-7">
         <button
           className="hover:text-slate-500"
@@ -173,31 +184,31 @@ const ChildDetails = () => {
           </div>
           <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
             <div>
-              <p className="font-bold text-gray-700 text-xl">
+              <p className="font-bold text-gray-700 text-md">
                 {childDetails && childDetails.child_id}
               </p>
               <p className="text-gray-400">{t("Child ID")}</p>
             </div>
             <div>
-              <p className="font-bold text-gray-700 text-xl capitalize">
+              <p className="font-bold text-gray-700 text-md capitalize">
                 {childDetails && childDetails.caseStatus}
               </p>
               <p className="text-gray-400">{t("Status")}</p>
             </div>
             <div>
-              <p className="font-bold text-gray-700 text-xl capitalize">
-                {childDetails && childDetails.gender}
-              </p>
-              <p className="text-gray-400">{t("Gender")}</p>
-            </div>
-          </div>
-          <div className="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
-            <div>
-              <p className="font-bold text-gray-700 text-xl capitalize">
+              <p className="font-bold text-gray-700 text-md capitalize">
                 {childDetails && childDetails.childClassification}
               </p>
               <p className="text-gray-400">{t("Classification")}</p>
             </div>
+          </div>
+          <div className="flex justify-between mt-32 md:mt-0 md:justify-center">
+            <button
+              className="text-white py-2 px-4 mr-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 capitalize"
+              onClick={() => setshowMissingReport(true)}
+            >
+              {t("Get Missing Report")}
+            </button>
             <button
               className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 capitalize"
               onClick={() => setopenEditDetails(true)}
