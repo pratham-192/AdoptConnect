@@ -2,7 +2,7 @@ import 'package:adoptconnect_app/models/adoption_flow.dart';
 import 'package:adoptconnect_app/models/child.dart';
 import 'package:flutter/material.dart';
 
-class ChildProvier extends ChangeNotifier {
+class ChildProvider extends ChangeNotifier {
   Child _child = Child(
       id: '',
       childId: '',
@@ -43,8 +43,13 @@ class ChildProvier extends ChangeNotifier {
 
   Child get child => _child;
 
-  void setChild(String child) {
+  void setChildFromJson(String child) {
     _child = Child.fromJson(child);
+    notifyListeners();
+  }
+
+  void setChild(Child child) {
+    _child = child;
     notifyListeners();
   }
 }

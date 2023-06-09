@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:adoptconnect_app/models/adoption_flow.dart';
+import 'package:intl/intl.dart';
 
 class Child {
   final String id;
@@ -141,7 +142,7 @@ class Child {
         familyVisitsPhoneCall: map['familyVisitsPhoneCall'] ?? '',
         siblings: map['siblings'] ?? '',
         lastDateOfCWCOrder: map['lastDateOfCWCOrder'] != null
-            ? DateTime.parse(map['lastDateOfCWCOrder'])
+            ? DateTime.parse(getFormattedDate(map['lastDateOfCWCOrder']))
             : DateTime.now(),
         lastCWCOrder: map['Lastcwcorder'] ?? '',
         lengthOfStayInShelter: map['lengthOfStayInShelter'] ?? '',
@@ -157,6 +158,15 @@ class Child {
         individualAdoptionFlow:
             AdoptionFlow.fromMap(map['individualAdoptionFlow']),
         uploadedDocuments: List<dynamic>.from(map['uploaded_documents'] ?? []));
+  }
+
+  static String getFormattedDate(String dateString) {
+    dateString = dateString.replaceAll(" GMT+0530 (India Standard Time)", "");
+    DateFormat inputFormat = DateFormat("EEE MMM dd yyyy HH:mm:ss");
+    DateTime dateTime = inputFormat.parse(dateString);
+    DateFormat outputFormat = DateFormat("yyyy-MM-dd");
+    String formattedDate = outputFormat.format(dateTime);
+    return formattedDate;
   }
 
   String toJson() => json.encode(toMap());

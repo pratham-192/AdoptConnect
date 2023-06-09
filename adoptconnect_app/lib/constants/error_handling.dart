@@ -4,14 +4,14 @@ import 'package:adoptconnect_app/constants/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-void httpErrorHandle(
+Future<void> httpErrorHandle(
     {required http.Response response,
     required BuildContext context,
-    required VoidCallback onSuccess,
-    String? errorText}) {
+    required Function onSuccess,
+    String? errorText}) async {
   switch (response.statusCode) {
     case 200:
-      onSuccess();
+      await onSuccess();
       break;
     case 400:
       showSnackBar(context, jsonDecode(response.body)["msg"]);
