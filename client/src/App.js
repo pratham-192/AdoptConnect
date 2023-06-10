@@ -13,6 +13,7 @@ import WorkerDetails from './pages/WorkerDetails';
 import FlowManagement from './pages/FlowManagement';
 import { Calendar } from './pages';
 import Messages from './pages/Messages';
+import ForgotPassword from './pages/ForgotPassword';
 
 const App = () => {
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
@@ -72,6 +73,7 @@ const App = () => {
                 <Route path="/" element={(<Messages />)} />
                 <Route path="/calendar" element={(<Calendar />)} />
                 <Route path="/login" element={(<Login />)} />
+                <Route path="/forgot-password" element={(<ForgotPassword />)} />
                 <Route path="/analytics" element={(<Analytics />)} />
                 <Route path="/workers" element={<Employees />} />
                 <Route path="/worker-details" element={<WorkerDetails />} />

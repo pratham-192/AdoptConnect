@@ -7,6 +7,7 @@ import EditFlowPopUp from "../components/Modal/EditFlowPopUp";
 import { FiEdit } from "react-icons/fi";
 import { RxDot } from "react-icons/rx";
 import { managerRoute } from "../Contexts/ProtectedRoute";
+import { useTranslation } from "react-i18next";
 
 const FlowManagement = () => {
   const [category, setcategory] = useState({});
@@ -27,6 +28,7 @@ const FlowManagement = () => {
   const [editTaskDetails, seteditTaskDetails] = useState({});
   const [majorErr, setmajorErr] = useState("");
   const [minorErr, setminorErr] = useState("");
+  const { t } = useTranslation();
 
   const addMajorTaskHandler = async () => {
     if (!majorTaskStatement || !majorTaskIteration) {
@@ -138,7 +140,7 @@ const FlowManagement = () => {
                   setselectedCategory(category);
                 }}
               >
-                {category.childClassification}
+                {t(`${category.childClassification}`)}
               </span>
               <button
                 className="flex justify-center items-center text-red-500 p-2 ml-2 hover:bg-slate-50 rounded hover:text-red-400"
@@ -161,7 +163,7 @@ const FlowManagement = () => {
       </ul>
       {openAddCategory ? (
         <div className="mb-3">
-          <label htmlFor="category">Add Category</label>
+          <label htmlFor="category">{t("Add Category")}</label>
           <div className="grid grid-cols-2">
             <input
               type="text"
@@ -176,7 +178,7 @@ const FlowManagement = () => {
               className="bg-blue-400 hover:bg-blue-500 ml-2 mt-2 h-10 text-white font-bold w-3/4 py-2 px-4 rounded"
               onClick={() => addCategoryHandler()}
             >
-              Add
+              {t("Add")}
             </button>
           </div>
         </div>
@@ -196,7 +198,7 @@ const FlowManagement = () => {
                         <span className="pr-2 flex justify-center items-center">
                           {majorIndex + 1}.
                         </span>
-                        {major.majorTaskStatement}
+                        {t(`${major.majorTaskStatement}`)}
                         <div className="text-sm flex items-center pl-2">
                           {major.majorTaskNote
                             ? `(${major.majorTaskNote})`
@@ -234,7 +236,7 @@ const FlowManagement = () => {
                                 <span className="pr-2 flex justify-center items-center">
                                   <RxDot size={20} />
                                 </span>
-                                {minor.minorTaskStatement}
+                                {t(`${minor.minorTaskStatement}`)}
                                 <span className="text-sm">
                                   {minor.minorTaskNote
                                     ? `(${minor.minorTaskNote})`
@@ -271,11 +273,13 @@ const FlowManagement = () => {
               })}
           </ol>
           <div className="mt-5">
-            <div className="text-lg font-bold mb-3">Add new Major Task</div>
+            <div className="text-lg font-bold mb-3">
+              {t("Add new Major Task")}
+            </div>
             {flowDetails && flowDetails.length ? (
               <div className="md:col-span-5">
                 <div className="text-sm py-1">
-                  Select before which major task to add
+                  {t("Select before which major task to add")}
                 </div>
                 <select
                   className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -286,18 +290,20 @@ const FlowManagement = () => {
                   {flowDetails.map((majorTask, index) => {
                     return (
                       <option key={index} value={index}>
-                        {majorTask.majorTaskStatement}
+                        {t(`${majorTask.majorTaskStatement}`)}
                       </option>
                     );
                   })}
                 </select>
               </div>
             ) : (
-              <div className="text-md py-2">Add your first major task</div>
+              <div className="text-md py-2">
+                {t("Add your first major task")}
+              </div>
             )}
             <div className="md:col-span-5 mt-3">
               <label htmlFor="full_name" className="text-sm">
-                Major Task Statement
+                {t("Major Task Statement")}
               </label>
               <input
                 type="text"
@@ -308,20 +314,20 @@ const FlowManagement = () => {
             </div>
             <div className="md:col-span-5 mt-3">
               <label htmlFor="full_name" className="text-sm">
-                Major Task Iteration Type
+                {t("Major Task Iteration Type")}
               </label>
               <select
                 className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                 onChange={(e) => setmajorTaskIteration(e.target.value)}
               >
-                <option value="">Please select one</option>
-                <option value="series">Series</option>
-                <option value="parallel">Parallel</option>
+                <option value="">{t("Please select one")}</option>
+                <option value="series">{t("Series")}</option>
+                <option value="parallel">{t("Parallel")}</option>
               </select>
             </div>
             <div className="md:col-span-5 mt-3">
               <label htmlFor="full_name" className="text-sm">
-                Major Task Note
+                {t("Major Task Note")}
               </label>
               <input
                 type="text"
@@ -331,7 +337,7 @@ const FlowManagement = () => {
               />
             </div>
             {majorErr ? (
-              <div className="text-sm text-red-500">{majorErr}</div>
+              <div className="text-sm text-red-500">majorErr</div>
             ) : (
               ""
             )}
@@ -341,18 +347,18 @@ const FlowManagement = () => {
                   className="bg-blue-500 hover:bg-blue-700 mt-3 w-56 text-white font-bold py-2 px-4 rounded"
                   onClick={() => addMajorTaskHandler()}
                 >
-                  Add Major Task
+                  {t("Add Major Task")}
                 </button>
               </div>
             </div>
           </div>
 
           <div className="mt-5">
-            <div className="text-lg font-bold mb-3">Add new Minor Task</div>
+            <div className="text-lg font-bold mb-3">{"Add new Minor Task"}</div>
             {flowDetails && flowDetails.length ? (
               <div className="md:col-span-5">
                 <div className="text-sm py-1">
-                  Select major task to add to it
+                  {t("Select major task to add to it")}
                 </div>
                 <select
                   className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -361,7 +367,7 @@ const FlowManagement = () => {
                   {flowDetails.map((majorTask, index) => {
                     return (
                       <option key={index} value={index}>
-                        {majorTask.majorTaskStatement}
+                        {t(`${majorTask.majorTaskStatement}`)}
                       </option>
                     );
                   })}
@@ -370,7 +376,7 @@ const FlowManagement = () => {
                 flowDetails[majorTaskPosition].minorTask.length ? (
                   <div className="md:col-span-5">
                     <div className="text-sm py-1">
-                      Select before which minor task to add
+                      {t("Select before which minor task to add")}
                     </div>
                     <select
                       className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -380,7 +386,7 @@ const FlowManagement = () => {
                         (minorTask, index) => {
                           return (
                             <option key={index} value={index}>
-                              {minorTask.minorTaskStatement}
+                              {t(`${minorTask.minorTaskStatement}`)}
                             </option>
                           );
                         }
@@ -389,16 +395,16 @@ const FlowManagement = () => {
                   </div>
                 ) : (
                   <div className="text-md mt-2 py-2">
-                    Add your first minor task
+                    {t("Add your first minor task")}
                   </div>
                 )}
               </div>
             ) : (
-              <div className="text-md py-2">Add a major task first</div>
+              <div className="text-md py-2">{t("Add a major task first")}</div>
             )}
             <div className="md:col-span-5 mt-3">
               <label htmlFor="full_name" className="text-sm">
-                Minor Task Statement
+                {t("Minor Task Statement")}
               </label>
               <input
                 type="text"
@@ -410,7 +416,7 @@ const FlowManagement = () => {
             </div>
             <div className="md:col-span-5 mt-3">
               <label htmlFor="full_name" className="text-sm">
-                Minor Task Note
+                {t("Minor Task Note")}
               </label>
               <input
                 type="text"
@@ -436,7 +442,7 @@ const FlowManagement = () => {
                   onClick={() => addMinorTaskHandler()}
                   disabled={!flowDetails || !flowDetails.length}
                 >
-                  Add Minor Task
+                  {t("Add Minor Task")}
                 </button>
               </div>
             </div>

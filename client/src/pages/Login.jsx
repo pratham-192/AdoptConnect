@@ -30,7 +30,7 @@ function Login() {
     );
     if (response2.data.user_id) {
       localStorage.setItem("userDetails", JSON.stringify(response2.data));
-      navigate("/workers");
+      navigate("/child-alloted");
     }
     const response3 = await axios.post(
       `http://localhost:3000/users/createSession?user_id=${userid}&password=${pass}`,
@@ -40,7 +40,7 @@ function Login() {
     );
     if (response3.data.user_id) {
       localStorage.setItem("userDetails", JSON.stringify(response3.data));
-      navigate("/child-alloted");
+      navigate("/workers");
     } else {
       seterr("User id and password doesn't match");
       return;
@@ -100,27 +100,21 @@ function Login() {
                   />
                 </div>
                 <div className="text-red-500 text-sm">{err}</div>
-                {/* <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between">
                   <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="remember"
-                        aria-describedby="remember"
-                        type="checkbox"
-                        className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                        required=""
-                      />
-                    </div>
-                    <div className="ml-3 text-sm">
+                    <div
+                      className="ml-3 text-sm"
+                      onClick={() => navigate("/forgot-password")}
+                    >
                       <label
                         htmlFor="remember"
-                        className="text-gray-500 dark:text-gray-300"
+                        className="text-gray-700 dark:text-gray-300 cursor-pointer hover:underline"
                       >
-                        Remember me
+                        Forgot Password?
                       </label>
                     </div>
                   </div>
-                </div> */}
+                </div>
                 <button
                   type="submit"
                   className="w-full text-slate-100 bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"

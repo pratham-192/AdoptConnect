@@ -18,7 +18,6 @@ const Messages = () => {
           from_user_id: user._id,
         }
       );
-      console.log(response.data);
       setallMessages(response.data.response);
     } else {
       const response2 = await axios.post(
@@ -27,14 +26,12 @@ const Messages = () => {
           to_user_id: user._id,
         }
       );
-      console.log(response2.data);
       const response = await axios.post(
         "http://localhost:3000/users/get_messages",
         {
           to_user_id: user._id,
         }
       );
-      console.log(response.data);
       setallMessages(response.data.response);
     }
   }, [user]);

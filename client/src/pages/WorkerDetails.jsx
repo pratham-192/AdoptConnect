@@ -25,7 +25,6 @@ const WorkerDetails = () => {
     const response = await axios.post("http://localhost:3000/users/getworker", {
       user_id: workerId,
     });
-    console.log(response.data.response);
     setworkerDetails(response.data.response);
     const response2 = await axios.post(
       "http://localhost:3000/users/get_image",
