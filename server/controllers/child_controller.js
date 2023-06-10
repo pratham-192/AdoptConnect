@@ -493,7 +493,8 @@ module.exports.bulkUpload = async function (req, res) {
 
             const child = await Child.create(childData)
             if (req.body.contact_no) child.contactNo = req.body.contact_no;
-            let flow = await AdoptionFlow.findOne({ childClassification: childData.childClassification });
+            let childcategory=childData.childClassification.toLowerCase();
+            let flow = await AdoptionFlow.findOne({ childClassification: childcategory });
             // console.log(flow);
             child.individualAdoptionFlow.majorTask = flow.majorTask;
             // console.log(await AdoptionFlow.findOne({ childClassification: childclass }))

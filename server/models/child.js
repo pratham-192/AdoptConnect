@@ -29,7 +29,7 @@ const childSchema = mongoose.Schema({
         type: String
     },
     age: {
-        type: Number
+        type: String
     },
     childClassification: {
         type: String,
