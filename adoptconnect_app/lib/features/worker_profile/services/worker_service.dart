@@ -5,26 +5,51 @@ import 'package:adoptconnect_app/constants/global_variables.dart';
 import 'package:adoptconnect_app/constants/utils.dart';
 import 'package:adoptconnect_app/models/user.dart';
 import 'package:adoptconnect_app/providers/user_provider.dart';
+import 'package:api_cache_manager/models/cache_db_model.dart';
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../constants/connectivity.dart';
 
 class WorkerService {
   void editWorker({
     required String userId,
     required String name,
     required String email,
-    required String password,
     required Map<String, dynamic> avatar,
+    required User user,
     required context,
   }) async {
+    if (!(await isConnectedToInternet())) {
+      Map<String, dynamic> avatarImage = avatar;
+      bool avatarChanged = false;
+      if (avatar["data"] != null && avatar["data"] is File) {
+        avatarImage = {"data": avatar["data"].path};
+        avatarChanged = true;
+      }
+      APICacheDBModel cacheDBModel = APICacheDBModel(
+        key: "worker",
+        syncData: jsonEncode({
+          "userId": userId,
+          "name": name,
+          "email": email,
+          "avatar": avatarImage,
+          "user": user.toJson(),
+          "avatarChanged": avatarChanged,
+        }),
+      );
+      await APICacheManager().addCacheData(cacheDBModel);
+      startInternetSubscription();
+    }
+
     try {
-      User user = Provider.of<UserProvider>(context, listen: false).user;
       Map<String, dynamic> body = {
         "user_id": userId,
         "name": name,
         "email": email,
-        "password": password,
+        "password": user.password,
         "category": "worker",
         "zone": user.zone,
         "address": user.address,

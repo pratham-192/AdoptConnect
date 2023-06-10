@@ -69,10 +69,6 @@ class _ChildProfileScreenState extends State<ChildProfileScreen> {
     setState(() => _childClassificationValue = value);
   }
 
-  void _updateCaseStatus(String value) {
-    setState(() => _caseStatusValue = value);
-  }
-
   void selectImage() async {
     var res = await pickImage();
     setState(() {
@@ -305,7 +301,7 @@ class _ChildProfileScreenState extends State<ChildProfileScreen> {
                   const SizedBox(height: 15),
                   Dropdown(
                     labelText: "Linked with SAA",
-                    items: const ["Yes", "No"],
+                    items: const ["yes", "No"],
                     dropdownValue: _linkedWithSAAValue,
                     updateDropdownValue: _updateLinkedWithSAA,
                     enabled: _isEditMode,

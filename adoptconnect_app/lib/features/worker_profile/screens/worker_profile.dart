@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:adoptconnect_app/constants/global_variables.dart';
 import 'package:adoptconnect_app/constants/utils.dart';
-import 'package:adoptconnect_app/features/worker_profile/services/worker_services.dart';
+import 'package:adoptconnect_app/features/worker_profile/services/worker_service.dart';
 import 'package:adoptconnect_app/models/user.dart';
 import 'package:adoptconnect_app/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,6 @@ class _WorkerProfileState extends State<WorkerProfile> {
   final _userIdController = TextEditingController();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
 
   void selectImage() async {
     var res = await pickImage();
@@ -46,8 +45,8 @@ class _WorkerProfileState extends State<WorkerProfile> {
       userId: _userIdController.text,
       name: _nameController.text,
       email: _emailController.text,
-      password: _passwordController.text,
       avatar: avatarImage == null ? _user.avatar : {"data": avatarImage},
+      user: _user,
       context: context,
     );
     setState(() => _isEditMode = !_isEditMode);
@@ -60,7 +59,6 @@ class _WorkerProfileState extends State<WorkerProfile> {
     _userIdController.text = _user.userId;
     _nameController.text = _user.name;
     _emailController.text = _user.email;
-    _passwordController.text = _user.password;
   }
 
   @override
@@ -68,7 +66,6 @@ class _WorkerProfileState extends State<WorkerProfile> {
     _userIdController.dispose();
     _nameController.dispose();
     _emailController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
@@ -139,14 +136,6 @@ class _WorkerProfileState extends State<WorkerProfile> {
                   enabled: _isEditMode,
                 ),
                 const SizedBox(height: 15),
-                InputText(
-                  labelText: "Password",
-                  controller: _passwordController,
-                  isPassword: true,
-                  validate: true,
-                  enabled: _isEditMode,
-                ),
-                const SizedBox(height: 30),
                 Container(
                   child: !_isEditMode
                       ? null

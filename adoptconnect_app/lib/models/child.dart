@@ -34,10 +34,10 @@ class Child {
   final String createdDate;
   final int contactNo;
   final String workerAlloted;
-  final Map<String, dynamic> avatar;
+  Map<String, dynamic> avatar;
   final String childNote;
   final AdoptionFlow individualAdoptionFlow;
-  final List<dynamic> uploadedDocuments;
+  List<dynamic> uploadedDocuments;
 
   Child({
     required this.id,
@@ -113,7 +113,7 @@ class Child {
       'avatar': avatar,
       'childNote': childNote,
       'individualAdoptionFlow': individualAdoptionFlow.toMap(),
-      'uploadedDocuments': uploadedDocuments,
+      'uploaded_documents': uploadedDocuments,
     };
   }
 
@@ -160,7 +160,10 @@ class Child {
         uploadedDocuments: List<dynamic>.from(map['uploaded_documents'] ?? []));
   }
 
-  static DateTime parseDate(String dateString) {
+  static DateTime parseDate(dynamic dateString) {
+    if (dateString is int) {
+      return DateTime.fromMillisecondsSinceEpoch(dateString);
+    }
     try {
         return DateTime.parse(getFormattedDate(dateString));
     } catch(e){

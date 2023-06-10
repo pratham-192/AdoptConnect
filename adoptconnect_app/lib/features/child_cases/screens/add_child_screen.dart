@@ -38,7 +38,7 @@ class _AddChildScreenState extends State<AddChildScreen> {
   String _linkedWithSAAValue = "Yes";
   String _childClassificationValue = "Abandoned";
   final _inquiryDateOfAdmissionController = TextEditingController();
-  String _caseStatusValue = "inactive";
+  final String _caseStatusValue = "inactive";
   final _reasonForAdmissionController = TextEditingController();
   final _caseHistoryController = TextEditingController();
   final _lastVisitController = TextEditingController();
@@ -63,10 +63,6 @@ class _AddChildScreenState extends State<AddChildScreen> {
 
   void _updateChildClassification(String value) {
     setState(() => _childClassificationValue = value);
-  }
-
-  void _updateCaseStatus(String value) {
-    setState(() => _caseStatusValue = value);
   }
 
   @override

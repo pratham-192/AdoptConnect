@@ -55,7 +55,7 @@ class User {
       email: map['email'] ?? '',
       password: map['password'] ?? '',
       category: map['category'] ?? '',
-      allotedChildren: List<Child>.from(map['alloted_children']),
+      allotedChildren: List<Child>.from(map['alloted_children'] ?? []),
       zone: map['zone'] ?? '',
       address: map['address'] ?? '',
       aadharCardNo: map['aadharCardNo'] ?? '',

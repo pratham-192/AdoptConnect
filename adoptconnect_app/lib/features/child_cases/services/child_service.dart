@@ -6,33 +6,58 @@ import 'package:adoptconnect_app/constants/global_variables.dart';
 import 'package:adoptconnect_app/constants/utils.dart';
 import 'package:adoptconnect_app/providers/cases_provider.dart';
 import 'package:adoptconnect_app/providers/user_provider.dart';
+import 'package:api_cache_manager/api_cache_manager.dart';
+import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-
+import '../../../constants/connectivity.dart';
 import '../../../models/child.dart';
 
 class ChildService {
-  void getAllCasesofWorker({required context}) async {
-    try {
-      String userId =
-          Provider.of<UserProvider>(context, listen: false).user.userId;
-      http.Response res = await http
-          .post(Uri.parse('$uri/users/getworker'), body: {"user_id": userId});
+  Future<bool> getAllCasesofWorker({required BuildContext context}) async {
+    if (!(await isConnectedToInternet())) {
+      if (await APICacheManager().isAPICacheKeyExist("cases")) {
+        var cacheData = await APICacheManager().getCacheData("cases");
+        String cases = cacheData.syncData;
+        if (context.mounted) {
+          Provider.of<CasesProvider>(context, listen: false).setCases(cases);
+        }
+      }
 
-      httpErrorHandle(
-          response: res,
-          context: context,
-          onSuccess: () {
-            var allotedChildren =
-                jsonDecode(res.body)["response"]["alloted_children"];
-            Provider.of<CasesProvider>(context, listen: false)
-                .setCases(jsonEncode(allotedChildren));
-          },
-          errorText: "Error in getting worker's child cases");
-    } catch (e) {
-      showSnackBar(context, e.toString());
+      return true;
     }
+
+    try {
+      if (context.mounted) {
+        String userId =
+            Provider.of<UserProvider>(context, listen: false).user.userId;
+        http.Response res = await http
+            .post(Uri.parse('$uri/users/getworker'), body: {"user_id": userId});
+        // ignore: use_build_context_synchronously
+        await httpErrorHandle(
+            response: res,
+            context: context,
+            onSuccess: () async {
+              var allotedChildren =
+                  jsonDecode(res.body)["response"]["alloted_children"];
+
+              Provider.of<CasesProvider>(context, listen: false)
+                  .setCases(jsonEncode(allotedChildren));
+
+              APICacheDBModel cacheDBModel = APICacheDBModel(
+                  key: "cases", syncData: jsonEncode(allotedChildren));
+              await APICacheManager().addCacheData(cacheDBModel);
+            },
+            errorText: "Error in getting worker's child cases");
+      }
+    } catch (e) {
+      if (context.mounted) {
+        showSnackBar(context, e.toString());
+      }
+    }
+
+    return true;
   }
 
   Future<Child?> getChild({required String childId, required context}) async {
@@ -56,6 +81,15 @@ class ChildService {
   }
 
   void addChild({required Child child, required context}) async {
+    if (!(await isConnectedToInternet())) {
+      child.avatar = {"data": child.avatar["data"].path};
+      child.uploadedDocuments = child.uploadedDocuments.map((e) => e.path).toList();
+      addChildDataToCache(child.toJson());
+      startInternetSubscription();
+      Navigator.pop(context);
+      return;
+    }
+
     try {
       Map<String, dynamic> body = {
         "child_id": child.childId,
@@ -118,7 +152,7 @@ class ChildService {
             await Future.wait(uploadTasks);
             Provider.of<CasesProvider>(context, listen: false)
                 .addChild(newChild);
-            Navigator.pop(context);
+            if (Navigator.canPop(context)) Navigator.pop(context);
           },
           errorText: "Error in Adding Child");
     } catch (e) {
@@ -126,8 +160,30 @@ class ChildService {
     }
   }
 
-  void editChild(
-      {required Child child, required context}) async {
+  void editChild({required Child child, required context}) async {
+    if (!(await isConnectedToInternet())) {
+      Map<String, dynamic> avatarImage = child.avatar;
+      bool avatarChanged = false;
+      if (child.avatar["data"] != null && child.avatar["data"] is File) {
+        avatarImage = {"data": child.avatar["data"].path};
+        child.avatar = {"data": child.avatar["data"].path};
+        avatarChanged = true;
+      }
+
+      child.uploadedDocuments =
+          child.uploadedDocuments.map((e) => e.path).toList();
+      Map<String, dynamic> childObj = {
+        "avatar": avatarImage,
+        "avatarChanged": avatarChanged,
+        "child": child.toJson()
+      };
+
+      editChildDataToCache(jsonEncode(childObj), child.childId);
+      startInternetSubscription();
+      Navigator.pop(context);
+      return;
+    }
+
     try {
       Map<String, dynamic> body = {
         "child_id": child.childId,
@@ -149,7 +205,7 @@ class ChildService {
         "guardianListed": child.guardianListed,
         "familyVisitPhoneCall": child.familyVisitsPhoneCall,
         "siblings": child.siblings,
-        "lastDateOfCWCOrder": child.lastDateOfCWCOrder.toIso8601String(),
+        "lastDateOfCWCOrder": child.lastDateOfCWCOrder.toIso8601String().substring(0, 10),
         "Lastcwcorder": child.lastCWCOrder,
         "lengthOfStayInShelter": child.lengthOfStayInShelter,
         "caringsRegistrationNumber": child.caringsRegistrationNumber,
@@ -167,7 +223,7 @@ class ChildService {
       if (child.avatar["data"] != null) {
         try {
           childObj["avatar"] = {"data": child.avatar["data"].readAsBytesSync()};
-        } catch(e) {
+        } catch (e) {
           childObj["avatar"] = child.avatar;
         }
       }
@@ -197,7 +253,7 @@ class ChildService {
             await Future.wait(uploadTasks);
             Provider.of<CasesProvider>(context, listen: false)
                 .editChild(child.childId, newChild);
-            Navigator.pop(context);
+            if(Navigator.canPop(context)) Navigator.pop(context);
           },
           errorText: "Error in Editing Child");
     } catch (e) {

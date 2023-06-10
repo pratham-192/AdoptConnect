@@ -15,10 +15,12 @@ class ChildCasesScreen extends StatefulWidget {
 class _ChildCasesScreenState extends State<ChildCasesScreen> {
   final ChildService childService = ChildService();
 
+  late Future<bool> cases;
+
   @override
   void initState() {
     super.initState();
-    childService.getAllCasesofWorker(context: context);
+    cases = childService.getAllCasesofWorker(context: context);
   }
 
   @override
@@ -42,8 +44,7 @@ class _ChildCasesScreenState extends State<ChildCasesScreen> {
         backgroundColor: GlobalVariables.primaryColor,
         tooltip: "Add Child",
         onPressed: () {
-          Navigator.pushNamed(
-              context, AddChildScreen.routeName);
+          Navigator.pushNamed(context, AddChildScreen.routeName);
         },
         child: const Icon(
           Icons.add,
@@ -51,7 +52,20 @@ class _ChildCasesScreenState extends State<ChildCasesScreen> {
           size: 34,
         ),
       ),
-      body: const ChildList(),
+      body: FutureBuilder(
+        future: cases,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return const ChildList();
+          }
+          return Container(
+            padding: const EdgeInsets.only(top: 80),
+            child: const Center(
+              child: CircularProgressIndicator.adaptive(),
+            ),
+          );
+        },
+      ),
       extendBodyBehindAppBar: true,
     );
   }
