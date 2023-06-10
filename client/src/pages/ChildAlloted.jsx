@@ -25,7 +25,13 @@ const ChildAlloted = () => {
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl ">
       <Header category={t("App")} title={t("Child Details")} />
       <div className="mt-12 flex flex-col justify-center">
-        <div className="pl-3 text-lg font-bold">{t("Child Allocated")}</div>
+        {childAlloted &&
+        childAlloted.alloted_children &&
+        childAlloted.alloted_children.length ? (
+          <div className="pl-3 text-lg font-bold">{t("Child Allocated")}</div>
+        ) : (
+          ""
+        )}
         <ul className="w-full divide-y divide-gray-200 dark:divide-gray-700 ">
           {childAlloted &&
             childAlloted.alloted_children &&
