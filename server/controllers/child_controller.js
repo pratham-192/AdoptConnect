@@ -450,7 +450,7 @@ module.exports.bulkUpload = async function (req, res) {
         const results = [];
         const fileBuffer = req.file.buffer;
         const fileContents = fileBuffer.toString();
-
+        let uploadFailed = [];
         const csvData = await csv({
             delimiter: ',',
             noheader: false,
@@ -458,51 +458,69 @@ module.exports.bulkUpload = async function (req, res) {
         }).fromString(fileContents);
 
         for (const row of csvData) {
-            // Extract the necessary fields from the row and create a Child document
-            const childData = {
-                child_id: row['Case Number'] || undefined,
-                state: row[columnMappings.csvState] || undefined,
-                district: row[columnMappings.csvDistrict] || undefined,
-                shelterHome: row[columnMappings.csvShelterHome] || undefined,
-                childName: row[columnMappings.csvChildName] || undefined,
-                linkedWithSAA: row[columnMappings.csvLinkedWithSAA] || undefined,
-                gender: row[columnMappings.csvGender] || undefined,
-                dateOfBirth: row[columnMappings.csvDateOfBirth] || undefined,
-                age: row[columnMappings.csvAge] || undefined,
-                childClassification: row[columnMappings.csvChildClassification] || undefined,
-                recommendedForAdoption: row[columnMappings.csvRecommendedForAdoption] || undefined,
-                inquiryDateOfAdmission: row[columnMappings.csvInquiryDateOfAdmission] || undefined,
-                reasonForAdmission: row[columnMappings.csvReasonForAdmission] || undefined,
-                reasonForFlagging: row[columnMappings.csvReasonForFlagging] || undefined,
-                lastVisit: row[columnMappings.csvLastVisit] || undefined,
-                lastCall: row[columnMappings.csvLastCall] || undefined,
-                caseHistory: row[columnMappings.csvCaseHistory] || undefined,
-                guardianListed: row[columnMappings.csvGuardianListed] || undefined,
-                familyVisitsPhoneCall: row[columnMappings.csvFamilyVisitsPhoneCall] || undefined,
-                siblings: row[columnMappings.csvSiblings] || undefined,
-                lastDateOfCWCOrder: row[columnMappings.csvLastDateOfCWCOrder] || undefined,
-                Lastcwcorder: row[columnMappings.csvLastcwcorder] || undefined,
-                lengthOfStayInShelter: row[columnMappings.csvLengthOfStayInShelter] || undefined,
-                caringsRegistrationNumber: row[columnMappings.csvCaringsRegistrationNumber] || undefined,
-                dateLFA_CSR_MERUploadedInCARINGS: row[columnMappings.csvDateLFA_CSR_MERUploadedInCARINGS] || undefined,
-                createdByUser: row[columnMappings.csvCreatedByUser] || undefined,
-                createdDate: row[columnMappings.csvCreatedDate] || undefined,
-            };
+            if (row[columnMappings.csvChildId]) {
+                if (row[columnMappings.csvChildClassification]) {
+                    let prevChild=await Child.findOne({child_id:row[columnMappings.csvChildId]})
+                    if(prevChild){
+                        continue;
+                    }
+                    const childData = {
+                        child_id: row[columnMappings.csvChildId] || undefined,
+                        state: row[columnMappings.csvState] || undefined,
+                        district: row[columnMappings.csvDistrict] || undefined,
+                        shelterHome: row[columnMappings.csvShelterHome] || undefined,
+                        childName: row[columnMappings.csvChildName] || undefined,
+                        linkedWithSAA: row[columnMappings.csvLinkedWithSAA] || undefined,
+                        gender: row[columnMappings.csvGender] || undefined,
+                        dateOfBirth: row[columnMappings.csvDateOfBirth] || undefined,
+                        age: row[columnMappings.csvAge] || undefined,
+                        childClassification: row[columnMappings.csvChildClassification] || undefined,
+                        recommendedForAdoption: row[columnMappings.csvRecommendedForAdoption] || undefined,
+                        inquiryDateOfAdmission: row[columnMappings.csvInquiryDateOfAdmission] || undefined,
+                        reasonForAdmission: row[columnMappings.csvReasonForAdmission] || undefined,
+                        reasonForFlagging: row[columnMappings.csvReasonForFlagging] || undefined,
+                        lastVisit: row[columnMappings.csvLastVisit] || undefined,
+                        lastCall: row[columnMappings.csvLastCall] || undefined,
+                        caseHistory: row[columnMappings.csvCaseHistory] || undefined,
+                        guardianListed: row[columnMappings.csvGuardianListed] || undefined,
+                        familyVisitsPhoneCall: row[columnMappings.csvFamilyVisitsPhoneCall] || undefined,
+                        siblings: row[columnMappings.csvSiblings] || undefined,
+                        lastDateOfCWCOrder: row[columnMappings.csvLastDateOfCWCOrder] || undefined,
+                        Lastcwcorder: row[columnMappings.csvLastcwcorder] || undefined,
+                        lengthOfStayInShelter: row[columnMappings.csvLengthOfStayInShelter] || undefined,
+                        caringsRegistrationNumber: row[columnMappings.csvCaringsRegistrationNumber] || undefined,
+                        dateLFA_CSR_MERUploadedInCARINGS: row[columnMappings.csvDateLFA_CSR_MERUploadedInCARINGS] || undefined,
+                        createdByUser: row[columnMappings.csvCreatedByUser] || undefined,
+                        createdDate: row[columnMappings.csvCreatedDate] || undefined,
+                    };
 
-            //   console.log(childData);
+                    //   console.log(childData);
 
-            const child = await Child.create(childData)
-            if (req.body.contact_no) child.contactNo = req.body.contact_no;
-            let childcategory=childData.childClassification.toLowerCase();
-            let flow = await AdoptionFlow.findOne({ childClassification: childcategory });
-            // console.log(flow);
-            child.individualAdoptionFlow.majorTask = flow.majorTask;
-            // console.log(await AdoptionFlow.findOne({ childClassification: childclass }))
-            // console.log(child.individualAdoptionFlow);
-            child.save();
+                    const child = await Child.create(childData)
+                    if (req.body.contact_no) child.contactNo = req.body.contact_no;
+                    let childcategory = childData.childClassification.toLowerCase();
+                    let flow = await AdoptionFlow.findOne({ childClassification: childcategory });
+                    // console.log(flow);
+                    child.individualAdoptionFlow.majorTask = flow.majorTask;
+                    // console.log(await AdoptionFlow.findOne({ childClassification: childclass }))
+                    // console.log(child.individualAdoptionFlow);
+                    child.save();
+                }else{
+                    uploadFailed.push({
+                        reason: 'child category is not present',
+                        row: row
+                    })
+                }
+            }
+            else {
+                uploadFailed.push({
+                    reason: 'Case number is not present',
+                    row: row
+                })
+            }
         }
 
-        res.status(200).json({ message: 'Bulk upload completed' });
+        res.status(200).json({ message: uploadFailed });
     } catch (err) {
         console.log(err);
         return res.status(200).send('Error in bulk uploading');
@@ -512,96 +530,96 @@ module.exports.bulkUpload = async function (req, res) {
 
 
 module.exports.csvDownload = async function (req, res) {
-  try {
-    let children = await Child.find({})
-      .populate({
-        path: 'worker_alloted',
-        select: 'name'
-      })
-      .select('-avatar -individualAdoptionFlow -childNote -uploaded_documents');
+    try {
+        let children = await Child.find({})
+            .populate({
+                path: 'worker_alloted',
+                select: 'name'
+            })
+            .select('-avatar -individualAdoptionFlow -childNote -uploaded_documents');
 
-    const csvData = [];
-    const header = [
-      'Case Number',
-      'State',
-      'District',
-      'Shelter Home',
-      'Child Name',
-      'Linked with SAA',
-      'Gender',
-      'Date of Birth',
-      'Age',
-      'Child Classification',
-      'Recommended for Adoption',
-      'Inquiry Date of Admission',
-      'Reason for Admission',
-      'Reason for Flagging',
-      'Last Visit',
-      'Last Call',
-      'Case History',
-      'Case Status',
-      'Guardian Listed',
-      'Family Visits Phone Call',
-      'Siblings',
-      'Last Date of CWC Order',
-      'Last CWC Order',
-      'Length of Stay in Shelter',
-      'CARINGS Registration Number',
-      'Date the LFA,CSR,MER Uploaded in CARINGS',
-      'Created By User',
-      'Created Date',
-      'Contact No',
-      'Worker Allotted'
-    ];
-    csvData.push(header);
+        const csvData = [];
+        const header = [
+            'Case Number',
+            'State',
+            'District',
+            'Shelter Home',
+            'Child Name',
+            'Linked with SAA',
+            'Gender',
+            'Date of Birth',
+            'Age',
+            'Child Classification',
+            'Recommended for Adoption',
+            'Inquiry Date of Admission',
+            'Reason for Admission',
+            'Reason for Flagging',
+            'Last Visit',
+            'Last Call',
+            'Case History',
+            'Case Status',
+            'Guardian Listed',
+            'Family Visits Phone Call',
+            'Siblings',
+            'Last Date of CWC Order',
+            'Last CWC Order',
+            'Length of Stay in Shelter',
+            'CARINGS Registration Number',
+            'Date the LFA,CSR,MER Uploaded in CARINGS',
+            'Created By User',
+            'Created Date',
+            'Contact No',
+            'Worker Allotted'
+        ];
+        csvData.push(header);
 
-    children.forEach(child => {
-      const record = [
-        child.child_id,
-        child.state,
-        child.district,
-        child.shelterHome,
-        child.childName,
-        child.linkedWithSAA,
-        child.gender,
-        child.dateOfBirth,
-        child.age,
-        child.childClassification,
-        child.recommendedForAdoption,
-        child.inquiryDateOfAdmission,
-        child.reasonForAdmission,
-        child.reasonForFlagging,
-        child.lastVisit,
-        child.lastCall,
-        child.caseHistory,
-        child.caseStatus,
-        child.guardianListed,
-        child.familyVisitsPhoneCall,
-        child.siblings,
-        child.lastDateOfCWCOrder,
-        child.Lastcwcorder,
-        child.lengthOfStayInShelter,
-        child.caringsRegistrationNumber,
-        child.dateLFA_CSR_MERUploadedInCARINGS,
-        child.createdByUser,
-        child.createdDate,
-        child.contactNo,
-        child.worker_alloted ? child.worker_alloted.name : ''
-      ];
-      csvData.push(record);
-    });
+        children.forEach(child => {
+            const record = [
+                child.child_id,
+                child.state,
+                child.district,
+                child.shelterHome,
+                child.childName,
+                child.linkedWithSAA,
+                child.gender,
+                child.dateOfBirth,
+                child.age,
+                child.childClassification,
+                child.recommendedForAdoption,
+                child.inquiryDateOfAdmission,
+                child.reasonForAdmission,
+                child.reasonForFlagging,
+                child.lastVisit,
+                child.lastCall,
+                child.caseHistory,
+                child.caseStatus,
+                child.guardianListed,
+                child.familyVisitsPhoneCall,
+                child.siblings,
+                child.lastDateOfCWCOrder,
+                child.Lastcwcorder,
+                child.lengthOfStayInShelter,
+                child.caringsRegistrationNumber,
+                child.dateLFA_CSR_MERUploadedInCARINGS,
+                child.createdByUser,
+                child.createdDate,
+                child.contactNo,
+                child.worker_alloted ? child.worker_alloted.name : ''
+            ];
+            csvData.push(record);
+        });
 
-    const csvStream = fastcsv.format({ headers: true }).transform(row => row.map(value => value === undefined ? '' : value));
+        const csvStream = fastcsv.format({ headers: true }).transform(row => row.map(value => value === undefined ? '' : value));
 
-    res.setHeader('Content-Disposition', 'attachment; filename=child_details.csv');
-    res.set('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename=child_details.csv');
+        res.set('Content-Type', 'text/csv');
 
-    csvStream.pipe(res);
-    csvData.forEach(data => csvStream.write(data));
-    csvStream.end();
+        csvStream.pipe(res);
+        csvData.forEach(data => csvStream.write(data));
+        csvStream.end();
 
-  } catch (err) {
-    console.log(err);
-    return res.status(200).send('Error in downloading CSV file of children');
-  }
+    } catch (err) {
+        console.log(err);
+        return res.status(200).send('Error in downloading CSV file of children');
+    }
 };
