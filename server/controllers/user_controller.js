@@ -5,6 +5,7 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const axios = require('axios');
 const fastcsv = require('fast-csv');
+const bcrypt=require('bcrypt');
 module.exports.profile = function (req, res) {
     // return res.render('user_profile', {
     //     title: 'User Profile'
@@ -61,7 +62,9 @@ module.exports.create = async function (req, res) {
                 email: req.body.email,
                 user_id: req.body.user_id
             });
-
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            user.password=hashedPassword;
+            await user.save();
             return res.status(200).json({ response: newuser });
         } else {
             return res.status(200).send("User already exists");
