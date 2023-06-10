@@ -1,5 +1,6 @@
 import 'package:adoptconnect_app/constants/global_variables.dart';
 import 'package:adoptconnect_app/features/child_cases/screens/child_cases_screen.dart';
+import 'package:adoptconnect_app/features/worker_profile/screens/worker_profile.dart';
 import 'package:adoptconnect_app/providers/cases_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
@@ -18,9 +19,7 @@ class _BottomBarState extends State<BottomBar> {
 
   List<Widget> pages = [
     const ChildCasesScreen(),
-    const Center(
-      child: Text("Profile"),
-    ),
+    const WorkerProfile(),
   ];
 
   void updatePage(int page) {

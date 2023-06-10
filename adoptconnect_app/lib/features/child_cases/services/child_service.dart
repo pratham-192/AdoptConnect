@@ -164,19 +164,12 @@ class ChildService {
           await http.post(Uri.parse("$uri/child/update_child"), body: body);
 
       var childObj = jsonDecode(childRes.body)["response"];
-      print(child.avatar["data"].runtimeType);
       if (child.avatar["data"] != null) {
         try {
           childObj["avatar"] = {"data": child.avatar["data"].readAsBytesSync()};
         } catch(e) {
           childObj["avatar"] = child.avatar;
-
         }
-        // if (child.avatar["data"].runtimeType == File) {
-        //   childObj["avatar"] = {"data": child.avatar["data"].readAsBytesSync()};
-        // } else {
-        //   childObj["avatar"] = child.avatar;
-        // }
       }
       childObj["uploaded_documents"] = [];
       Child newChild = Child.fromJson(jsonEncode(childObj));
