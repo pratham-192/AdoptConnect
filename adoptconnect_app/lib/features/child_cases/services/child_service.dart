@@ -60,7 +60,7 @@ class ChildService {
       Map<String, dynamic> body = {
         "child_id": child.childId,
         "childName": child.childName,
-        "age": child.age.toString(),
+        "age": child.age,
         "gender": child.gender,
         "dateOfBirth": child.dateOfBirth,
         "state": child.state,
@@ -132,7 +132,7 @@ class ChildService {
       Map<String, dynamic> body = {
         "child_id": child.childId,
         "childName": child.childName,
-        "age": child.age.toString(),
+        "age": child.age,
         "gender": child.gender,
         "dateOfBirth": child.dateOfBirth,
         "state": child.state,

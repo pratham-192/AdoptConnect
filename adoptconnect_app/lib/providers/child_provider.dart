@@ -13,7 +13,7 @@ class ChildProvider extends ChangeNotifier {
       linkedWithSAA: '',
       gender: '',
       dateOfBirth: '',
-      age: 0,
+      age: '',
       childClassification: '',
       recommendedForAdoption: '',
       inquiryDateOfAdmission: '',
