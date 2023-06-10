@@ -381,4 +381,21 @@ module.exports.csvDownload = async function (req, res) {
       return res.status(200).send('Error in downloading CSV file of user');
     }
   };
+
+  module.exports.getAllocatedChildren=async function(req,res){
+    try{
+        let user=await User.findOne({user_id:req.body.user_id})
+        .populate({
+            path:'alloted_children',
+            select:'child_id childName caseStatus shelterHome'
+        })
+        .select('alloted_children');
+        return res.status(200).json({
+            response:user
+        })
+    }catch(err){
+        console.log(err);
+        return res.status(200).send("error in getting all allocated children");
+    }
+  }
   

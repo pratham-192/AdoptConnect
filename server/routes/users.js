@@ -29,6 +29,7 @@ router.get('/loggedin_user',userController.getLoggedInUser);
 //get worker details
 router.post('/getworker',userController.getWorkerbyId);
 // router.get('/getmanager',userController.getManagerbyId);
+router.post('/get_allocated_children',userController.getAllocatedChildren)
 
 router.post('/image_upload',upload.single('file'),userController.imageUpload);
 router.post('/get_image',userController.getImage);
