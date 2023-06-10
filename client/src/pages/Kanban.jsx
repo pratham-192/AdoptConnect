@@ -116,7 +116,7 @@ const Kanban = () => {
                                     <BsClockHistory />
                                   </span>
                                   <span className="">
-                                    {minor.minorTaskStatement}
+                                    {t(`${minor.minorTaskStatement}`)}
                                   </span>
                                 </span>
                                 <span>
@@ -124,7 +124,7 @@ const Kanban = () => {
                                     className="py-1 text-sm px-4 rounded bg-green-400 hover:bg-green-300 text-slate-100 mr-4"
                                     onClick={() => seriesMinorCompleted(index)}
                                   >
-                                    Completed
+                                    {t("Completed")}
                                   </button>
                                 </span>
                               </li>
@@ -137,7 +137,7 @@ const Kanban = () => {
                                     <BsClockHistory />
                                   </span>
                                   <span className="">
-                                    {minor.minorTaskStatement}
+                                    {t(`${minor.minorTaskStatement}`)}
                                   </span>
                                 </span>
                               </li>
@@ -158,7 +158,7 @@ const Kanban = () => {
                                   ></path>
                                 </svg>
                                 <span className="text-slate-400">
-                                  {minor.minorTaskStatement}
+                                  {t(`${minor.minorTaskStatement}`)}
                                 </span>
                               </li>
                             );
@@ -192,7 +192,7 @@ const Kanban = () => {
                         className="bg-blue-500 hover:bg-blue-700 w-56 flex justify-center items-center text-white font-bold py-2 px-4 rounded"
                         onClick={() => parallelTaskUpdate()}
                       >
-                        Update
+                        {t("Update")}
                       </button>
                     </div>
                   </div>
@@ -204,7 +204,9 @@ const Kanban = () => {
           )}
           {currentChild.currMajorTask > 0 ? (
             <div className="mt-5">
-              <div className="text-lg font-bold mb-3">Completed Tasks</div>
+              <div className="text-lg font-bold mb-3">
+                {t("Completed Tasks")}
+              </div>
               {currentChild.majorTask && currentChild.majorTask.length
                 ? currentChild.majorTask.map((major, index) => {
                     if (index < currentChild.currMajorTask) {
@@ -226,7 +228,7 @@ const Kanban = () => {
                                 clip-rule="evenodd"
                               ></path>
                             </svg>
-                            <span>{major.majorTaskStatement}</span>
+                            <span>{t(`${major.majorTaskStatement}`)}</span>
                           </li>
                           <ol className="pl-7">
                             {major.minorTask && major.minorTask.length
@@ -248,7 +250,9 @@ const Kanban = () => {
                                           clip-rule="evenodd"
                                         ></path>
                                       </svg>
-                                      <span>{minor.minorTaskStatement}</span>
+                                      <span>
+                                        {t(`${minor.minorTaskStatement}`)}
+                                      </span>
                                     </li>
                                   );
                                 })
@@ -267,7 +271,9 @@ const Kanban = () => {
           )}
           {currentChild.currMajorTask < currentChild.majorTask.length - 1 ? (
             <div className="mt-5">
-              <div className="text-lg font-bold mb-3">Upcoming Tasks</div>
+              <div className="text-lg font-bold mb-3">
+                {t("Upcoming Tasks")}
+              </div>
               {currentChild.majorTask && currentChild.majorTask.length
                 ? currentChild.majorTask.map((major, index) => {
                     if (index > currentChild.currMajorTask) {
@@ -280,7 +286,7 @@ const Kanban = () => {
                             <span className="text-yellow-500">
                               <BsClockHistory />
                             </span>
-                            <span>{major.majorTaskStatement}</span>
+                            <span>{t(`${major.majorTaskStatement}`)}</span>
                           </li>
                           <ol className="pl-7">
                             {major.minorTask && major.minorTask.length
@@ -293,7 +299,9 @@ const Kanban = () => {
                                       <span className="text-yellow-500">
                                         <BsClockHistory />
                                       </span>
-                                      <span>{minor.minorTaskStatement}</span>
+                                      <span>
+                                        {t(`${minor.minorTaskStatement}`)}
+                                      </span>
                                     </li>
                                   );
                                 })

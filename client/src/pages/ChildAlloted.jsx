@@ -88,7 +88,7 @@ const ChildAlloted = () => {
                             </p>
                           )}
                         </p>
-                        <p>{child.caseStatus}</p>
+                        <p>{t(`${child.caseStatus}`)}</p>
                       </div>
                     </div>
                   </div>

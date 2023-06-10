@@ -102,6 +102,7 @@ const ChildDetails = () => {
           child_id: childId,
         }
       );
+      console.log(response3.data.response);
       setchildDetails(response3.data.response);
       const response4 = await axios.post(
         "http://localhost:3000/child/document/getbychildid",
@@ -243,12 +244,22 @@ const ChildDetails = () => {
                   {t("Mentor Assigned")} :{" "}
                 </span>
                 <select
-                  className="h-10 border mt-1 rounded px-4 w-1/3 bg-gray-50 ml-5"
+                  className="h-10 border mt-1 rounded px-4 w-1/3 bg-gray-50 ml-5 capitalize"
                   onChange={(e) => setselectedWorker(e.target.value)}
                 >
-                  <option value="">Please Select</option>
+                  <option value="">
+                    {childDetails && childDetails.worker_alloted
+                      ? childDetails.worker_alloted.name
+                      : `${t("Please Select")}`}
+                  </option>
                   {allWorkers.map((item) => {
-                    return <option value={item.user_id}>{item.name}</option>;
+                    if (
+                      childDetails.worker_alloted &&
+                      childDetails.worker_alloted.user_id === item.user_id
+                    )
+                      return "";
+                    else
+                      return <option value={item.user_id}>{item.name}</option>;
                   })}
                 </select>
                 <button
@@ -256,7 +267,7 @@ const ChildDetails = () => {
                   onClick={() => updatementorHandler()}
                 >
                   <FaSave size={25} />
-                  <span className="pl-3 text-lg">Save</span>
+                  <span className="pl-3 text-lg">{t("Save")}</span>
                 </button>
               </p>
             </div>
