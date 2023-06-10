@@ -12,7 +12,7 @@ class Child {
   final String linkedWithSAA;
   final String gender;
   final String dateOfBirth;
-  final int age;
+  final String age;
   final String childClassification;
   final String recommendedForAdoption;
   final String inquiryDateOfAdmission;
@@ -34,10 +34,10 @@ class Child {
   final String createdDate;
   final int contactNo;
   final String workerAlloted;
-  final Map<String, dynamic> avatar;
+  Map<String, dynamic> avatar;
   final String childNote;
   final AdoptionFlow individualAdoptionFlow;
-  final List<dynamic> uploadedDocuments;
+  List<dynamic> uploadedDocuments;
 
   Child({
     required this.id,
@@ -113,7 +113,7 @@ class Child {
       'avatar': avatar,
       'childNote': childNote,
       'individualAdoptionFlow': individualAdoptionFlow.toMap(),
-      'uploadedDocuments': uploadedDocuments,
+      'uploaded_documents': uploadedDocuments,
     };
   }
 
@@ -128,7 +128,7 @@ class Child {
         linkedWithSAA: map['linkedWithSAA'] ?? '',
         gender: map['gender'] ?? '',
         dateOfBirth: map['dateOfBirth'] ?? '',
-        age: map['age']?.toInt() ?? 0,
+        age: map['age'] ?? '',
         childClassification: map['childClassification'] ?? '',
         recommendedForAdoption: map['recommendedForAdoption'] ?? '',
         inquiryDateOfAdmission: map['inquiryDateOfAdmission'] ?? '',
@@ -142,7 +142,7 @@ class Child {
         familyVisitsPhoneCall: map['familyVisitsPhoneCall'] ?? '',
         siblings: map['siblings'] ?? '',
         lastDateOfCWCOrder: map['lastDateOfCWCOrder'] != null
-            ? DateTime.parse(getFormattedDate(map['lastDateOfCWCOrder']))
+            ? parseDate(map['lastDateOfCWCOrder'])
             : DateTime.now(),
         lastCWCOrder: map['Lastcwcorder'] ?? '',
         lengthOfStayInShelter: map['lengthOfStayInShelter'] ?? '',
@@ -158,6 +158,17 @@ class Child {
         individualAdoptionFlow:
             AdoptionFlow.fromMap(map['individualAdoptionFlow']),
         uploadedDocuments: List<dynamic>.from(map['uploaded_documents'] ?? []));
+  }
+
+  static DateTime parseDate(dynamic dateString) {
+    if (dateString is int) {
+      return DateTime.fromMillisecondsSinceEpoch(dateString);
+    }
+    try {
+        return DateTime.parse(getFormattedDate(dateString));
+    } catch(e){
+      return DateTime.now();
+    }
   }
 
   static String getFormattedDate(String dateString) {
@@ -189,7 +200,7 @@ class Child {
     String? linkedWithSAA,
     String? gender,
     String? dateOfBirth,
-    int? age,
+    String? age,
     String? childClassification,
     String? recommendedForAdoption,
     String? inquiryDateOfAdmission,

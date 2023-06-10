@@ -38,7 +38,7 @@ class _AddChildScreenState extends State<AddChildScreen> {
   String _linkedWithSAAValue = "Yes";
   String _childClassificationValue = "Abandoned";
   final _inquiryDateOfAdmissionController = TextEditingController();
-  String _caseStatusValue = "Active";
+  final String _caseStatusValue = "inactive";
   final _reasonForAdmissionController = TextEditingController();
   final _caseHistoryController = TextEditingController();
   final _lastVisitController = TextEditingController();
@@ -63,10 +63,6 @@ class _AddChildScreenState extends State<AddChildScreen> {
 
   void _updateChildClassification(String value) {
     setState(() => _childClassificationValue = value);
-  }
-
-  void _updateCaseStatus(String value) {
-    setState(() => _caseStatusValue = value);
   }
 
   @override
@@ -123,7 +119,7 @@ class _AddChildScreenState extends State<AddChildScreen> {
       linkedWithSAA: _linkedWithSAAValue,
       gender: _genderValue,
       dateOfBirth: _dateOfBirthController.text,
-      age: int.parse(_ageController.text),
+      age: _ageController.text,
       childClassification: _childClassificationValue,
       recommendedForAdoption: '',
       inquiryDateOfAdmission: _inquiryDateOfAdmissionController.text,
@@ -209,7 +205,6 @@ class _AddChildScreenState extends State<AddChildScreen> {
                   InputText(
                     labelText: "Age",
                     controller: _ageController,
-                    keyboardType: TextInputType.number,
                     validate: true,
                   ),
                   const SizedBox(height: 15),
@@ -263,13 +258,13 @@ class _AddChildScreenState extends State<AddChildScreen> {
                     validate: true,
                     isDate: true,
                   ),
-                  const SizedBox(height: 15),
-                  Dropdown(
-                    labelText: "Case Status",
-                    items: const ["Active", "On Hold", "Adopted"],
-                    dropdownValue: _caseStatusValue,
-                    updateDropdownValue: _updateCaseStatus,
-                  ),
+                  // const SizedBox(height: 15),
+                  // Dropdown(
+                  //   labelText: "Case Status",
+                  //   items: const ["Active", "On Hold", "Adopted"],
+                  //   dropdownValue: _caseStatusValue,
+                  //   updateDropdownValue: _updateCaseStatus,
+                  // ),
                   const SizedBox(height: 15),
                   InputText(
                     labelText: "Reason For Admission",

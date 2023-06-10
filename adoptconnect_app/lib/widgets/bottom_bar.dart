@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
 
+import '../constants/connectivity.dart';
+
 class BottomBar extends StatefulWidget {
   static const String routeName = 'actual-home';
   const BottomBar({super.key});
@@ -24,6 +26,13 @@ class _BottomBarState extends State<BottomBar> {
 
   void updatePage(int page) {
     setState(() => _page = page);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    globalContext = context;
+    syncData();
   }
 
   @override
