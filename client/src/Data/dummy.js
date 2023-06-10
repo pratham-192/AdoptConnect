@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiBarChart, FiUser, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
-import { BsKanban, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
+import { BsKanban, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsDatabaseFill } from 'react-icons/bs';
 import { IoMdContacts } from 'react-icons/io';
 import { TbDeviceDesktopAnalytics } from 'react-icons/tb'
 import { TiTick, TiFlowChildren } from 'react-icons/ti'
@@ -548,6 +548,11 @@ export const links = [
         name: 'flow-management',
         icon: <TiFlowChildren />,
         allowed: ["admin", "case-manager"]
+      },
+      {
+        name: "manage-data",
+        icon: <BsDatabaseFill />,
+        allowed: ["admin"]
       },
       {
         name: 'messages',
