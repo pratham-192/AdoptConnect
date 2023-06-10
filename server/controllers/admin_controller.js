@@ -192,7 +192,7 @@ module.exports.getMessagebyAdmin=async function(req,res){
 
 module.exports.getAnalytics=async function(req,res){
     try{
-        let ageDistribution=await Child.aggregate([
+        let ageratio=await Child.aggregate([
             {
               $group: {
                 _id: {
@@ -217,7 +217,11 @@ module.exports.getAnalytics=async function(req,res){
               }
             }
           ])
-          let genderDistribution=await Child.aggregate([
+          let ageDistribution={
+                labels:ageratio.map(entry => entry.ageGroup),
+                values:ageratio.map(entry => entry.count)
+          }
+          let genderratio=await Child.aggregate([
             {
               $group: {
                 _id: {$toLower: '$gender'},
@@ -231,8 +235,12 @@ module.exports.getAnalytics=async function(req,res){
                 count: 1
               }
             }
-          ])
-          let geographicDistributionDistrict=await Child.aggregate([
+          ]);
+          let genderDistribution={
+            labels:genderratio.map(entry => entry.gender),
+            values:genderratio.map(entry => entry.count)
+          }
+          let geographicratioDistrict=await Child.aggregate([
             {
               $group: {
                 _id: '$district',  
@@ -247,7 +255,11 @@ module.exports.getAnalytics=async function(req,res){
               }
             }
           ]);
-          let geographicDistributionState=await Child.aggregate([
+         let geographicDistributionDistrict={
+            labels:geographicratioDistrict.map(entry => entry.district),
+            values:geographicratioDistrict.map(entry => entry.count)
+          }
+          let geographicratioState=await Child.aggregate([
             {
               $group: {
                 _id: '$state', 
@@ -261,8 +273,12 @@ module.exports.getAnalytics=async function(req,res){
                 count: 1
               }
             }
-          ])
-          let workerRatio=await User.aggregate([
+          ]);
+          let geographicDistributionState={
+            labels:geographicratioState.map(entry => entry.state),
+            values:geographicratioState.map(entry => entry.count)
+          }
+          let workerratio=await User.aggregate([
             {
               $group: {
                 _id: '$category',
@@ -276,8 +292,12 @@ module.exports.getAnalytics=async function(req,res){
                 count: 1
               }
             }
-          ])
-          let ShelterHomeRatio=await Child.aggregate([
+          ]);
+          let workerRatio={
+labels:workerratio.map(entry => entry.category),
+values:workerratio.map(entry => entry.count)
+          }
+          let ShelterHomeratio=await Child.aggregate([
             {
               $group: {
                 _id: '$shelterHome', 
@@ -292,7 +312,11 @@ module.exports.getAnalytics=async function(req,res){
               }
             }
           ]);
-          let childClassificationRatio=await Child.aggregate([
+          let ShelterHomeRatio={
+labels:ShelterHomeratio.map(entry => entry.shelterHome),
+values:ShelterHomeratio.map(entry => entry.count)
+          }
+          let childClassificationratio=await Child.aggregate([
             {
               $group: {
                 _id: '$childClassification',
@@ -307,7 +331,11 @@ module.exports.getAnalytics=async function(req,res){
               }
             }
           ]);
-          let AdoptionSuccess=await Child.aggregate([
+          let childClassificationRatio={
+            labels:childClassificationratio.map(entry => entry.childClassification),
+            values:childClassificationratio.map(entry => entry.count)
+          }
+          let Adoptionsuccess=await Child.aggregate([
             {
               $group: {
                 _id: null,
@@ -327,7 +355,11 @@ module.exports.getAnalytics=async function(req,res){
               }
             }
           ]);
-          let ratioCaseStatus=await Child.aggregate([
+          let AdoptionSuccess={
+            labels:Adoptionsuccess[0].completedCount,
+            values:Adoptionsuccess[0].totalCount
+          }
+          let ratioCasestatus=await Child.aggregate([
             {
               $group: {
                 _id: '$caseStatus',   
@@ -342,7 +374,11 @@ module.exports.getAnalytics=async function(req,res){
               }
             }
           ]);
-          let childStatusShelterHome=await Child.aggregate([
+          let ratioCaseStatus={
+            labels:ratioCasestatus.map(entry => entry.caseStatus),
+            values:ratioCasestatus.map(entry => entry.count)
+          }
+          let childStatusShelterhome=await Child.aggregate([
             {
               $match: {
                 caseStatus: 'completed' 
@@ -362,6 +398,10 @@ module.exports.getAnalytics=async function(req,res){
               }
             }
           ]);
+          let childStatusShelterHome={
+            labels:childStatusShelterhome.map(entry => entry.shelterHome),
+            values:childStatusShelterhome.map(entry => entry.count)
+          }
           return res.status(200).json({
             response:{
                 ageDistribution,
