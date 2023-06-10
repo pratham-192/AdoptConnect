@@ -69,10 +69,9 @@ const App = () => {
               {themeSettings && (<ThemeSettings />)}
 
               <Routes>
-                {/* <Route path="/" element={(<Calendar />)} /> */}
-                <Route path="/" element={(<EditProfile />)} />
-                <Route path="/login/admin" element={(<Login />)} />
-                <Route path="/login/user" element={(<Login />)} />
+                <Route path="/" element={(<Messages />)} />
+                <Route path="/calendar" element={(<Calendar />)} />
+                <Route path="/login" element={(<Login />)} />
                 <Route path="/analytics" element={(<Analytics />)} />
                 <Route path="/workers" element={<Employees />} />
                 <Route path="/worker-details" element={<WorkerDetails />} />
