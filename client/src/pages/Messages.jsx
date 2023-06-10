@@ -13,7 +13,7 @@ const Messages = () => {
     if (!user) return;
     if (user.category === "admin") {
       const response = await axios.post(
-        "http://localhost:3000/admin/message/get_message",
+        "https://adoptconnect.onrender.com/admin/message/get_message",
         {
           from_user_id: user._id,
         }
@@ -21,13 +21,13 @@ const Messages = () => {
       setallMessages(response.data.response);
     } else {
       const response2 = await axios.post(
-        "http://localhost:3000/users/all_seen",
+        "https://adoptconnect.onrender.com/users/all_seen",
         {
           to_user_id: user._id,
         }
       );
       const response = await axios.post(
-        "http://localhost:3000/users/get_messages",
+        "https://adoptconnect.onrender.com/users/get_messages",
         {
           to_user_id: user._id,
         }
