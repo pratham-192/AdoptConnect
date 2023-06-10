@@ -172,7 +172,7 @@ module.exports.delete_child_category = async function (req, res) {
     try {
         const childclass = req.body.childClassification.toLowerCase();
         let childcateg = await ChildCategory.findOneAndDelete({ childClassification: childclass });
-        let adoptflow=await AdoptionFlow.findOneAndDelete({childClassification: childclass})
+        let adoptflow = await AdoptionFlow.findOneAndDelete({ childClassification: childclass })
 
         return res.status(200).send("child-category deleted successfully");
     } catch (err) {
@@ -228,6 +228,7 @@ module.exports.statusUpdate = async function (req, res) {
                 if (minor.minorTaskStatus == 2) {
                     if (!u.start_time) u.start_time = new Date();
                     curr_minor = curr_minor + 1;
+                    u.majorTaskStatus=1;
                 }
                 if (minor.minorTaskStatus == 0 || minor.minorTaskStatus == 1) {
                     flag = 1;
@@ -239,8 +240,10 @@ module.exports.statusUpdate = async function (req, res) {
             u.currMinorTask = curr_minor;
             // u.save();
             if (!flag) {
+                u.majorTaskStatus=2;
                 curr_major = curr_major + 1;
                 if (!u.end_time) u.end_time = new Date();
+
             } else break;
         }
         // status_object.save();
@@ -249,7 +252,7 @@ module.exports.statusUpdate = async function (req, res) {
         if (curr_major == status_object.length) child.caseStatus = "completed";
         child.save();
 
-        if (curr_major && !child.individualAdoptionFlow.majorTask[curr_major-1].end_time) child.individualAdoptionFlow.majorTask[curr_major-1].end_time = new Date();
+        if (curr_major && !child.individualAdoptionFlow.majorTask[curr_major - 1].end_time) child.individualAdoptionFlow.majorTask[curr_major - 1].end_time = new Date();
         return res.status(200).json({
             response: child
         })
@@ -539,7 +542,7 @@ module.exports.csvDownload = async function (req, res) {
                 path: 'worker_alloted',
                 select: 'name'
             })
-            .select('-avatar -individualAdoptionFlow -childNote -uploaded_documents');
+            .select('-avatar -childNote -uploaded_documents');
 
         const csvData = [];
         const header = [
@@ -572,11 +575,21 @@ module.exports.csvDownload = async function (req, res) {
             'Created By User',
             'Created Date',
             'Contact No',
-            'Worker Allotted'
+            'Worker Allotted',
+            'Adoption Task completed'
         ];
         csvData.push(header);
 
         children.forEach(child => {
+            const completedMajorTaskStatements = [];
+            // console.log(child.individualAdoptionFlow);
+            const majorTasks = child.individualAdoptionFlow.majorTask?child.individualAdoptionFlow.majorTask : [];
+            majorTasks.forEach(majorTask => {
+                if (majorTask.majorTaskStatus === 2) {
+                    completedMajorTaskStatements.push(majorTask.majorTaskStatement);
+                }
+            });
+
             const record = [
                 child.child_id,
                 child.state,
@@ -607,7 +620,8 @@ module.exports.csvDownload = async function (req, res) {
                 child.createdByUser,
                 child.createdDate,
                 child.contactNo,
-                child.worker_alloted ? child.worker_alloted.name : ''
+                child.worker_alloted ? child.worker_alloted.name : '',
+                completedMajorTaskStatements.join(', ')
             ];
             csvData.push(record);
         });
