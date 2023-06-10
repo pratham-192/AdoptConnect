@@ -5,6 +5,7 @@ import { AiOutlineCloudDownload, AiOutlineCloudUpload } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PopUp from "../components/Modal/PopUp";
+import { managerRoute } from "../Contexts/ProtectedRoute";
 
 const ManageData = () => {
   const { t } = useTranslation();
@@ -159,4 +160,4 @@ const ManageData = () => {
   );
 };
 
-export default ManageData;
+export default managerRoute(ManageData);

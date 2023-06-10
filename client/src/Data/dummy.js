@@ -552,7 +552,7 @@ export const links = [
       {
         name: "manage-data",
         icon: <BsDatabaseFill />,
-        allowed: ["admin"]
+        allowed: ["admin", "case-manager"]
       },
       {
         name: 'messages',
