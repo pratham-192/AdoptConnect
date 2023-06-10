@@ -63,8 +63,8 @@ module.exports.create = async function (req, res) {
                 user_id: req.body.user_id
             });
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
-            user.password=hashedPassword;
-            await user.save();
+            newuser.password=hashedPassword;
+            await newuser.save();
             return res.status(200).json({ response: newuser });
         } else {
             return res.status(200).send("User already exists");
