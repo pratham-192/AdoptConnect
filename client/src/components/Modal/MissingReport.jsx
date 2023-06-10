@@ -2,8 +2,11 @@ import React from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { ImCross } from "react-icons/im";
+import { useTranslation } from "react-i18next";
 
 const MissingReport = ({ childDetails, setshowMissingReport, imageUrl }) => {
+  const { t } = useTranslation();
+
   const generatePDF = () => {
     const component = document.getElementById("missing-report-component");
     html2canvas(component).then((canvas) => {
@@ -44,23 +47,23 @@ const MissingReport = ({ childDetails, setshowMissingReport, imageUrl }) => {
               </div>
               <div className="text-lg pt-2">
                 <div>
-                  <span className="font-semibold">Name :</span>{" "}
+                  <span className="font-semibold">{t("Name")} :</span>{" "}
                   {childDetails && childDetails.childName}
                 </div>
                 <div>
-                  <span className="font-semibold">Date of Birth :</span>{" "}
+                  <span className="font-semibold">{t("Date of Birth")} :</span>{" "}
                   {childDetails && childDetails.dateOfBirth}
                 </div>
                 <div>
-                  <span className="font-semibold">Gender :</span>{" "}
+                  <span className="font-semibold">{t("Gender")} :</span>{" "}
                   {childDetails && childDetails.gender}
                 </div>
                 <div>
-                  <span className="font-semibold">Age :</span>{" "}
+                  <span className="font-semibold">{t("Age")} :</span>{" "}
                   {childDetails && childDetails.age}
                 </div>
                 <div>
-                  <span className="font-semibold">State :</span>{" "}
+                  <span className="font-semibold">{t("State")} :</span>{" "}
                   {childDetails && childDetails.district},
                   {childDetails && childDetails.state}
                 </div>
@@ -68,10 +71,11 @@ const MissingReport = ({ childDetails, setshowMissingReport, imageUrl }) => {
             </div>
             <div className="flex flex-col w-full bg-slate-200 p-3">
               <div>
-                <span className="font-semibold">Contact :</span> +91 99309 86400
+                <span className="font-semibold">{t("Contact")} :</span> +91
+                99309 86400
               </div>
               <div>
-                <span className="font-semibold">Email :</span>{" "}
+                <span className="font-semibold">{t("Email")} :</span>{" "}
                 info@balashatrust.org
               </div>
               <div>
@@ -85,7 +89,7 @@ const MissingReport = ({ childDetails, setshowMissingReport, imageUrl }) => {
           className="text-white py-2 px-4 mb-7 mr-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 capitalize"
           onClick={() => generatePDF()}
         >
-          Download Missing Report
+          {t("Download Missing Report")}
         </button>
       </div>
     </div>

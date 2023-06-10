@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { BiErrorCircle } from "react-icons/bi";
 import { ImCross } from "react-icons/im";
+import { useTranslation } from "react-i18next";
 
 export default function EditFlowPopUp({
   editTaskDetails,
@@ -11,6 +12,7 @@ export default function EditFlowPopUp({
   const [taskStatement, settaskStatement] = useState(editTaskDetails.statement);
   const [taskNote, settaskNote] = useState(editTaskDetails.note);
   const [iteration, setiteration] = useState(editTaskDetails.iterationMethod);
+  const { t } = useTranslation();
 
   const saveTaskHandler = async () => {
     if (editTaskDetails.minorTask) {
@@ -89,7 +91,7 @@ export default function EditFlowPopUp({
             </div>
             <div className="mt-3 sm:mt-5">
               <label htmlFor="full_name" className="text-sm">
-                Task Statement
+                {t("Task Statement")}
               </label>
               <input
                 type="text"
@@ -98,7 +100,7 @@ export default function EditFlowPopUp({
                 onChange={(e) => settaskStatement(e.target.value)}
               />
               <label htmlFor="full_name" className="text-sm">
-                Task Note
+                {t("Task Note")}
               </label>
               <input
                 type="text"
@@ -109,14 +111,14 @@ export default function EditFlowPopUp({
               {editTaskDetails.majorTask ? (
                 <span>
                   <label htmlFor="full_name" className="text-sm">
-                    Iteration Methd
+                    {t(" Iteration Method")}
                   </label>
                   <select
                     className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                     onChange={(e) => setiteration(e.target.value)}
                   >
-                    <option value="series">Series</option>
-                    <option value="parallel">Parallel</option>
+                    <option value="series">{t("Series")}</option>
+                    <option value="parallel">{t("Parallel")}</option>
                   </select>
                 </span>
               ) : (
@@ -131,7 +133,7 @@ export default function EditFlowPopUp({
                 className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400 sm:text-sm"
                 onClick={() => saveTaskHandler()}
               >
-                Save Task
+                {t("Save Task")}
               </button>
             </div>
             <div className="mt-5 ml-1 sm:mt-6">
@@ -140,7 +142,7 @@ export default function EditFlowPopUp({
                 className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-500 text-base font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400 sm:text-sm"
                 onClick={() => deleteTaskHandler()}
               >
-                Delete Task
+                {t("Delete Task")}
               </button>
             </div>
           </div>

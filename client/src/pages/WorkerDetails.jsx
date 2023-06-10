@@ -146,7 +146,13 @@ const WorkerDetails = () => {
           </p>
         </div>
         <div className="mt-12 flex flex-col justify-center">
-          <div className="pl-3 text-lg font-bold">{t("Child Allocated")}</div>
+          {workerDetails &&
+          workerDetails.alloted_children &&
+          workerDetails.alloted_children.length ? (
+            <div className="pl-3 text-lg font-bold">{t("Child Allocated")}</div>
+          ) : (
+            ""
+          )}
           <ul className="w-full divide-y divide-gray-200 dark:divide-gray-700 ">
             {workerDetails &&
               workerDetails.alloted_children &&
