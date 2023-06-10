@@ -14,7 +14,7 @@ export default function MessagePopUp({
   const { t } = useTranslation();
 
   const sendMessageHandler = async () => {
-    await axios.post("http://localhost:3000/admin/message/create", {
+    await axios.post("https://adoptconnect.onrender.com/admin/message/create", {
       to_user_id: to_user_id,
       content: message,
       from_user_id: JSON.parse(localStorage.getItem("userDetails"))._id,

@@ -35,13 +35,16 @@ const FlowManagement = () => {
       setmajorErr("Please fill all the details");
       return;
     }
-    await axios.post("http://localhost:3000/admin/adoption_flow/major/create", {
-      childClassification: selectedCategory.childClassification,
-      majorTaskPosition: parseInt(majorTaskPosition) + 1,
-      majorTaskNote: majorTaskNote,
-      majorTaskStatement: majorTaskStatement,
-      iterationMethod: majorTaskIteration,
-    });
+    await axios.post(
+      "https://adoptconnect.onrender.com/admin/adoption_flow/major/create",
+      {
+        childClassification: selectedCategory.childClassification,
+        majorTaskPosition: parseInt(majorTaskPosition) + 1,
+        majorTaskNote: majorTaskNote,
+        majorTaskStatement: majorTaskStatement,
+        iterationMethod: majorTaskIteration,
+      }
+    );
     setmajorTaskNote("");
     setmajorTaskPosition(0);
     setmajorTaskStatement("");
@@ -53,13 +56,16 @@ const FlowManagement = () => {
       setminorErr("Please fill all the details");
       return;
     }
-    await axios.post("http://localhost:3000/admin/adoption_flow/minor/create", {
-      childClassification: selectedCategory.childClassification,
-      majorTaskPosition: majorTaskPosition,
-      minorTaskPosition: parseInt(minorTaskPosition) + 1,
-      minorTaskNote: minorTaskNote,
-      minorTaskStatement: minorTaskStatement,
-    });
+    await axios.post(
+      "https://adoptconnect.onrender.com/admin/adoption_flow/minor/create",
+      {
+        childClassification: selectedCategory.childClassification,
+        majorTaskPosition: majorTaskPosition,
+        minorTaskPosition: parseInt(minorTaskPosition) + 1,
+        minorTaskNote: minorTaskNote,
+        minorTaskStatement: minorTaskStatement,
+      }
+    );
     setminorTaskNote("");
     // setminorTaskPosition(0);
     // setmajorTaskPosition(0);
@@ -69,16 +75,19 @@ const FlowManagement = () => {
   };
 
   const addCategoryHandler = async () => {
-    await axios.post("http://localhost:3000/child/create_child_category", {
-      childClassification: newCategory,
-    });
+    await axios.post(
+      "https://adoptconnect.onrender.com/child/create_child_category",
+      {
+        childClassification: newCategory,
+      }
+    );
     setreload(!reload);
     setopenAddCategory(false);
   };
 
   const changeCategory = async (childClassification) => {
     const response = await axios.post(
-      "http://localhost:3000/admin/adoption_flow/curr_flow",
+      "https://adoptconnect.onrender.com/admin/adoption_flow/curr_flow",
       {
         childClassification: childClassification,
       }
@@ -90,13 +99,16 @@ const FlowManagement = () => {
 
   useEffect(async () => {
     if (openConfirmPopUp == 1) {
-      await axios.post("http://localhost:3000/child/delete_child_category", {
-        childClassification: selectedCategory.childClassification,
-      });
+      await axios.post(
+        "https://adoptconnect.onrender.com/child/delete_child_category",
+        {
+          childClassification: selectedCategory.childClassification,
+        }
+      );
       setopenConfirmPopUp(0);
     }
     const response = await axios.get(
-      "http://localhost:3000/child/get_child_category"
+      "https://adoptconnect.onrender.com/child/get_child_category"
     );
     setcategory(response.data.response);
   }, [openConfirmPopUp, reload]);
