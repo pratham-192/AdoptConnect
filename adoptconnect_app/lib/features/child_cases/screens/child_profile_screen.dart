@@ -127,9 +127,6 @@ class _ChildProfileScreenState extends State<ChildProfileScreen> {
       individualAdoptionFlow: AdoptionFlow(currMajorTask: 0, majorTask: []),
       uploadedDocuments: documents,
     );
-    print("AVA IMAG");
-    print(avatarImage);
-    print(avatarImage.runtimeType);
 
     _childService.editChild(child: child, context: context);
   }

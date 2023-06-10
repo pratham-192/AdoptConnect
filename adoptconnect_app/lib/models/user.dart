@@ -13,6 +13,7 @@ class User {
   final String address;
   final String aadharCardNo;
   final int contactNo;
+  final Map<String, dynamic> avatar;
 
   User({
     required this.id,
@@ -26,6 +27,7 @@ class User {
     required this.address,
     required this.aadharCardNo,
     required this.contactNo,
+    required this.avatar,
   });
 
   Map<String, dynamic> toMap() {
@@ -41,6 +43,7 @@ class User {
       'address': address,
       'aadharCardNo': aadharCardNo,
       'contactNo': contactNo,
+      'avatar': avatar,
     };
   }
 
@@ -57,6 +60,7 @@ class User {
       address: map['address'] ?? '',
       aadharCardNo: map['aadharCardNo'] ?? '',
       contactNo: map['contactNo']?.toInt() ?? 0,
+      avatar: map['avatar'] ?? {},
     );
   }
 
@@ -76,6 +80,7 @@ class User {
     String? address,
     String? aadharCardNo,
     int? contactNo,
+    Map<String, dynamic>? avatar,
   }) {
     return User(
       id: id ?? this.id,
@@ -89,6 +94,7 @@ class User {
       address: address ?? this.address,
       aadharCardNo: aadharCardNo ?? this.aadharCardNo,
       contactNo: contactNo ?? this.contactNo,
+      avatar: avatar ?? this.avatar,
     );
   }
 }

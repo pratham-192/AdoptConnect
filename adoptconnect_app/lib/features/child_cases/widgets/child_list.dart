@@ -34,7 +34,7 @@ class _ChildListState extends State<ChildList> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const SizedBox(height: 170),
+                      const SizedBox(height: 150),
                       ChildListItem(
                         child: cases[index],
                       ),
