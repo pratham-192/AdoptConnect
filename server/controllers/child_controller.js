@@ -168,17 +168,17 @@ module.exports.create_child_category = async function (req, res) {
 
 
 }
-module.exports.delete_child_category = function (req, res) {
-    // if (req.user.category != 'admin') {
-    //     return res.status(200).send("you are not accessed to delete child=> contact to admin");
-    // }
-    const childclass = req.body.childClassification.toLowerCase();
-    ChildCategory.findOneAndDelete({ childClassification: childclass }, function (err, childcateg) {
-        if (err) {
-            return res.status(200).send("error in deleting child category");
-        }
+module.exports.delete_child_category = async function (req, res) {
+    try {
+        const childclass = req.body.childClassification.toLowerCase();
+        let childcateg = await ChildCategory.findOneAndDelete({ childClassification: childclass });
+        let adoptflow=await AdoptionFlow.findOneAndDelete({childClassification: childclass})
+
         return res.status(200).send("child-category deleted successfully");
-    })
+    } catch (err) {
+        return res.status(200).send("error in deleting child category");
+    }
+
 
 }
 
@@ -226,7 +226,7 @@ module.exports.statusUpdate = async function (req, res) {
             if (u.minorTask.length == 0) break;
             for (let minor of u.minorTask) {
                 if (minor.minorTaskStatus == 2) {
-                    if(!u.start_time)u.start_time=new Date();
+                    if (!u.start_time) u.start_time = new Date();
                     curr_minor = curr_minor + 1;
                 }
                 if (minor.minorTaskStatus == 0 || minor.minorTaskStatus == 1) {
@@ -240,16 +240,16 @@ module.exports.statusUpdate = async function (req, res) {
             // u.save();
             if (!flag) {
                 curr_major = curr_major + 1;
-                if(!u.end_time)u.end_time=new Date();
+                if (!u.end_time) u.end_time = new Date();
             } else break;
         }
         // status_object.save();
         child.individualAdoptionFlow.currMajorTask = curr_major;
         child.individualAdoptionFlow.majorTask = status_object;
         if (curr_major == status_object.length) child.caseStatus = "completed";
-            child.save();
+        child.save();
 
-        if(!child.individualAdoptionFlow.majorTask[curr_major].end_time)child.end_time=new Date();
+        if (!child.individualAdoptionFlow.majorTask[curr_major].end_time) child.end_time = new Date();
         return res.status(200).json({
             response: child
         })
@@ -463,8 +463,8 @@ module.exports.bulkUpload = async function (req, res) {
         for (const row of csvData) {
             if (row[columnMappings.csvChildId]) {
                 if (row[columnMappings.csvChildClassification]) {
-                    let prevChild=await Child.findOne({child_id:row[columnMappings.csvChildId]})
-                    if(prevChild){
+                    let prevChild = await Child.findOne({ child_id: row[columnMappings.csvChildId] })
+                    if (prevChild) {
                         continue;
                     }
                     const childData = {
@@ -508,7 +508,7 @@ module.exports.bulkUpload = async function (req, res) {
                     // console.log(await AdoptionFlow.findOne({ childClassification: childclass }))
                     // console.log(child.individualAdoptionFlow);
                     child.save();
-                }else{
+                } else {
                     uploadFailed.push({
                         reason: 'child category is not present',
                         row: row
