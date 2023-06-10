@@ -226,6 +226,7 @@ module.exports.statusUpdate = async function (req, res) {
             if (u.minorTask.length == 0) break;
             for (let minor of u.minorTask) {
                 if (minor.minorTaskStatus == 2) {
+                    if(!u.start_time)u.start_time=new Date();
                     curr_minor = curr_minor + 1;
                 }
                 if (minor.minorTaskStatus == 0 || minor.minorTaskStatus == 1) {
@@ -239,14 +240,16 @@ module.exports.statusUpdate = async function (req, res) {
             // u.save();
             if (!flag) {
                 curr_major = curr_major + 1;
+                if(!u.end_time)u.end_time=new Date();
             } else break;
         }
         // status_object.save();
         child.individualAdoptionFlow.currMajorTask = curr_major;
         child.individualAdoptionFlow.majorTask = status_object;
         if (curr_major == status_object.length) child.caseStatus = "completed";
-        else if (curr_major != 0)
             child.save();
+
+        if(!child.individualAdoptionFlow.majorTask[curr_major].end_time)child.end_time=new Date();
         return res.status(200).json({
             response: child
         })

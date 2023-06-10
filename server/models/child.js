@@ -113,6 +113,12 @@ const childSchema = mongoose.Schema({
         },
         majorTask:[
             {
+                start_time:{
+                    type:Date
+                },
+                end_time:{
+                    type:Date
+                },
                 majorTaskStatement:{
                     type:String
                 },
