@@ -303,8 +303,9 @@ module.exports.sendResetMail = async (req, res) => {
             // console.log(user.email);
             const newPassword = crypto.randomBytes(4).toString("hex");
             // console.log(newPassword);
-            user.password = newPassword;
-            user.save();
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            user.password=hashedPassword;
+            await user.save();
             const transporter = nodemailer.createTransport({
                 service: "Gmail",
                 auth: {
@@ -316,7 +317,7 @@ module.exports.sendResetMail = async (req, res) => {
                 from: "prathammehtani23@gmail.com",
                 to: user.email,
                 subject: "Reset Password",
-                text: `Hello ${user.name},\n\nYou have your new password .\n\nYour login credentials:\nUser-Id: ${user.user_id}\nPassword: ${user.password}\n\nThank you!`,
+                text: `Hello ${user.name},\n\nYou have your new password .\n\nYour login credentials:\nUser-Id: ${user.user_id}\nPassword: ${newPassword}\n\nThank you!`,
             };
             await transporter.sendMail(mailOptions);
             res.status(200).json({ message: "User created and email sent successfully" });
