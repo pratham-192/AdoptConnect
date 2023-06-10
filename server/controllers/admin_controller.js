@@ -27,6 +27,19 @@ module.exports.getAllWorkers = async function (req, res) {
     }
 
 }
+module.exports.getAllWorkers2 = async function (req, res) {
+    try {
+        let allworkers = await User.find({ category: "worker" }).select('user_id name category email')
+
+        // allworkers.populate('alloted_children')
+        res.status(200).json({
+            response: allworkers
+        })
+    } catch (err) {
+        res.status(200).send("error in finding all workers");
+    }
+
+}
 // module.exports.getAllCaseManagers = async function (req, res) {
 //     try {
 //         let allmanagers = await User.find({ category: "manager" }).populate('alloted_children');
@@ -43,6 +56,19 @@ module.exports.getAllWorkers = async function (req, res) {
 module.exports.getAllChild = async function (req, res) {
     try {
         let allchild = await Child.find({}).populate('worker_alloted');
+
+        // allchild.populate('worker_alloted');
+        res.status(200).json({
+            response: allchild
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(200).send("error in sending all childs");
+    }
+}
+module.exports.getAllChild2 = async function (req, res) {
+    try {
+        let allchild = await Child.find({}).select('child_id name childClassification caseStatus shelterHome gender');
 
         // allchild.populate('worker_alloted');
         res.status(200).json({
