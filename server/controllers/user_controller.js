@@ -31,10 +31,10 @@ module.exports.sendmail = async (req, res) => {
     };
     try {
         await transporter.sendMail(mailOptions);
-        res.status(201).json({ message: "User created and email sent successfully" });
+        res.status(200).json({ message: "User created and email sent successfully" });
     } catch (error) {
         console.log("Error sending email: ", error);
-        res.status(500).json({ error: "Failed to send email" });
+        res.status(200).json({ error: "Failed to send email" });
     }
 };
 
@@ -319,7 +319,7 @@ module.exports.sendResetMail = async (req, res) => {
             res.status(200).json({ message: "User created and email sent successfully" });
         }
         else {
-            return res.status("user doesn't exists")
+            return res.status(200).send("user doesn't exists");
         }
 
     } catch (error) {

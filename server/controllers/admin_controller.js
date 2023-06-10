@@ -315,7 +315,27 @@ module.exports.getAnalytics=async function(req,res){
                 count: 1
               }
             }
-          ])
+          ]);
+          let childStatusShelterHome=await Child.aggregate([
+            {
+              $match: {
+                caseStatus: 'completed' 
+              }
+            },
+            {
+              $group: {
+                _id: '$shelterHome',  
+                count: { $sum: 1 }   
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                shelterHome: '$_id',
+                count: 1
+              }
+            }
+          ]);
           return res.status(200).json({
             response:{
                 ageDistribution,
@@ -326,7 +346,8 @@ module.exports.getAnalytics=async function(req,res){
                 ShelterHomeRatio,
                 childClassificationRatio,
                 AdoptionSuccess,
-                ratioCaseStatus
+                ratioCaseStatus,
+                childStatusShelterHome
             }
           })
     }catch(err){
