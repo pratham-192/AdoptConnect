@@ -18,21 +18,10 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
   const { t } = useTranslation();
 
   const addWorkerHandler = async () => {
-    // if (
-    //   !userId ||
-    //   !userName ||
-    //   !userEmail ||
-    //   !userPass ||
-    //   !userCat ||
-    //   !userZone ||
-    //   !userAddress ||
-    //   !userAadhar ||
-    //   !userContact ||
-    //   !avatar
-    // ) {
-    //   seterr("Please fill all the details");
-    //   return;
-    // }
+    if (!userId || !userName || !userEmail || !userPass) {
+      seterr("Please fill all the details");
+      return;
+    }
     await axios.post("http://localhost:3000/users/create", {
       user_id: userId,
       name: userName,

@@ -39,7 +39,6 @@ export function adminRoute(Component) {
     const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('userDetails'))
     if (!user) {
-      console.log("huee")
       navigate("/login");
       return (
         <div className="w-full h-full flex justify-center items-center">
@@ -63,7 +62,6 @@ export function managerRoute(Component) {
     const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('userDetails'))
     if (!user) {
-      console.log("huee")
       navigate("/login");
       return (
         <div className="w-full h-full flex justify-center items-center">

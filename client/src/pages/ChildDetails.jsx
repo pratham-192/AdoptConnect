@@ -28,6 +28,7 @@ const ChildDetails = () => {
   const [dltDocId, setdltDocId] = useState();
   const [showMissingReport, setshowMissingReport] = useState(false);
   const { t } = useTranslation();
+  const user = JSON.parse(localStorage.getItem("userDetails"));
 
   const updatementorHandler = async () => {
     const response = await axios.post(
@@ -70,7 +71,6 @@ const ChildDetails = () => {
     link.click();
     link.remove();
     window.URL.revokeObjectURL(url);
-    console.log(response.data);
   };
 
   useEffect(async () => {
@@ -87,7 +87,6 @@ const ChildDetails = () => {
           child_id: childId,
         }
       );
-      console.log(response.data);
       if (response.data && response.data.response) {
         const uint8Array = new Uint8Array(response.data.response.data);
         const blob = new Blob([uint8Array]);
@@ -137,7 +136,10 @@ const ChildDetails = () => {
       <div className="flex justify-start items-center mb-7">
         <button
           className="hover:text-slate-500"
-          onClick={() => navigate("/cases")}
+          onClick={() => {
+            if (user && user.category !== "worker") navigate("/cases");
+            else navigate("/child-alloted");
+          }}
         >
           <FaArrowLeft />
         </button>
@@ -221,9 +223,6 @@ const ChildDetails = () => {
         <div className="mt-20 text-center border-b pb-12">
           <h1 className="text-4xl font-medium text-gray-700">
             {childDetails && childDetails.childName}{" "}
-            <span className="font-light text-gray-500">
-              {childDetails && childDetails.age}
-            </span>
           </h1>
           <p className="font-light text-lg text-gray-600 mt-3">
             {childDetails && childDetails.shelterHome}
@@ -234,7 +233,10 @@ const ChildDetails = () => {
           </p>
         </div>
         <div className="mt-12 flex flex-col">
-          {allWorkers && allWorkers.length ? (
+          {user &&
+          user.category !== "worker" &&
+          allWorkers &&
+          allWorkers.length ? (
             <div>
               <p className="flex justify-start sm:px-16 mt-5 items-center">
                 <span className="font-semibold pr-5">
@@ -261,111 +263,109 @@ const ChildDetails = () => {
           ) : (
             ""
           )}
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Age")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.age}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Date of Birth")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.dateOfBirth}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Recommended For Adoption")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.recommendedForAdoption}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Linked with SAA")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.linkedWithSAA}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2  py-4">
             {t("Case History")} :
-          </p>
-          <p>
-            <span className="text-slate-600 font-light lg:mx-16  border-b-2 py-2 pb-5 p-1">
+            <span className="text-slate-600 font-light py-4 pb-5 p-1">
               {childDetails && childDetails.caseHistory}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Inquiry Date Of Admission")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.inquiryDateOfAdmission}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Reason For Admission")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.reasonForAdmission}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Last Visit")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.lastVisit}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Last Call")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.lastCall}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Guardian")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.guardianListed}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Last Family Visit Phone Call")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.familyVisitPhoneCall}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Number Of Siblings")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.siblings}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Last Date Of CWC Order")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.lastDateOfCWCOrder}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Last CWC Order")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.Lastcwcorder}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Time of stay in shelter")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.lengthOfStayInShelter}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("CARINGS Registration Number")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.caringsRegistrationNumber}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("Date LFA, CSR, MERU uploaded in CARINGS")} :{" "}
             <span className="text-slate-600 font-light">
               {childDetails && childDetails.dateLFA_CSR_MERUUploadedINCARINGS}
             </span>
           </p>
-          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-2">
+          <p className="text-gray-800 font-bold p-1 lg:mx-16 border-b-2 py-4">
             {t("All uploaded Documents")} :{" "}
             {allDocuments && allDocuments.length
               ? allDocuments.map((document) => {
