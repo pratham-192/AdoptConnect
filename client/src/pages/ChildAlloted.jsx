@@ -1,21 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "../components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useTranslation } from "react-i18next";
 
 const ChildAlloted = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("userDetails"));
+  const [childAlloted, setchildAlloted] = useState();
   const { t } = useTranslation();
+
+  useEffect(async () => {
+    if (!user) return;
+    const response = await axios.post(
+      "http://localhost:3000/users/get_allocated_children",
+      {
+        user_id: user.user_id,
+      }
+    );
+    setchildAlloted(response.data.response);
+  }, []);
+
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl ">
       <Header category={t("App")} title={t("Child Details")} />
       <div className="mt-12 flex flex-col justify-center">
-        <div className="pl-3 text-lg font-bold">{t("Child Allocated")}</div>
+        {childAlloted &&
+        childAlloted.alloted_children &&
+        childAlloted.alloted_children.length ? (
+          <div className="pl-3 text-lg font-bold">{t("Child Allocated")}</div>
+        ) : (
+          ""
+        )}
         <ul className="w-full divide-y divide-gray-200 dark:divide-gray-700 ">
-          {user &&
-            user.alloted_children &&
-            user.alloted_children.map((child) => {
+          {childAlloted &&
+            childAlloted.alloted_children &&
+            childAlloted.alloted_children.map((child) => {
               return (
                 <li
                   className="py-2 my-2 sm:py-4 capitalize mt-2 cursor-pointer hover:bg-slate-100 px-3 rounded"
@@ -74,11 +94,8 @@ const ChildAlloted = () => {
                             </p>
                           )}
                         </p>
-                        <p>{child.caseStatus}</p>
+                        <p>{t(`${child.caseStatus}`)}</p>
                       </div>
-                    </div>
-                    <div className="inline-flex items-center text-sm text-base font-semibold text-gray-900 dark:text-white">
-                      {t(`${child.childClassification}`)}
                     </div>
                   </div>
                 </li>

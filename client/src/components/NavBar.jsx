@@ -37,6 +37,7 @@ const Navbar = () => {
     setScreenSize,
     screenSize,
   } = useStateContext();
+  const user = JSON.parse(localStorage.getItem("userDetails"));
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -79,28 +80,36 @@ const Navbar = () => {
             className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
             onClick={() => handleClick("userProfile")}
           >
-            <img
-              className="rounded-full w-8 h-8"
-              src={
-                localStorage.getItem("userDetails") &&
-                JSON.parse(localStorage.getItem("userDetails")).avatar &&
-                URL.createObjectURL(
-                  new Blob([
-                    new Uint8Array(
-                      JSON.parse(
-                        localStorage.getItem("userDetails")
-                      ).avatar.data
-                    ),
-                  ])
-                )
-              }
-              alt="user-profile"
-            />
+            {user && user.avatar && user.avatar.data ? (
+              <img
+                className="rounded-full w-8 h-8"
+                src={
+                  user &&
+                  user.avatar &&
+                  URL.createObjectURL(
+                    new Blob([new Uint8Array(user.avatar.data)])
+                  )
+                }
+                alt="user-profile"
+              />
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
             <p>
               <span className="text-gray-400 text-14">{t("Hi")},</span>{" "}
               <span className="text-gray-400 font-bold ml-1 text-14">
-                {JSON.parse(localStorage.getItem("userDetails")) &&
-                  JSON.parse(localStorage.getItem("userDetails")).name}
+                {user && user.name}
               </span>
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />

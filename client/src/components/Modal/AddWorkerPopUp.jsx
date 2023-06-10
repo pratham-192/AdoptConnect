@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { ImCross } from "react-icons/im";
 import { useTranslation } from "react-i18next";
+import { validateEmail } from "../../Contexts/Validation";
 
 export default function AddWorkerPopUp({ setopenAddWorker }) {
   const [userId, setuserId] = useState("");
@@ -18,22 +19,15 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
   const { t } = useTranslation();
 
   const addWorkerHandler = async () => {
-    // if (
-    //   !userId ||
-    //   !userName ||
-    //   !userEmail ||
-    //   !userPass ||
-    //   !userCat ||
-    //   !userZone ||
-    //   !userAddress ||
-    //   !userAadhar ||
-    //   !userContact ||
-    //   !avatar
-    // ) {
-    //   seterr("Please fill all the details");
-    //   return;
-    // }
-    await axios.post("http://localhost:3000/users/create", {
+    if (!validateEmail(userEmail)) {
+      seterr("Please enter a valid email");
+      return;
+    }
+    if (!userId || !userName || !userEmail || !userPass) {
+      seterr("Please fill all the details");
+      return;
+    }
+    const response = await axios.post("http://localhost:3000/users/create", {
       user_id: userId,
       name: userName,
       email: userEmail,
@@ -44,12 +38,15 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
       aadharCardNo: userAadhar,
       contactNo: userContact,
     });
-
-    const formData = new FormData();
-    formData.append("file", avatar);
-    formData.append("user_id", userId);
-    await axios.post("http://localhost:3000/users/image_upload", formData);
-
+    if (!response.data.response) {
+      seterr("Error in creating the user/user already exists");
+    }
+    if (avatar) {
+      const formData = new FormData();
+      formData.append("file", avatar);
+      formData.append("user_id", userId);
+      await axios.post("http://localhost:3000/users/image_upload", formData);
+    }
     setopenAddWorker(false);
   };
 

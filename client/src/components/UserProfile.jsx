@@ -19,7 +19,7 @@ const UserProfile = () => {
     // const response = await axios.post("http://localhost:3000/users/sign-out");
     // console.log(response.data);
     localStorage.removeItem("userDetails");
-    navigate("/login/user");
+    navigate("/login");
   };
 
   return (
@@ -37,20 +37,29 @@ const UserProfile = () => {
         />
       </div>
       <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
-        <img
-          className="rounded-full h-24 w-24"
-          src={
-            JSON.parse(localStorage.getItem("userDetails")).avatar &&
-            URL.createObjectURL(
-              new Blob([
-                new Uint8Array(
-                  JSON.parse(localStorage.getItem("userDetails")).avatar.data
-                ),
-              ])
-            )
-          }
-          alt="user-profile"
-        />
+        {user && user.avatar && user.avatar.data ? (
+          <img
+            className="rounded-full h-24 w-24"
+            src={
+              user.avatar &&
+              URL.createObjectURL(new Blob([new Uint8Array(user.avatar.data)]))
+            }
+            alt="user-profile"
+          />
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-10 w-10"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+              clipRule="evenodd"
+            />
+          </svg>
+        )}
         <div>
           <p className="font-semibold text-xl dark:text-gray-200 capitalize">
             {" "}

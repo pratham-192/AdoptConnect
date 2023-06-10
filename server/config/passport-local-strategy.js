@@ -1,22 +1,30 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
+
 //authentication using passport
 passport.use(new LocalStrategy({
     usernameField: 'user_id',
     passReqToCallback: true//it allows us to use req as the first argument in the callback function
 },
-    function (req, user_id, password, done) {
-        //find the user and establish the identity
-        User.findOne({ user_id: user_id }, function (err, user) {
-            if (err) {
-                return done(err);//response to passport that there is error in finding the user
+    async function (req, user_id, password, done) {
+        try {
+            //find the user and establish the identity
+            let user = await User.findOne({ user_id: user_id });
+
+            if (!user || req.body.category != user.category) {
+                return done(null, false, { message: 'Incorrect username' });//it means that there is no error but user is not found
             }
-            if (!user || user.password != password || req.body.category != user.category) {
-                return done(null, false);//it means that there is no error but user is not found
+            const passwordsMatch = await bcrypt.compare(password, user.password);
+
+            if (!passwordsMatch) {
+                return done(null, false, { message: 'Incorrect password' });
             }
             return done(null, user);//return the user to passport
-        })
+        } catch (err) {
+            return done(err);
+        }
     }
 
 ))

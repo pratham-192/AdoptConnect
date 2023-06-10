@@ -5,6 +5,7 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const axios = require('axios');
 const fastcsv = require('fast-csv');
+const bcrypt=require('bcrypt');
 module.exports.profile = function (req, res) {
     // return res.render('user_profile', {
     //     title: 'User Profile'
@@ -31,10 +32,10 @@ module.exports.sendmail = async (req, res) => {
     };
     try {
         await transporter.sendMail(mailOptions);
-        res.status(201).json({ message: "User created and email sent successfully" });
+        res.status(200).json({ message: "User created and email sent successfully" });
     } catch (error) {
         console.log("Error sending email: ", error);
-        res.status(500).json({ error: "Failed to send email" });
+        res.status(200).json({ error: "Failed to send email" });
     }
 };
 
@@ -61,7 +62,9 @@ module.exports.create = async function (req, res) {
                 email: req.body.email,
                 user_id: req.body.user_id
             });
-
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            newuser.password=hashedPassword;
+            await newuser.save();
             return res.status(200).json({ response: newuser });
         } else {
             return res.status(200).send("User already exists");
@@ -300,8 +303,9 @@ module.exports.sendResetMail = async (req, res) => {
             // console.log(user.email);
             const newPassword = crypto.randomBytes(4).toString("hex");
             // console.log(newPassword);
-            user.password = newPassword;
-            user.save();
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            user.password=hashedPassword;
+            await user.save();
             const transporter = nodemailer.createTransport({
                 service: "Gmail",
                 auth: {
@@ -313,13 +317,13 @@ module.exports.sendResetMail = async (req, res) => {
                 from: "prathammehtani23@gmail.com",
                 to: user.email,
                 subject: "Reset Password",
-                text: `Hello ${user.name},\n\nYou have your new password .\n\nYour login credentials:\nUser-Id: ${user.user_id}\nPassword: ${user.password}\n\nThank you!`,
+                text: `Hello ${user.name},\n\nYou have your new password .\n\nYour login credentials:\nUser-Id: ${user.user_id}\nPassword: ${newPassword}\n\nThank you!`,
             };
             await transporter.sendMail(mailOptions);
             res.status(200).json({ message: "User created and email sent successfully" });
         }
         else {
-            return res.status("user doesn't exists")
+            return res.status(200).send("user doesn't exists");
         }
 
     } catch (error) {

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { AiFillMessage } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
+import { useTranslation } from "react-i18next";
 
 export default function MessagePopUp({
   setopenMessagePopUp,
@@ -10,6 +11,7 @@ export default function MessagePopUp({
   setopenPopUp,
 }) {
   const [message, setmessage] = useState("");
+  const { t } = useTranslation();
 
   const sendMessageHandler = async () => {
     await axios.post("http://localhost:3000/admin/message/create", {
@@ -35,11 +37,11 @@ export default function MessagePopUp({
               <AiFillMessage size={20} />
             </div>
             <div className="mt-3 text-center font-semibold">
-              Send message to {to_user_name}
+              {t("Send message to")} {to_user_name}
             </div>
             <div className="mt-3 sm:mt-5">
               <label htmlFor="full_name" className="text-sm">
-                Message
+                {t("Message")}
               </label>
               <textarea
                 rows="5"
@@ -55,7 +57,7 @@ export default function MessagePopUp({
               className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 sm:text-sm"
               onClick={() => sendMessageHandler()}
             >
-              Send Message
+              {t("Send Message")}
             </button>
           </div>
         </div>
