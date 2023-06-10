@@ -19,9 +19,9 @@ import { useNavigate } from "react-router-dom";
 import { managerRoute } from "../Contexts/ProtectedRoute";
 
 const childGenderTemplate = (props) => (
-  <div className="flex gap-2 justify-center items-center text-gray-700 capitalize">
+  <div className="flex gap-2  items-center text-gray-700 capitalize">
     <p>
-      {props.gender == "male" ? (
+      {props.gender && props.gender.toLowerCase() == "male" ? (
         <span className="text-blue-600">
           <FaMale size={15} />
         </span>
@@ -36,7 +36,7 @@ const childGenderTemplate = (props) => (
 );
 
 const caseStatusTemplate = (props) => (
-  <div className="flex gap-2 justify-center items-center text-gray-700 capitalize">
+  <div className="flex gap-2 items-center text-gray-700 capitalize">
     <p>
       {props.caseStatus == "completed" ? (
         <p className="h-3 w-3 rounded-full bg-green-400"></p>
@@ -64,7 +64,9 @@ const Cases = () => {
   const navigate = useNavigate();
 
   useEffect(async () => {
-    const response = await axios.get("http://localhost:3000/admin/all_child");
+    const response = await axios.get(
+      "https://adoptconnect.onrender.com/admin/all_child"
+    );
     setchildData(response.data.response);
   }, [openAddChild, openchildDetails, openEditDetails]);
 

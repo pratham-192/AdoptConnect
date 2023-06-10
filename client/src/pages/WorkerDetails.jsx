@@ -22,12 +22,15 @@ const WorkerDetails = () => {
   const { t } = useTranslation();
 
   useEffect(async () => {
-    const response = await axios.post("http://localhost:3000/users/getworker", {
-      user_id: workerId,
-    });
+    const response = await axios.post(
+      "https://adoptconnect.onrender.com/users/getworker",
+      {
+        user_id: workerId,
+      }
+    );
     setworkerDetails(response.data.response);
     const response2 = await axios.post(
-      "http://localhost:3000/users/get_image",
+      "https://adoptconnect.onrender.com/users/get_image",
       {
         user_id: workerId,
       }
