@@ -15,6 +15,7 @@ const Kanban = () => {
   const [selectedChild, setselectedChild] = useState();
   const [currentChild, setcurrentChild] = useState();
   const [reload, setreload] = useState(false);
+  const user = JSON.parse(localStorage.getItem("userDetails"));
   const { t } = useTranslation();
 
   let grid;
@@ -29,7 +30,8 @@ const Kanban = () => {
           statusObject: currAdoptionflow,
         }
       );
-      setcurrentChild(response.data.response.individualAdoptionFlow);
+      if (response.data.response)
+        setcurrentChild(response.data.response.individualAdoptionFlow);
     }
   };
 
@@ -46,12 +48,34 @@ const Kanban = () => {
         statusObject: majorAdoptionFlow,
       }
     );
-    setcurrentChild(response.data.response.individualAdoptionFlow);
+    console.log(response.data);
+    if (response.data.response)
+      setcurrentChild(response.data.response.individualAdoptionFlow);
+  };
+
+  const getcurrentChildHandler = async (child_id) => {
+    const response = await axios.post("http://localhost:3000/child/getchild", {
+      child_id: child_id,
+    });
+    if (response.data.response)
+      setcurrentChild(response.data.response.individualAdoptionFlow);
   };
 
   useEffect(async () => {
-    const response = await axios.get("http://localhost:3000/admin/all_child");
-    setchildData(response.data.response);
+    if (!user) return;
+    if (user.category === "admin") {
+      const response = await axios.get("http://localhost:3000/admin/all_child");
+      console.log(response.data.response);
+      setchildData(response.data.response);
+    } else {
+      const response = await axios.post(
+        "http://localhost:3000/users/get_allocated_children",
+        {
+          user_id: user.user_id,
+        }
+      );
+      setchildData(response.data.response.alloted_children);
+    }
   }, []);
 
   return (
@@ -62,11 +86,12 @@ const Kanban = () => {
         <select
           className="h-10 border mt-1 rounded px-4 w-3/4 bg-gray-50 ml-5"
           onChange={(e) => {
+            console.log(e.target.value);
             if (e.target.value === "") {
               setcurrentChild();
             } else {
-              setselectedChild(childData[e.target.value].child_id);
-              setcurrentChild(childData[e.target.value].individualAdoptionFlow);
+              getcurrentChildHandler(e.target.value);
+              setselectedChild(e.target.value);
             }
           }}
         >
@@ -75,7 +100,7 @@ const Kanban = () => {
             childData.length &&
             childData.map((child, index) => {
               return (
-                <option key={index} value={index}>
+                <option key={index} value={child.child_id}>
                   {child.childName}
                 </option>
               );

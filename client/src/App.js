@@ -14,6 +14,7 @@ import FlowManagement from './pages/FlowManagement';
 import { Calendar } from './pages';
 import Messages from './pages/Messages';
 import ForgotPassword from './pages/ForgotPassword';
+import ManageData from './pages/ManageData';
 
 const App = () => {
   const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
@@ -77,6 +78,7 @@ const App = () => {
                 <Route path="/analytics" element={(<Analytics />)} />
                 <Route path="/workers" element={<Employees />} />
                 <Route path="/worker-details" element={<WorkerDetails />} />
+                <Route path="/manage-data" element={<ManageData />} />
                 <Route path="/cases" element={<Cases />} />
                 <Route path="/progress" element={<Kanban />} />
                 <Route path="/edit-profile" element={<EditProfile />} />
