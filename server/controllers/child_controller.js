@@ -249,7 +249,7 @@ module.exports.statusUpdate = async function (req, res) {
         if (curr_major == status_object.length) child.caseStatus = "completed";
         child.save();
 
-        if (!child.individualAdoptionFlow.majorTask[curr_major].end_time) child.end_time = new Date();
+        if (!child.individualAdoptionFlow.majorTask[curr_major].end_time) child.individualAdoptionFlow.majorTask[curr_major].end_time = new Date();
         return res.status(200).json({
             response: child
         })
