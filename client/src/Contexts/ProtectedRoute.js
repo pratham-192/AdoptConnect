@@ -38,9 +38,16 @@ export function adminRoute(Component) {
   return function AdminRoute(props) {
     const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('userDetails'))
-
-    if (user.category !== "admin") {
-      navigate("/child-alloted");
+    if (!user) {
+      console.log("huee")
+      navigate("/login");
+      return (
+        <div className="w-full h-full flex justify-center items-center">
+          Loading...
+        </div>
+      );
+    } else if (user.category !== "admin") {
+      navigate("/cases");
       return (
         <div className="w-full h-full flex justify-center items-center">
           Loading...
@@ -55,8 +62,15 @@ export function managerRoute(Component) {
   return function ManagerRoute(props) {
     const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('userDetails'))
-
-    if (user.category !== "admin" && user.category !== "case-manager") {
+    if (!user) {
+      console.log("huee")
+      navigate("/login");
+      return (
+        <div className="w-full h-full flex justify-center items-center">
+          Loading...
+        </div>
+      );
+    } else if (user.category !== "admin" && user.category !== "case-manager") {
       navigate("/child-alloted");
       return (
         <div className="w-full h-full flex justify-center items-center">

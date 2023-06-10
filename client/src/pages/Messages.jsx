@@ -10,6 +10,7 @@ const Messages = () => {
   const user = JSON.parse(localStorage.getItem("userDetails"));
 
   useEffect(async () => {
+    if (!user) return;
     if (user.category === "admin") {
       const response = await axios.post(
         "http://localhost:3000/admin/message/get_message",
@@ -36,7 +37,7 @@ const Messages = () => {
       console.log(response.data);
       setallMessages(response.data.response);
     }
-  }, []);
+  }, [user]);
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl capitalize">
@@ -52,26 +53,33 @@ const Messages = () => {
                 <li className="py-2 sm:py-4" key={index}>
                   <div
                     className={`flex sm:py-2 px-3 rounded py-1 items-center space-x-4 capitalize ${
-                      message.seen && message.from_user._id === user._id
+                      message &&
+                      message.seen &&
+                      message &&
+                      message.from_user._id === user._id
                         ? "bg-slate-50"
                         : ""
                     }`}
                   >
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                        {message.content}
+                        {message && message.content}
                       </p>
                       <p className="text-sm text-gray-500 truncate dark:text-gray-400">
                         {user.category === "admin"
-                          ? message.to_user.name
-                          : message.from_user.name}
+                          ? message && message.to_user && message.to_user.name
+                          : message &&
+                            message.from_user &&
+                            message.from_user.name}
                       </p>
                     </div>
                     <div className="inline-flex items-center text-sm text-base text-gray-900 dark:text-white">
-                      {message.from_user._id === user._id ? (
+                      {message && message.from_user._id === user._id ? (
                         <span
                           className={`pr-3 ${
-                            message.seen ? "text-blue-500" : "text-slate-700"
+                            message && message.seen
+                              ? "text-blue-500"
+                              : "text-slate-700"
                           }`}
                         >
                           <TiTick size={22} />
@@ -79,12 +87,16 @@ const Messages = () => {
                       ) : (
                         ""
                       )}
-                      {new Date(message.createdAt).toLocaleTimeString("en-GB", {
+                      {new Date(
+                        message && message.createdAt
+                      ).toLocaleTimeString("en-GB", {
                         hour: "numeric",
                         minute: "numeric",
                       })}
                       {", "}
-                      {new Date(message.createdAt).toLocaleDateString()}
+                      {new Date(
+                        message && message.createdAt
+                      ).toLocaleDateString()}
                     </div>
                   </div>
                 </li>

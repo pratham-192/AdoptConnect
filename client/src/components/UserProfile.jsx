@@ -19,7 +19,7 @@ const UserProfile = () => {
     // const response = await axios.post("http://localhost:3000/users/sign-out");
     // console.log(response.data);
     localStorage.removeItem("userDetails");
-    navigate("/login/user");
+    navigate("/login");
   };
 
   return (
