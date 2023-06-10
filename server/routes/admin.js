@@ -17,4 +17,6 @@ router.post('/message/update',adminController.updateMessage);
 router.post('/message/delete',adminController.deleteMessage);
 router.post('/message/get_message',adminController.getMessagebyAdmin);
 
+router.get('/get_analytics',adminController.getAnalytics);
+
 module.exports=router;

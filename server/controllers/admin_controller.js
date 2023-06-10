@@ -163,3 +163,174 @@ module.exports.getMessagebyAdmin=async function(req,res){
         return res.status(200).send("error in getting messages of admin");
     }
 }
+
+module.exports.getAnalytics=async function(req,res){
+    try{
+        let ageDistribution=await Child.aggregate([
+            {
+              $group: {
+                _id: {
+                  $switch: {
+                    branches: [
+                      { case: { $lte: ['$age', 5] }, then: '0-5' },
+                      { case: { $lte: ['$age', 10] }, then: '6-10' },
+                      { case: { $lte: ['$age', 15] }, then: '11-15' },
+                      { case: { $lte: ['$age', 18] }, then: '16-18' }
+                    ],
+                    default: 'Age Not Mentioned' 
+                  }
+                },
+                count: { $sum: 1 }   
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                ageGroup: '$_id',
+                count: 1
+              }
+            }
+          ])
+          let genderDistribution=await Child.aggregate([
+            {
+              $group: {
+                _id: {$toLower: '$gender'},
+                count: { $sum: 1 }   
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                gender:'$_id',
+                count: 1
+              }
+            }
+          ])
+          let geographicDistributionDistrict=await Child.aggregate([
+            {
+              $group: {
+                _id: '$district',  
+                count: { $sum: 1 }  
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                district: '$_id',
+                count: 1
+              }
+            }
+          ]);
+          let geographicDistributionState=await Child.aggregate([
+            {
+              $group: {
+                _id: '$state', 
+                count: { $sum: 1 }  
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                state: '$_id',
+                count: 1
+              }
+            }
+          ])
+          let workerRatio=await User.aggregate([
+            {
+              $group: {
+                _id: '$category',
+                count: { $sum: 1 } 
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                category: '$_id',
+                count: 1
+              }
+            }
+          ])
+          let ShelterHomeRatio=await Child.aggregate([
+            {
+              $group: {
+                _id: '$shelterHome', 
+                count: { $sum: 1 }   
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                shelterHome: '$_id',
+                count: 1
+              }
+            }
+          ]);
+          let childClassificationRatio=await Child.aggregate([
+            {
+              $group: {
+                _id: '$childClassification',
+                count: { $sum: 1 }  
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                childClassification: '$_id',
+                count: 1
+              }
+            }
+          ]);
+          let AdoptionSuccess=await Child.aggregate([
+            {
+              $group: {
+                _id: null,
+                completedCount: {
+                  $sum: {
+                    $cond: [{ $eq: ['$caseStatus', 'completed'] }, 1, 0]
+                  }
+                },
+                totalCount: { $sum: 1 }
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                completedCount: 1,
+                totalCount: 1
+              }
+            }
+          ]);
+          let ratioCaseStatus=await Child.aggregate([
+            {
+              $group: {
+                _id: '$caseStatus',   
+                count: { $sum: 1 }   
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                caseStatus: '$_id',
+                count: 1
+              }
+            }
+          ])
+          return res.status(200).json({
+            response:{
+                ageDistribution,
+                genderDistribution,
+                geographicDistributionDistrict,
+                geographicDistributionState,
+                workerRatio,
+                ShelterHomeRatio,
+                childClassificationRatio,
+                AdoptionSuccess,
+                ratioCaseStatus
+            }
+          })
+    }catch(err){
+        console.log(err);
+        return res.status(200).send("error in getting analytics");
+    }
+}
