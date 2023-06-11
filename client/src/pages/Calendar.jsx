@@ -24,7 +24,7 @@ const Calendar = () => {
     const newscheduleData = [];
     for (var i = 0; i < user.alloted_children.length; i++) {
       const response = await axios.post(
-        "http://localhost:3000/child/get_flow_child",
+        "https://adoptconnect.onrender.com/child/get_flow_child",
         {
           child_id: user.alloted_children[i],
         }
@@ -34,16 +34,7 @@ const Calendar = () => {
         const adoptionFlow = response.data.response.individualAdoptionFlow;
         for (var j = 0; j < adoptionFlow.majorTask.length; j++) {
           const major = adoptionFlow.majorTask[j];
-          if (major && major.majorTaskStatus === 2) {
-            newscheduleData.push({
-              Id: major._id,
-              Subject: major.majorTaskStatement,
-              Location: major.majorTaskNote,
-              StartTime: new Date(major.start_time),
-              EndTime: new Date(major.end_time),
-              CategoryColor: "#1aaa55",
-            });
-          } else if (major && major.majorTaskStatus === 1) {
+          if (major && major.majorTaskStatus === 1) {
             newscheduleData.push({
               Id: major._id,
               Subject: major.majorTaskStatement,
