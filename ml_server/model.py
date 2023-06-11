@@ -1,7 +1,7 @@
 from transformers import pipeline
 
-classifier = pipeline("zero-shot-classification")
-sentiment_labels = ["Prompt","Postpone"]
+classifier = pipeline("zero-shot-classification", model = 'microsoft/deberta-v3-small')
+sentiment_labels = ["Urgent Adoption", "Adopt Later"]
 
 def get_prediction(text: str) -> str:
     if text.strip() == "":

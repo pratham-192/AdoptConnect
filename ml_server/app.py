@@ -25,5 +25,5 @@ def flag_children():
     texts = { child["childId"] : get_text(child) for child in children}
     clean_texts = { childId: get_clean_text(text) for childId, text in texts.items() }
     predictions = { childId: get_prediction(text) for childId, text in clean_texts.items() }
-    output = { childId: prediction == "Prompt" for childId, prediction in predictions.items() }
+    output = { childId: prediction == "Urgent Adoption" for childId, prediction in predictions.items() }
     return output

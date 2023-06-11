@@ -4,3 +4,5 @@ uvicorn
 tensorflow
 torch
 transformers
+sentencepiece
+protobuf==3.20.1
