@@ -16,7 +16,7 @@ const ManageData = () => {
 
   const getUsersDataHandler = async () => {
     await axios
-      .get("http://localhost:3000/users/download_csv")
+      .get("https://adoptconnect.onrender.com/users/download_csv")
       .then((response) => response.data)
       .then((arrayBuffer) => {
         const blob = new Blob([arrayBuffer], { type: "text/csv" });
@@ -47,7 +47,7 @@ const ManageData = () => {
 
   const getChildDataHandler = async () => {
     await axios
-      .get("http://localhost:3000/child/download_csv")
+      .get("https://adoptconnect.onrender.com/child/download_csv")
       .then((response) => response.data)
       .then((arrayBuffer) => {
         const blob = new Blob([arrayBuffer], { type: "text/csv" });
@@ -81,7 +81,7 @@ const ManageData = () => {
     formData.append("file", childData);
     console.log(formData);
     const response = await axios.post(
-      "http://localhost:3000/child/bulk_upload",
+      "https://adoptconnect.onrender.com/child/bulk_upload",
       formData
     );
     console.log(response);

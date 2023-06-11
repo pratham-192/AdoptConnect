@@ -64,7 +64,9 @@ const Cases = () => {
   const navigate = useNavigate();
 
   useEffect(async () => {
-    const response = await axios.get("http://localhost:3000/admin/all_child2");
+    const response = await axios.get(
+      "https://adoptconnect.onrender.com/admin/all_child2"
+    );
     setchildData(response.data.response);
   }, [openAddChild, openchildDetails, openEditDetails]);
 

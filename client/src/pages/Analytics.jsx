@@ -30,7 +30,7 @@ const Analytics = () => {
 
   useEffect(async () => {
     const response = await axios.get(
-      "http://localhost:3000/admin/get_analytics"
+      "https://adoptconnect.onrender.com/admin/get_analytics"
     );
     if (response.data) {
       console.log(response.data.response);

@@ -32,7 +32,7 @@ const ChildDetails = () => {
 
   const updatementorHandler = async () => {
     const response = await axios.post(
-      "http://localhost:3000/admin/addchildtoworker",
+      "https://adoptconnect.onrender.com/admin/addchildtoworker",
       {
         child_id: childDetails.child_id,
         user_id: selectedWorker,
@@ -56,7 +56,7 @@ const ChildDetails = () => {
 
   const downloadDocumentHandler = async (docId) => {
     const response = await axios.post(
-      "http://localhost:3000/child/document/download",
+      "https://adoptconnect.onrender.com/child/document/download",
       {
         child_id: childId,
         docId: docId,
@@ -75,14 +75,17 @@ const ChildDetails = () => {
 
   useEffect(async () => {
     if (openConfirmPopUp === 1) {
-      await axios.post("http://localhost:3000/child/document/files/delete", {
-        child_id: childId,
-        docId: dltDocId,
-      });
+      await axios.post(
+        "https://adoptconnect.onrender.com/child/document/files/delete",
+        {
+          child_id: childId,
+          docId: dltDocId,
+        }
+      );
       setopenConfirmPopUp(0);
     } else {
       const response = await axios.post(
-        "http://localhost:3000/child/get_image",
+        "https://adoptconnect.onrender.com/child/get_image",
         {
           child_id: childId,
         }
@@ -93,18 +96,18 @@ const ChildDetails = () => {
         setimageUrl(URL.createObjectURL(blob));
       }
       const response2 = await axios.get(
-        "http://localhost:3000/admin/all_workers"
+        "https://adoptconnect.onrender.com/admin/all_workers"
       );
       setallWorkers(response2.data.response);
       const response3 = await axios.post(
-        "http://localhost:3000/child/getchild",
+        "https://adoptconnect.onrender.com/child/getchild",
         {
           child_id: childId,
         }
       );
       setchildDetails(response3.data.response);
       const response4 = await axios.post(
-        "http://localhost:3000/child/document/getbychildid",
+        "https://adoptconnect.onrender.com/child/document/getbychildid",
         {
           child_id: childId,
         }
