@@ -40,4 +40,6 @@ router.post('/delete_image',childController.deleteImage)
 router.post('/bulk_upload',upload.single('file'),childController.bulkUpload);
 
 router.get('/download_csv',childController.csvDownload);
+
+router.post('get_flow_child',childController.getadoptionbychildid);
 module.exports=router;

@@ -515,10 +515,10 @@ module.exports.bulkUpload = async function (req, res) {
                         // console.log(await AdoptionFlow.findOne({ childClassification: childclass }))
                         // console.log(child.individualAdoptionFlow);
                         child.save();
-                    }else{
+                    } else {
                         uploadFailed.push({
-                            reason:'this child category does not exist',
-                            row:row
+                            reason: 'this child category does not exist',
+                            row: row
                         })
                     }
                 } else {
@@ -650,3 +650,14 @@ module.exports.csvDownload = async function (req, res) {
         return res.status(200).send('Error in downloading CSV file of children');
     }
 };
+
+module.exports.getadoptionbychildid = async function (req, res) {
+    try {
+        let adoptionflowchild = await Child.findById(req.body.child_id).select('individualAdoptionFlow');
+        return res.status(200).json({
+            response: adoptionflowchild
+        })
+    } catch (err) {
+        return res.status(200).send("error in sending individual adoption flow");
+    }
+}
