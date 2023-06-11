@@ -6,6 +6,7 @@ const port = 3000;
 const db = require('./config/mongoose');
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const passportjwt=require('./config/passport-jwt-strategy')
 
 app.use(cors())
 app.use(express.json({limit:'10mb'}));

@@ -5,7 +5,7 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage, limits:{fileSize :10*1024*1024} });
 const userController=require('../controllers/user_controller');
-
+const authentication=require('../controllers/authentication');
 router.get('/signupadmin',userController.signupadmin);
 
 
@@ -47,4 +47,6 @@ router.post('/sendmail',userController.sendmail);
 router.post('/reset_password',userController.sendResetMail);
 
 router.get('/download_csv',userController.csvDownload);
+
+router.post('/createsessionjwt',authentication.createSession);
 module.exports=router;
