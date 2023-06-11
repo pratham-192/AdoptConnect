@@ -310,10 +310,10 @@ class _ChildProfileScreenState extends State<ChildProfileScreen> {
                   Dropdown(
                     labelText: "Child Classification",
                     items: const [
-                      "Abandoned",
-                      "Orphaned",
-                      "Surrendered",
-                      "Untraceable"
+                      "abandoned",
+                      "orphaned",
+                      "surrendered",
+                      "admitted-by-guardians"
                     ],
                     dropdownValue: _childClassificationValue,
                     updateDropdownValue: _updateChildClassification,

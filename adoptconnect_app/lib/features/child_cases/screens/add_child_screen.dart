@@ -243,10 +243,10 @@ class _AddChildScreenState extends State<AddChildScreen> {
                   Dropdown(
                     labelText: "Child Classification",
                     items: const [
-                      "Abandoned",
-                      "Orphaned",
-                      "Surrendered",
-                      "Untraceable"
+                      "abandoned",
+                      "orphaned",
+                      "surrendered",
+                      "admitted-by-guardians"
                     ],
                     dropdownValue: _childClassificationValue,
                     updateDropdownValue: _updateChildClassification,
