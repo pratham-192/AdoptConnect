@@ -472,6 +472,7 @@ module.exports.bulkUpload = async function (req, res) {
                     }
                     const childclass = row[columnMappings.csvChildClassification].toLowerCase();
                     let i = await ChildCategory.findOne({ childClassification: childclass });
+                    // console.log(i);
                     if (i) {
                         const childData = {
                             child_id: row[columnMappings.csvChildId] || undefined,
@@ -483,7 +484,7 @@ module.exports.bulkUpload = async function (req, res) {
                             gender: row[columnMappings.csvGender] || undefined,
                             dateOfBirth: row[columnMappings.csvDateOfBirth] || undefined,
                             age: row[columnMappings.csvAge] || undefined,
-                            childClassification: childclass || undefined,
+                            childClassification: i.childClassification || undefined,
                             recommendedForAdoption: row[columnMappings.csvRecommendedForAdoption] || undefined,
                             inquiryDateOfAdmission: row[columnMappings.csvInquiryDateOfAdmission] || undefined,
                             reasonForAdmission: row[columnMappings.csvReasonForAdmission] || undefined,
