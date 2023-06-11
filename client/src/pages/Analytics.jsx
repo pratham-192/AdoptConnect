@@ -27,6 +27,12 @@ const Analytics = () => {
   const [workerRatioData, setworkerRatioData] = useState([]);
   const [childClassificationRatioData, setchildClassificationRatioData] =
     useState([]);
+  const [
+    geographicDistributionDistrictData,
+    setgeographicDistributionDistrictData,
+  ] = useState([]);
+  const [geographicDistributionStateData, setgeographicDistributionStateData] =
+    useState([]);
 
   useEffect(async () => {
     const response = await axios.get(
@@ -130,6 +136,36 @@ const Analytics = () => {
         });
       }
       setchildClassificationRatioData(newchildClassificationData);
+
+      const newgeographicDistributionDistrictData = [];
+      for (
+        var i = 0;
+        i < response.data.response.geographicDistributionDistrict.labels.length;
+        i++
+      ) {
+        newgeographicDistributionDistrictData.push({
+          district:
+            response.data.response.geographicDistributionDistrict.labels[i],
+          count:
+            response.data.response.geographicDistributionDistrict.values[i],
+        });
+      }
+      setgeographicDistributionDistrictData(
+        newgeographicDistributionDistrictData
+      );
+
+      const newgeographicDistributionStateData = [];
+      for (
+        var i = 0;
+        i < response.data.response.geographicDistributionState.labels.length;
+        i++
+      ) {
+        newgeographicDistributionStateData.push({
+          state: response.data.response.geographicDistributionState.labels[i],
+          count: response.data.response.geographicDistributionState.values[i],
+        });
+      }
+      setgeographicDistributionStateData(newgeographicDistributionStateData);
     }
   }, []);
 
@@ -262,8 +298,6 @@ const Analytics = () => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="w-full grid grid-cols-2">
             <div>
               <div className="flex justify-between">
                 <p className="font-semibold text-xl mb-10">
@@ -319,9 +353,7 @@ const Analytics = () => {
                 </ResponsiveContainer>
               </div>
             </div>
-          </div>
-          <div className="w-full grid grid-cols-1">
-            <div>
+            <div className="col-span-2">
               <div className="flex justify-between">
                 <p className="font-semibold text-xl mb-10">
                   Child Classification
@@ -346,6 +378,60 @@ const Analytics = () => {
                     <Tooltip />
                     <Legend />
                     <Bar dataKey="count" fill="#f6977a" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+            <div className="">
+              <div className="flex justify-between">
+                <p className="font-semibold text-xl mb-10">District Wise</p>
+              </div>
+              <div className="h-96 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    width={1000}
+                    height={300}
+                    data={geographicDistributionDistrictData}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="district" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="count" fill="#a74786" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+            <div className="">
+              <div className="flex justify-between">
+                <p className="font-semibold text-xl mb-10">State Wise</p>
+              </div>
+              <div className="h-96 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    width={1000}
+                    height={300}
+                    data={geographicDistributionStateData}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="state" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="count" fill="#8884d8" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

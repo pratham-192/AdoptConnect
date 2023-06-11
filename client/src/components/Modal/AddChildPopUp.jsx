@@ -133,7 +133,10 @@ export default function AddChildPopUp({ setopenAddchild }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="full_name">{t("Child ID")}</label>
+                      <label htmlFor="full_name">
+                        {t("Child ID")}
+                        <span className="text-red-500 pl-1">*</span>
+                      </label>
                       <input
                         type="text"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -142,7 +145,10 @@ export default function AddChildPopUp({ setopenAddchild }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="email">{t("Child Name")}</label>
+                      <label htmlFor="email">
+                        {t("Child Name")}
+                        <span className="text-red-500 pl-1">*</span>
+                      </label>
                       <input
                         type="text"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -182,7 +188,10 @@ export default function AddChildPopUp({ setopenAddchild }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="address">{t("Shelter Home")}</label>
+                      <label htmlFor="address">
+                        {t("Shelter Home")}
+                        <span className="text-red-500 pl-1">*</span>
+                      </label>
                       <input
                         type="text"
                         id="address"
@@ -249,7 +258,10 @@ export default function AddChildPopUp({ setopenAddchild }) {
                       </select>
                     </div>
                     <div className="md:col-span-3">
-                      <label htmlFor="email">{t("Child Classification")}</label>
+                      <label htmlFor="email">
+                        {t("Child Classification")}
+                        <span className="text-red-500 pl-1">*</span>
+                      </label>
                       <select
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                         onChange={(e) => setchildClassification(e.target.value)}

@@ -99,7 +99,10 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="user_id">{t("User Id")}</label>
+                      <label htmlFor="user_id">
+                        {t("User Id")}
+                        <span className="text-red-500 pl-1">*</span>
+                      </label>
                       <div className="grid grid-cols-2">
                         <input
                           type="text"
@@ -120,7 +123,10 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                       </div>
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="pass">{t("Password")}</label>
+                      <label htmlFor="pass">
+                        {t("Password")}
+                        <span className="text-red-500 pl-1">*</span>
+                      </label>
                       <input
                         type="text"
                         name="pass"
@@ -132,7 +138,10 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="full_name">{t("Full Name")}</label>
+                      <label htmlFor="full_name">
+                        {t("Full Name")}
+                        <span className="text-red-500 pl-1">*</span>
+                      </label>
                       <input
                         type="text"
                         name="full_name"
@@ -143,7 +152,10 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                       />
                     </div>
                     <div className="md:col-span-5">
-                      <label htmlFor="email">{t("Email Address")}</label>
+                      <label htmlFor="email">
+                        {t("Email Address")}
+                        <span className="text-red-500 pl-1">*</span>
+                      </label>
                       <input
                         type="text"
                         name="email"

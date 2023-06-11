@@ -53,7 +53,7 @@ const Messages = () => {
                     className={`flex sm:py-2 px-3 rounded py-1 items-center space-x-4 capitalize ${
                       message &&
                       message.seen &&
-                      message &&
+                      message.from_user &&
                       message.from_user._id === user._id
                         ? "bg-slate-50"
                         : ""
@@ -72,7 +72,9 @@ const Messages = () => {
                       </p>
                     </div>
                     <div className="inline-flex items-center text-sm text-base text-gray-900 dark:text-white">
-                      {message && message.from_user._id === user._id ? (
+                      {message &&
+                      message.from_user &&
+                      message.from_user._id === user._id ? (
                         <span
                           className={`pr-3 ${
                             message && message.seen
