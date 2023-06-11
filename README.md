@@ -1,4 +1,6 @@
-Deployed Website : adopt-connect.vercel.app
+<a href="adopt-connect.vercel.app">
+Deployed Website
+</a>
 
 # What problem do we solve?
 
