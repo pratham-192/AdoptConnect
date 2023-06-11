@@ -77,7 +77,7 @@ const EditProfile = () => {
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl ">
-      <Header category="App" title="Edit Profile" />
+      <Header category={t("App")} title={t("Edit Profile")} />
       <div>
         {openPopUp ? (
           <PopUp
@@ -214,7 +214,7 @@ const EditProfile = () => {
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                           onClick={() => updateProfileHandler()}
                         >
-                          Submit
+                          {t("Submit")}
                         </button>
                       </div>
                     </div>

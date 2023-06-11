@@ -17,6 +17,7 @@ import {
   Pie,
 } from "recharts";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const Analytics = () => {
   const [analyticsData, setanalyticsData] = useState();
@@ -34,12 +35,13 @@ const Analytics = () => {
   const [geographicDistributionStateData, setgeographicDistributionStateData] =
     useState([]);
 
+  const { t } = useTranslation();
+
   useEffect(async () => {
     const response = await axios.get(
       "https://adoptconnect.onrender.com/admin/get_analytics"
     );
     if (response.data) {
-      console.log(response.data.response);
       setanalyticsData(response.data.response);
       const arr = response.data.response.ratioCaseStatus.labels;
       const newArr = [];
@@ -189,7 +191,7 @@ const Analytics = () => {
                     analyticsData.AdoptionSuccess.values}
                 </span>
               </p>
-              <p className="text-sm text-gray-400  mt-1">Total Cases</p>
+              <p className="text-sm text-gray-400  mt-1">{t("Total Cases")}</p>
             </div>
           </div>
           <div className="bg-white h-44 dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56  p-4 pt-9 rounded-2xl ">
@@ -204,7 +206,7 @@ const Analytics = () => {
                 {caseStatusCount[1]}
               </span>
             </p>
-            <p className="text-sm text-gray-400  mt-1">Adopted</p>
+            <p className="text-sm text-gray-400  mt-1">{t("Adopted")}</p>
           </div>
         </div>
         <div className="flex m-3 flex-wrap justify-center gap-1 items-center">
@@ -220,7 +222,7 @@ const Analytics = () => {
                 {caseStatusCount[2]}
               </span>
             </p>
-            <p className="text-sm text-gray-400  mt-1">In Progress</p>
+            <p className="text-sm text-gray-400  mt-1">{t("In Progress")}</p>
           </div>
         </div>
         <div className="flex m-3 flex-wrap justify-center gap-1 items-center">
@@ -236,7 +238,7 @@ const Analytics = () => {
                 {caseStatusCount[0]}
               </span>
             </p>
-            <p className="text-sm text-gray-400  mt-1">Inactive</p>
+            <p className="text-sm text-gray-400  mt-1">{t("Inactive")}</p>
           </div>
         </div>
       </div>
@@ -245,7 +247,9 @@ const Analytics = () => {
           <div className="w-full grid grid-cols-2">
             <div>
               <div className="flex justify-between">
-                <p className="font-semibold text-xl mb-10">Shelter Homes</p>
+                <p className="font-semibold text-xl mb-10">
+                  {t("Shelter Homes")}
+                </p>
               </div>
               <div className="h-96 w-96">
                 <ResponsiveContainer width="100%" height="100%">
@@ -273,7 +277,7 @@ const Analytics = () => {
             <div>
               <div className="flex justify-between">
                 <p className="font-semibold text-xl mb-10">
-                  Gender Distribution
+                  {t("Gender Distribution")}
                 </p>
               </div>
               <div className="h-96 w-96">
@@ -292,7 +296,9 @@ const Analytics = () => {
                 <div className="custom-legend flex pl-20 flex-col text-slate-600">
                   {genderDistributionData.map((entry, index) => (
                     <div key={`legend-${index}`} className="capitalize">
-                      <span className="legend-label">{`${entry.gender} - ${entry.count}`}</span>
+                      <span className="legend-label">
+                        {t(`${entry.gender}`)} - {`${entry.count}`}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -301,7 +307,7 @@ const Analytics = () => {
             <div>
               <div className="flex justify-between">
                 <p className="font-semibold text-xl mb-10">
-                  Worker Distribution
+                  {t("Worker Distribution")}
                 </p>
               </div>
               <div className="h-full w-full">
@@ -320,7 +326,9 @@ const Analytics = () => {
                 <div className="custom-legend flex pl-20 flex-col text-slate-600">
                   {workerRatioData.map((entry, index) => (
                     <div key={`legend-${index}`} className="capitalize">
-                      <span className="legend-label">{`${entry.age} : ${entry.count}`}</span>
+                      <span className="legend-label">
+                        {t(`${entry.age}`)} : {`${entry.count}`}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -328,7 +336,9 @@ const Analytics = () => {
             </div>
             <div>
               <div className="flex justify-between">
-                <p className="font-semibold text-xl mb-10">Age Distribution</p>
+                <p className="font-semibold text-xl mb-10">
+                  {t("Age Distribution")}
+                </p>
               </div>
               <div className="h-96 w-96">
                 <ResponsiveContainer width="100%" height="100%">
@@ -356,7 +366,7 @@ const Analytics = () => {
             <div className="col-span-2">
               <div className="flex justify-between">
                 <p className="font-semibold text-xl mb-10">
-                  Child Classification
+                  {t("Child Classification")}
                 </p>
               </div>
               <div className="h-96 w-full">
@@ -384,7 +394,9 @@ const Analytics = () => {
             </div>
             <div className="">
               <div className="flex justify-between">
-                <p className="font-semibold text-xl mb-10">District Wise</p>
+                <p className="font-semibold text-xl mb-10">
+                  {t("District Wise")}
+                </p>
               </div>
               <div className="h-96 w-full">
                 <ResponsiveContainer width="100%" height="100%">
@@ -411,7 +423,7 @@ const Analytics = () => {
             </div>
             <div className="">
               <div className="flex justify-between">
-                <p className="font-semibold text-xl mb-10">State Wise</p>
+                <p className="font-semibold text-xl mb-10">{t("State Wise")}</p>
               </div>
               <div className="h-96 w-full">
                 <ResponsiveContainer width="100%" height="100%">

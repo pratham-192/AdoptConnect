@@ -14,7 +14,7 @@ const Kanban = () => {
   const [childData, setchildData] = useState({});
   const [selectedChild, setselectedChild] = useState();
   const [currentChild, setcurrentChild] = useState();
-  const [reload, setreload] = useState(false);
+  const [childNote, setchildNote] = useState("");
   const user = JSON.parse(localStorage.getItem("userDetails"));
   const { t } = useTranslation();
 
@@ -59,8 +59,22 @@ const Kanban = () => {
         child_id: child_id,
       }
     );
-    if (response.data.response)
+    setchildNote("");
+    if (response.data.response) {
       setcurrentChild(response.data.response.individualAdoptionFlow);
+      if (response.data.response.childNote)
+        setchildNote(response.data.response.childNote);
+    }
+  };
+
+  const updateChildNoteHandler = async () => {
+    const response = await axios.post(
+      "https://adoptconnect.onrender.com/child/upload_childnote",
+      {
+        child_id: selectedChild,
+        note: childNote,
+      }
+    );
   };
 
   useEffect(async () => {
@@ -83,7 +97,7 @@ const Kanban = () => {
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl ">
-      <Header category="App" title="Progress" />
+      <Header category={t("App")} title={t("Progress")} />
       <div className="mb-4 ml-3">
         <span className="font-semibold pr-5">{t("Select Child")} : </span>
         <select
@@ -97,7 +111,7 @@ const Kanban = () => {
             }
           }}
         >
-          <option value="">Please Select</option>
+          <option value="">{t("Please Select")}</option>
           {childData &&
             childData.length &&
             childData.map((child, index) => {
@@ -111,9 +125,27 @@ const Kanban = () => {
       </div>
       {currentChild ? (
         <div>
+          <div className="font-bold text-lg my-2">{t("Child Note")} : </div>
+          <div>
+            <textarea
+              rows="5"
+              className="pt-2 border mt-1 rounded px-4 w-full bg-gray-50"
+              value={childNote}
+              onChange={(e) => setchildNote(e.target.value)}
+            ></textarea>
+          </div>
+          <div className="flex justify-end items-center my-3">
+            <button
+              type="button"
+              className="inline-flex justify-center w-1/3 rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 sm:text-sm"
+              onClick={() => updateChildNoteHandler()}
+            >
+              {t("Update")}
+            </button>
+          </div>
           {currentChild.currMajorTask < currentChild.majorTask.length ? (
             <div>
-              <div className="text-lg font-bold my-7">Current Tasks</div>
+              <div className="text-lg font-bold my-7">{t("Current Tasks")}</div>
               <div className="mb-5 ml-5">
                 <div className="text-md font-semibold mb-5">
                   {
