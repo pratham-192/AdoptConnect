@@ -8,7 +8,7 @@
 
 Clone the repo using\
 ```
-git clone [https://github.com/huehue26/detoxer](https://github.com/pratham-192/AdoptConnect)
+git clone https://github.com/pratham-192/AdoptConnect
 ```
 
 ## Step 2
@@ -36,3 +36,6 @@ npm i
 
 npm run start
 ```
+
+## Step 5
+Visit the localhost:3001 for accesing the web application
