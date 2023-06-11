@@ -4,12 +4,14 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { publicRoute } from "../Contexts/ProtectedRoute";
 import bal_asha_team from "../assets/bal_asha_team.png";
+import { useTranslation } from "react-i18next";
 
 function Login() {
   const [userid, setuserid] = useState("");
   const [pass, setpass] = useState("");
   const [err, seterr] = useState("");
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const loginHandler = async () => {
     const response = await axios.post(
@@ -63,7 +65,7 @@ function Login() {
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Sign in to your account
+                {t("Sign in to your account")}
               </h1>
               <div className="space-y-4 md:space-y-6">
                 <div>
@@ -71,7 +73,7 @@ function Login() {
                     htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    User Id
+                    {t("User Id")}
                   </label>
                   <input
                     type="text"
@@ -89,7 +91,7 @@ function Login() {
                     htmlFor="password"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Password
+                    {t("Password")}
                   </label>
                   <input
                     type="password"
@@ -113,7 +115,7 @@ function Login() {
                         htmlFor="remember"
                         className="text-gray-700 dark:text-gray-300 cursor-pointer hover:underline"
                       >
-                        Forgot Password?
+                        {t("Forgot Password")}?
                       </label>
                     </div>
                   </div>
@@ -123,7 +125,7 @@ function Login() {
                   className="w-full text-slate-100 bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   onClick={() => loginHandler()}
                 >
-                  Sign in
+                  {t("Sign in")}
                 </button>
               </div>
             </div>

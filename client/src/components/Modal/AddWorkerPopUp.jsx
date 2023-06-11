@@ -118,7 +118,7 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                             setuserId(Math.floor(Math.random() * 1000000000));
                           }}
                         >
-                          Generate Random
+                          {t("Generate Random")}
                         </button>
                       </div>
                     </div>
@@ -240,7 +240,7 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                           onClick={() => addWorkerHandler()}
                         >
-                          Submit
+                          {t("Submit")}
                         </button>
                       </div>
                     </div>

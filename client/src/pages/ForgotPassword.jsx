@@ -3,12 +3,14 @@ import mail_logo from "../assets/mail_logo.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { publicRoute } from "../Contexts/ProtectedRoute";
+import { useTranslation } from "react-i18next";
 
 function Login() {
   const [userid, setuserid] = useState("");
   const [err, seterr] = useState("");
   const [success, setsuccess] = useState("");
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const forgotPasswordHandler = async () => {
     const response = await axios.post(
@@ -42,7 +44,7 @@ function Login() {
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Enter your user id
+                {t("Enter your user id")}
               </h1>
               <div className="space-y-4 md:space-y-6">
                 <div>
@@ -50,7 +52,7 @@ function Login() {
                     htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    User Id
+                    {t("User Id")}
                   </label>
                   <input
                     type="text"
@@ -70,7 +72,7 @@ function Login() {
                   className="w-full text-slate-100 bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   onClick={() => forgotPasswordHandler()}
                 >
-                  Send Credentials
+                  {t("Send Credentials")}
                 </button>
               </div>
             </div>

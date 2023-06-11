@@ -178,7 +178,7 @@ const FlowManagement = () => {
       ) : (
         ""
       )}
-      <Header category="Apps" title="Flow Management" />
+      <Header category={t("Apps")} title={t("Flow Management")} />
       {openConfirmPopUp == 3 ? (
         <ConfirmPopUp
           heading={"Delete the category"}

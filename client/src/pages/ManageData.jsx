@@ -79,12 +79,10 @@ const ManageData = () => {
   const uploadChildDataHandler = async () => {
     const formData = new FormData();
     formData.append("file", childData);
-    console.log(formData);
     const response = await axios.post(
       "https://adoptconnect.onrender.com/child/bulk_upload",
       formData
     );
-    console.log(response.data);
     if (response.data.message) {
       setpopUpDetails({
         heading: "Success",
@@ -104,7 +102,7 @@ const ManageData = () => {
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <Header category="App" title="Manage Data" />
+      <Header category={t("App")} title={t("Manage Data")} />
       {openPopUp ? (
         <PopUp
           heading={popUpDetails.heading}
@@ -116,7 +114,7 @@ const ManageData = () => {
         ""
       )}
       <div className="border-b-2 pb-5 mb-2">
-        <div className="text-lg font-semibold pb-4">Workers</div>
+        <div className="text-lg font-semibold pb-4">{t("Workers")}</div>
         <div className="inline-flex items-end">
           <button
             className="bg-blue-400 hover:bg-blue-500 flex justify-center items-center w-72 text-white font-bold py-2 px-4 rounded"
@@ -130,7 +128,7 @@ const ManageData = () => {
         </div>
       </div>
       <div className="flex flex-col">
-        <div className="text-lg font-semibold pb-4">Children</div>
+        <div className="text-lg font-semibold pb-4">{t("Children")}</div>
         <div className="inline-flex items-end">
           <input
             type="file"

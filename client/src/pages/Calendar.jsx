@@ -29,11 +29,12 @@ const Calendar = () => {
           child_id: user.alloted_children[i],
         }
       );
+      console.log(response.data.response);
       if (response.data.response != null) {
-        console.log(response.data.response);
         const adoptionFlow = response.data.response.individualAdoptionFlow;
         for (var j = 0; j < adoptionFlow.majorTask.length; j++) {
           const major = adoptionFlow.majorTask[j];
+          console.log(major && major.majorTaskStatus);
           if (major && major.majorTaskStatus === 1) {
             newscheduleData.push({
               Id: major._id,
@@ -43,19 +44,19 @@ const Calendar = () => {
               EndTime: new Date(),
               CategoryColor: "#1aaa55",
             });
-          } else {
+          } else if (major && major.majorTaskStatus === 0) {
             break;
           }
         }
       }
     }
+    console.log(newscheduleData);
     setscheduleData(newscheduleData);
   }, []);
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl ">
-      <Header category="App" title="Calendar" />
-      {console.log(scheduleData)}
+      <Header category={t("App")} title={t("Calendar")} />
       <ScheduleComponent
         height="650px"
         eventSettings={{ dataSource: scheduleData }}
