@@ -18,7 +18,7 @@ git clone https://github.com/pratham-192/AdoptConnect
 ## Step 2
 Go to the cloned repository using
 ```
-ls AdoptConnect
+cd AdoptConnect
 ```
 
 ## Step 3
