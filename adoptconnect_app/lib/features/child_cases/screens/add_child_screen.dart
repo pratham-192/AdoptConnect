@@ -36,7 +36,7 @@ class _AddChildScreenState extends State<AddChildScreen> {
   final _streetController = TextEditingController();
   final _cityController = TextEditingController();
   String _linkedWithSAAValue = "Yes";
-  String _childClassificationValue = "Abandoned";
+  String _childClassificationValue = "abandoned";
   final _inquiryDateOfAdmissionController = TextEditingController();
   final String _caseStatusValue = "inactive";
   final _reasonForAdmissionController = TextEditingController();

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:adoptconnect_app/constants/global_variables.dart';
 import 'package:adoptconnect_app/constants/utils.dart';
+import 'package:adoptconnect_app/features/auth/services/auth_service.dart';
 import 'package:adoptconnect_app/features/worker_profile/services/worker_service.dart';
 import 'package:adoptconnect_app/models/user.dart';
 import 'package:adoptconnect_app/providers/user_provider.dart';
@@ -24,6 +25,7 @@ class _WorkerProfileState extends State<WorkerProfile> {
   bool _isEditMode = false;
   File? avatarImage;
   late User _user;
+  final AuthService _authService = AuthService();
   final WorkerService _workerService = WorkerService();
 
   final _userIdController = TextEditingController();
@@ -52,6 +54,10 @@ class _WorkerProfileState extends State<WorkerProfile> {
     setState(() => _isEditMode = !_isEditMode);
   }
 
+  void logOutUser() {
+    _authService.signOutUser(context: context);
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -76,6 +82,10 @@ class _WorkerProfileState extends State<WorkerProfile> {
       appBar: AppBar(
         centerTitle: true,
         title: _isEditMode ? const Text("Edit Profile") : const Text("Profile"),
+        leading: IconButton(
+          onPressed: logOutUser,
+          icon: const Icon(Icons.logout_outlined),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor:
@@ -143,7 +153,8 @@ class _WorkerProfileState extends State<WorkerProfile> {
                           onPressed: editWorker,
                           style: ElevatedButton.styleFrom(
                               minimumSize: const Size(double.infinity, 40),
-                              padding: const EdgeInsets.symmetric(vertical: 14)),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 14)),
                           child: const Text(
                             "Submit",
                             style: TextStyle(
