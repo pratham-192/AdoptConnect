@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Header } from "../components";
 import axios from "axios";
-import { AiFillDelete } from "react-icons/ai";
+import {
+  AiFillDelete,
+  AiOutlineArrowDown,
+  AiOutlineArrowUp,
+} from "react-icons/ai";
 import ConfirmPopUp from "../components/Modal/ConfirmPopUp";
 import EditFlowPopUp from "../components/Modal/EditFlowPopUp";
 import { FiEdit } from "react-icons/fi";
@@ -26,6 +30,7 @@ const FlowManagement = () => {
   const [minorTaskNote, setminorTaskNote] = useState("");
   const [openEditPopUp, setopenEditPopUp] = useState(false);
   const [editTaskDetails, seteditTaskDetails] = useState({});
+  const [changeMinorTaskPosition, setchangeMinorTaskPosition] = useState({});
   const [majorErr, setmajorErr] = useState("");
   const [minorErr, setminorErr] = useState("");
   const { t } = useTranslation();
@@ -95,6 +100,55 @@ const FlowManagement = () => {
     if (response.data.reponse) {
       setflowDetails(response.data.reponse.majorTask);
     }
+  };
+
+  const minorTaskGoDownHandler = async (
+    major,
+    minor,
+    minorIndex,
+    majorIndex
+  ) => {
+    await axios.post(
+      "https://adoptconnect.onrender.com/admin/adoption_flow/minor/delete",
+      {
+        childClassification: selectedCategory.childClassification,
+        majorTaskPosition: majorIndex,
+        minorTaskPosition: minorIndex,
+      }
+    );
+    await axios.post(
+      "https://adoptconnect.onrender.com/admin/adoption_flow/minor/create",
+      {
+        childClassification: selectedCategory.childClassification,
+        majorTaskPosition: majorIndex,
+        minorTaskPosition: parseInt(minorIndex) + 1,
+        minorTaskNote: minor.minorTaskNote,
+        minorTaskStatement: minor.minorTaskStatement,
+      }
+    );
+    changeCategory(selectedCategory.childClassification);
+  };
+
+  const minorTaskGoUpHandler = async (major, minor, minorIndex, majorIndex) => {
+    await axios.post(
+      "https://adoptconnect.onrender.com/admin/adoption_flow/minor/delete",
+      {
+        childClassification: selectedCategory.childClassification,
+        majorTaskPosition: majorIndex,
+        minorTaskPosition: minorIndex,
+      }
+    );
+    await axios.post(
+      "https://adoptconnect.onrender.com/admin/adoption_flow/minor/create",
+      {
+        childClassification: selectedCategory.childClassification,
+        majorTaskPosition: majorIndex,
+        minorTaskPosition: parseInt(minorIndex) - 1,
+        minorTaskNote: minor.minorTaskNote,
+        minorTaskStatement: minor.minorTaskStatement,
+      }
+    );
+    changeCategory(selectedCategory.childClassification);
   };
 
   useEffect(async () => {
@@ -255,23 +309,61 @@ const FlowManagement = () => {
                                     : ""}
                                 </span>
                               </span>
-                              <span
-                                className="hover:text-slate-500 cursor-pointer p-1"
-                                onClick={() => {
-                                  seteditTaskDetails({
-                                    minorTask: true,
-                                    majorTask: false,
-                                    statement: minor.minorTaskStatement,
-                                    note: minor.minorTaskNote,
-                                    majorIndex: majorIndex,
-                                    minorIndex: minorIndex,
-                                    childClassification:
-                                      selectedCategory.childClassification,
-                                  });
-                                  setopenEditPopUp(true);
-                                }}
-                              >
-                                <FiEdit />
+                              <span className="flex">
+                                <span className="flex flex-end items-center mr-3">
+                                  {minorIndex !== 0 ? (
+                                    <span
+                                      className="p-1 mr-2 rounded-full hover:bg-slate-200 cursor-pointer"
+                                      onClick={() => {
+                                        minorTaskGoUpHandler(
+                                          major,
+                                          minor,
+                                          minorIndex,
+                                          majorIndex
+                                        );
+                                      }}
+                                    >
+                                      <AiOutlineArrowUp />
+                                    </span>
+                                  ) : (
+                                    ""
+                                  )}
+                                  {minorIndex !== major.minorTask.length - 1 ? (
+                                    <span
+                                      className="p-1 mr-2 rounded-full hover:bg-slate-200 cursor-pointer"
+                                      onClick={() =>
+                                        minorTaskGoDownHandler(
+                                          major,
+                                          minor,
+                                          minorIndex,
+                                          majorIndex
+                                        )
+                                      }
+                                    >
+                                      <AiOutlineArrowDown />
+                                    </span>
+                                  ) : (
+                                    ""
+                                  )}
+                                </span>
+                                <span
+                                  className="hover:text-slate-500 cursor-pointer p-1"
+                                  onClick={() => {
+                                    seteditTaskDetails({
+                                      minorTask: true,
+                                      majorTask: false,
+                                      statement: minor.minorTaskStatement,
+                                      note: minor.minorTaskNote,
+                                      majorIndex: majorIndex,
+                                      minorIndex: minorIndex,
+                                      childClassification:
+                                        selectedCategory.childClassification,
+                                    });
+                                    setopenEditPopUp(true);
+                                  }}
+                                >
+                                  <FiEdit />
+                                </span>
                               </span>
                             </li>
                           );

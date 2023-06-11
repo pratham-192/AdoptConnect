@@ -4,6 +4,7 @@ import { BsKanban, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsDatabase
 import { IoMdContacts } from 'react-icons/io';
 import { TbDeviceDesktopAnalytics } from 'react-icons/tb'
 import { TiTick, TiFlowChildren } from 'react-icons/ti'
+import { SlCalender } from 'react-icons/sl'
 import { RiContactsLine } from 'react-icons/ri';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
 import { HiOutlineRefresh } from 'react-icons/hi';
@@ -542,6 +543,11 @@ export const links = [
       {
         name: 'progress',
         icon: <BsKanban />,
+        allowed: ["admin", "case-manager", "worker"]
+      },
+      {
+        name: 'calendar',
+        icon: <SlCalender />,
         allowed: ["admin", "case-manager", "worker"]
       },
       {

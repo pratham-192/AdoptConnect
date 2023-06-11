@@ -3,6 +3,7 @@ import { Header } from "../components";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { TiTick } from "react-icons/ti";
+import { protectedRoute } from "../Contexts/ProtectedRoute";
 
 const Messages = () => {
   const [allMessages, setallMessages] = useState({});
@@ -104,4 +105,4 @@ const Messages = () => {
     </div>
   );
 };
-export default Messages;
+export default protectedRoute(Messages);

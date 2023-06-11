@@ -48,7 +48,6 @@ const Kanban = () => {
         statusObject: majorAdoptionFlow,
       }
     );
-    console.log(response.data);
     if (response.data.response)
       setcurrentChild(response.data.response.individualAdoptionFlow);
   };
@@ -70,7 +69,6 @@ const Kanban = () => {
       const response = await axios.get(
         "https://adoptconnect.onrender.com/admin/all_child"
       );
-      console.log(response.data.response);
       setchildData(response.data.response);
     } else {
       const response = await axios.post(
@@ -91,7 +89,6 @@ const Kanban = () => {
         <select
           className="h-10 border mt-1 rounded px-4 w-3/4 bg-gray-50 ml-5"
           onChange={(e) => {
-            console.log(e.target.value);
             if (e.target.value === "") {
               setcurrentChild();
             } else {

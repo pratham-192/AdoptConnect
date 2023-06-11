@@ -13,7 +13,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
   const [district, setdistrict] = useState();
   const [shelterHome, setshelterHome] = useState();
   const [linkedWithSAA, setlinkedWithSAA] = useState("yes");
-  const [childClassification, setchildClassification] = useState("abandoned");
+  const [childClassification, setchildClassification] = useState("Abandoned");
   const [inquiryDateOfAdmission, setinquiryDateOfAdmission] = useState();
   const [reasonForAdmission, setreasonForAdmission] = useState();
   const [lastVisit, setlastVisit] = useState();
@@ -254,9 +254,9 @@ export default function AddChildPopUp({ setopenAddchild }) {
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                         onChange={(e) => setchildClassification(e.target.value)}
                       >
-                        <option value="abandoned">Abandoned</option>
-                        <option value="surrendered">Surrendered</option>
-                        <option value="abandoned-guardian">
+                        <option value="Abandoned">Abandoned</option>
+                        <option value="Surrendered">Surrendered</option>
+                        <option value="Abandoned-by-Guardian">
                           Abandoned by guardian
                         </option>
                       </select>
