@@ -256,8 +256,9 @@ export default function AddChildPopUp({ setopenAddchild }) {
                       >
                         <option value="Abandoned">Abandoned</option>
                         <option value="Surrendered">Surrendered</option>
-                        <option value="Abandoned-by-Guardian">
-                          Abandoned by guardian
+                        <option value="Orphaned">Orphaned</option>
+                        <option value="Admitted-by-guardians">
+                          Admitted by Guardians
                         </option>
                       </select>
                     </div>
