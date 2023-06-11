@@ -83,8 +83,9 @@ class ChildService {
   void addChild({required Child child, required context}) async {
     if (!(await isConnectedToInternet())) {
       child.avatar = {"data": child.avatar["data"].path};
-      child.uploadedDocuments = child.uploadedDocuments.map((e) => e.path).toList();
-      addChildDataToCache(child.toJson());
+      child.uploadedDocuments =
+          child.uploadedDocuments.map((e) => e.path).toList();
+      addChildDataToCache(child.toJson(), child.childId);
       startInternetSubscription();
       Navigator.pop(context);
       return;
@@ -150,8 +151,8 @@ class ChildService {
             }
 
             await Future.wait(uploadTasks);
-            Provider.of<CasesProvider>(context, listen: false)
-                .addChild(newChild);
+            // Provider.of<CasesProvider>(context, listen: false)
+            //     .addChild(newChild);
             if (Navigator.canPop(context)) Navigator.pop(context);
           },
           errorText: "Error in Adding Child");
@@ -205,7 +206,8 @@ class ChildService {
         "guardianListed": child.guardianListed,
         "familyVisitPhoneCall": child.familyVisitsPhoneCall,
         "siblings": child.siblings,
-        "lastDateOfCWCOrder": child.lastDateOfCWCOrder.toIso8601String().substring(0, 10),
+        "lastDateOfCWCOrder":
+            child.lastDateOfCWCOrder.toIso8601String().substring(0, 10),
         "Lastcwcorder": child.lastCWCOrder,
         "lengthOfStayInShelter": child.lengthOfStayInShelter,
         "caringsRegistrationNumber": child.caringsRegistrationNumber,
@@ -253,7 +255,12 @@ class ChildService {
             await Future.wait(uploadTasks);
             Provider.of<CasesProvider>(context, listen: false)
                 .editChild(child.childId, newChild);
-            if(Navigator.canPop(context)) Navigator.pop(context);
+            APICacheDBModel cacheDBModel = APICacheDBModel(
+                key: "cases",
+                syncData: jsonEncode(
+                    Provider.of<CasesProvider>(context, listen: false).cases));
+            await APICacheManager().addCacheData(cacheDBModel);
+            if (Navigator.canPop(context)) Navigator.pop(context);
           },
           errorText: "Error in Editing Child");
     } catch (e) {
