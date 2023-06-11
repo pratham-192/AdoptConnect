@@ -51,7 +51,7 @@ const Employees = () => {
       ) : (
         ""
       )}
-      <Header category={t("Page")} title={t("Employees")} />
+      <Header category={t("Page")} title={t("Workers")} />
       <button
         className="p-2 mb-2 font-light text-sm rounded px-5 hover:bg-slate-100 cursor-pointer w-32 flex justify-center items-center"
         onClick={() => setopenAddWorker(true)}
