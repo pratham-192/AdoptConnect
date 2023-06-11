@@ -23,6 +23,6 @@ class CasesProvider extends ChangeNotifier {
     if (_cases.isEmpty) return;
     int index = _cases.indexWhere((element) => element.childId == childId);
     _cases[index] = child;
-      notifyListeners();
+    notifyListeners();
   }
 }

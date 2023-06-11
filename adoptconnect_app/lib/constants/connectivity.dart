@@ -89,7 +89,9 @@ void syncAddChild({required context}) async {
 
   try {
     String childrenKeysString = await getCacheData("addChild");
-    List<String> childrenKeys = jsonDecode(childrenKeysString);
+    List<dynamic> childrenKeysDynamic =
+        jsonDecode(childrenKeysString).map((item) => item.toString()).toList();
+    List<String> childrenKeys = List<String>.from(childrenKeysDynamic);
     ChildService childService = ChildService();
 
     List<String> unsuccessfulKeys = [];
@@ -126,8 +128,9 @@ void syncEditChild({required context}) async {
 
   try {
     String childrenKeysString = await getCacheData("editChild");
-    List<String> childrenKeys =
-        List<String>.from(jsonDecode(childrenKeysString) as List);
+    List<dynamic> childrenKeysDynamic =
+        jsonDecode(childrenKeysString).map((item) => item.toString()).toList();
+    List<String> childrenKeys = List<String>.from(childrenKeysDynamic);
 
     ChildService childService = ChildService();
 
@@ -165,16 +168,20 @@ void syncEditChild({required context}) async {
   }
 }
 
-void addChildDataToCache(String childData) async {
-  String key = Random().nextInt(9999999).toString();
-
+void addChildDataToCache(String childData, String key) async {
+  bool childExists = await APICacheManager().isAPICacheKeyExist(key);
   APICacheDBModel cacheDBModel = APICacheDBModel(key: key, syncData: childData);
   await APICacheManager().addCacheData(cacheDBModel);
+
+  if (childExists) return;
 
   List<String> childrenKeys = [];
   if (await APICacheManager().isAPICacheKeyExist("addChild")) {
     String cachedData = await getCacheData("addChild");
-    childrenKeys = List<String>.from(jsonDecode(cachedData) as List);
+    // childrenKeys = List<String>.from(jsonDecode(cachedData) as List);
+    List<dynamic> childrenKeysDynamic =
+        jsonDecode(cachedData).map((item) => item.toString()).toList();
+    childrenKeys = List<String>.from(childrenKeysDynamic);
   }
 
   childrenKeys.add(key);
@@ -193,7 +200,9 @@ void editChildDataToCache(String childData, String key) async {
   List<String> childrenKeys = [];
   if (await APICacheManager().isAPICacheKeyExist("editChild")) {
     String cachedData = await getCacheData("editChild");
-    childrenKeys = List<String>.from(jsonDecode(cachedData) as List);
+    List<dynamic> childrenKeysDynamic =
+        jsonDecode(cachedData).map((item) => item.toString()).toList();
+    childrenKeys = List<String>.from(childrenKeysDynamic);
   }
 
   childrenKeys.add(key);
