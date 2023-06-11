@@ -1,6 +1,7 @@
 import 'package:adoptconnect_app/features/auth/services/auth_service.dart';
 import 'package:adoptconnect_app/providers/cases_provider.dart';
 import 'package:adoptconnect_app/providers/child_provider.dart';
+import 'package:adoptconnect_app/providers/messages_provider.dart';
 import 'package:adoptconnect_app/providers/user_provider.dart';
 import 'package:adoptconnect_app/router.dart';
 import 'package:adoptconnect_app/widgets/bottom_bar.dart';
@@ -15,8 +16,9 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => CasesProvider()),
-        ChangeNotifierProvider(create: (context) => ChildProvider())
-        ],
+        ChangeNotifierProvider(create: (context) => ChildProvider()),
+        ChangeNotifierProvider(create: (context) => MessagesProvider()),
+      ],
       child: const MyApp(),
     ),
   );
