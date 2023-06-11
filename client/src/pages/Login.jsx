@@ -3,13 +3,13 @@ import mail_logo from "../assets/mail_logo.png";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { publicRoute } from "../Contexts/ProtectedRoute";
+import bal_asha_team from "../assets/bal_asha_team.png";
 
 function Login() {
   const [userid, setuserid] = useState("");
   const [pass, setpass] = useState("");
   const [err, seterr] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
 
   const loginHandler = async () => {
     const response = await axios.post(
@@ -48,9 +48,12 @@ function Login() {
   };
 
   return (
-    <div className="h-screen w-screen fixed inset-0 bg-black">
-      <section className="bg-gray-50 dark:bg-gray-900">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <div className="h-screen w-screen fixed inset-0 bg-white">
+      <div className="h-screen w-screen flex justify-center items-center sm:grid sm:grid-cols-3">
+        <div className="h-0 sm:h-screen">
+          <img src={bal_asha_team} className="h-full sm:block hidden" />
+        </div>
+        <div className="col-span-2 w-full flex flex-col justify-center items-center">
           <a
             href="#"
             className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
@@ -126,7 +129,7 @@ function Login() {
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
