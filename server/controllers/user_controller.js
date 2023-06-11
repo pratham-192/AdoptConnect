@@ -5,7 +5,7 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const axios = require('axios');
 const fastcsv = require('fast-csv');
-const bcrypt=require('bcrypt');
+const bcrypt = require('bcrypt');
 module.exports.profile = function (req, res) {
     // return res.render('user_profile', {
     //     title: 'User Profile'
@@ -63,7 +63,7 @@ module.exports.create = async function (req, res) {
                 user_id: req.body.user_id
             });
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
-            newuser.password=hashedPassword;
+            newuser.password = hashedPassword;
             await newuser.save();
             return res.status(200).json({ response: newuser });
         } else {
@@ -303,7 +303,7 @@ module.exports.sendResetMail = async (req, res) => {
             const newPassword = crypto.randomBytes(4).toString("hex");
             // console.log(newPassword);
             const hashedPassword = await bcrypt.hash(newPassword, 10);
-            user.password=hashedPassword;
+            user.password = hashedPassword;
             await user.save();
             const transporter = nodemailer.createTransport({
                 service: "Gmail",
@@ -333,72 +333,71 @@ module.exports.sendResetMail = async (req, res) => {
 
 module.exports.csvDownload = async function (req, res) {
     try {
-      let users = await User.find({})
-      .populate({
-        path: 'alloted_children',
-        select: 'childName'
-      })
-      .select('-password -avatar')
-//   console.log(users);
-      const csvData = [];
-      const header = [
-        'User Id',
-        'Name',
-        'Email',
-        'category',
-        'Allocated Children',
-        'Zone',
-        'Address',
-        'Aadhar Card No.',
-        'contact No'
-      ];
-      csvData.push(header);
-  
-      users.forEach(user => {
-        const allocatedChildren = user.alloted_children.map(child => child.childName).join(', ');
-        const record = [
-            user.user_id,
-            user.name,
-            user.email,
-            user.category,
-            allocatedChildren,
-            user.zone,
-            user.address,
-            user.aadharCardNo,
-            user.contactNo
+        let users = await User.find({})
+            .populate({
+                path: 'alloted_children',
+                select: 'childName'
+            })
+            .select('-password -avatar')
+        //   console.log(users);
+        const csvData = [];
+        const header = [
+            'User Id',
+            'Name',
+            'Email',
+            'category',
+            'Allocated Children',
+            'Zone',
+            'Address',
+            'Aadhar Card No.',
+            'contact No'
         ];
-        csvData.push(record);
-      });
-  
-      const csvStream = fastcsv.format({ headers: true }).transform(row => row.map(value => value === undefined ? '' : value));
-  
-      res.setHeader('Content-Disposition', 'attachment; filename=user_details.csv');
-      res.set('Content-Type', 'text/csv');
-  
-      csvStream.pipe(res);
-      csvData.forEach(data => csvStream.write(data));
-      csvStream.end();
-  
-    } catch (err) {
-      console.log(err);
-      return res.status(200).send('Error in downloading CSV file of user');
-    }
-  };
+        csvData.push(header);
 
-  module.exports.getAllocatedChildren=async function(req,res){
-    try{
-        let user=await User.findOne({user_id:req.body.user_id})
-        .populate({
-            path:'alloted_children',
-            select:'child_id childName caseStatus shelterHome'
-        })
-        .select('alloted_children');
+        users.forEach(user => {
+            const allocatedChildren = user.alloted_children.map(child => child.childName).join(', ');
+            const record = [
+                user.user_id,
+                user.name,
+                user.email,
+                user.category,
+                allocatedChildren,
+                user.zone,
+                user.address,
+                user.aadharCardNo,
+                user.contactNo
+            ];
+            csvData.push(record);
+        });
+
+        const csvStream = fastcsv.format({ headers: true }).transform(row => row.map(value => value === undefined ? '' : value));
+
+        res.setHeader('Content-Disposition', 'attachment; filename=user_details.csv');
+        res.set('Content-Type', 'text/csv');
+
+        csvStream.pipe(res);
+        csvData.forEach(data => csvStream.write(data));
+        csvStream.end();
+
+    } catch (err) {
+        console.log(err);
+        return res.status(200).send('Error in downloading CSV file of user');
+    }
+};
+
+module.exports.getAllocatedChildren = async function (req, res) {
+    try {
+        let user = await User.findOne({ user_id: req.body.user_id })
+            .populate({
+                path: 'alloted_children',
+                select: 'child_id childName caseStatus shelterHome'
+            })
+            .select('alloted_children');
         return res.status(200).json({
-            response:user
+            response: user
         })
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(200).send("error in getting all allocated children");
     }
-  }
-  
+}

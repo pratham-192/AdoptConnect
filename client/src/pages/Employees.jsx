@@ -30,7 +30,7 @@ const Employees = () => {
       setworkerData(response.data.response);
     } else {
       const response = await axios.get(
-        "https://adoptconnect.onrender.com/admin/all_workers"
+        "https://adoptconnect.onrender.com/admin/all_workers2"
       );
       setworkerData(response.data.response);
     }

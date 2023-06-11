@@ -68,7 +68,7 @@ module.exports.getAllChild = async function (req, res) {
 }
 module.exports.getAllChild2 = async function (req, res) {
     try {
-        let allchild = await Child.find({}).select('child_id name childClassification caseStatus shelterHome gender');
+        let allchild = await Child.find({}).select('child_id childName childClassification caseStatus shelterHome gender');
 
         // allchild.populate('worker_alloted');
         res.status(200).json({

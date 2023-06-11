@@ -105,7 +105,6 @@ const ChildDetails = () => {
           child_id: childId,
         }
       );
-      console.log(response3.data.response);
       setchildDetails(response3.data.response);
       const response4 = await axios.post(
         "https://adoptconnect.onrender.com/child/document/getbychildid",

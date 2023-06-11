@@ -228,7 +228,7 @@ module.exports.statusUpdate = async function (req, res) {
                 if (minor.minorTaskStatus == 2) {
                     if (!u.start_time) u.start_time = new Date();
                     curr_minor = curr_minor + 1;
-                    u.majorTaskStatus=1;
+                    u.majorTaskStatus = 1;
                 }
                 if (minor.minorTaskStatus == 0 || minor.minorTaskStatus == 1) {
                     flag = 1;
@@ -240,7 +240,7 @@ module.exports.statusUpdate = async function (req, res) {
             u.currMinorTask = curr_minor;
             // u.save();
             if (!flag) {
-                u.majorTaskStatus=2;
+                u.majorTaskStatus = 2;
                 curr_major = curr_major + 1;
                 if (!u.end_time) u.end_time = new Date();
 
@@ -470,50 +470,60 @@ module.exports.bulkUpload = async function (req, res) {
                     if (prevChild) {
                         continue;
                     }
-                    const childData = {
-                        child_id: row[columnMappings.csvChildId] || undefined,
-                        state: row[columnMappings.csvState] || undefined,
-                        district: row[columnMappings.csvDistrict] || undefined,
-                        shelterHome: row[columnMappings.csvShelterHome] || undefined,
-                        childName: row[columnMappings.csvChildName] || undefined,
-                        linkedWithSAA: row[columnMappings.csvLinkedWithSAA] || undefined,
-                        gender: row[columnMappings.csvGender] || undefined,
-                        dateOfBirth: row[columnMappings.csvDateOfBirth] || undefined,
-                        age: row[columnMappings.csvAge] || undefined,
-                        childClassification: row[columnMappings.csvChildClassification] || undefined,
-                        recommendedForAdoption: row[columnMappings.csvRecommendedForAdoption] || undefined,
-                        inquiryDateOfAdmission: row[columnMappings.csvInquiryDateOfAdmission] || undefined,
-                        reasonForAdmission: row[columnMappings.csvReasonForAdmission] || undefined,
-                        reasonForFlagging: row[columnMappings.csvReasonForFlagging] || undefined,
-                        lastVisit: row[columnMappings.csvLastVisit] || undefined,
-                        lastCall: row[columnMappings.csvLastCall] || undefined,
-                        caseHistory: row[columnMappings.csvCaseHistory] || undefined,
-                        guardianListed: row[columnMappings.csvGuardianListed] || undefined,
-                        familyVisitsPhoneCall: row[columnMappings.csvFamilyVisitsPhoneCall] || undefined,
-                        siblings: row[columnMappings.csvSiblings] || undefined,
-                        lastDateOfCWCOrder: row[columnMappings.csvLastDateOfCWCOrder] || undefined,
-                        Lastcwcorder: row[columnMappings.csvLastcwcorder] || undefined,
-                        lengthOfStayInShelter: row[columnMappings.csvLengthOfStayInShelter] || undefined,
-                        caringsRegistrationNumber: row[columnMappings.csvCaringsRegistrationNumber] || undefined,
-                        dateLFA_CSR_MERUploadedInCARINGS: row[columnMappings.csvDateLFA_CSR_MERUploadedInCARINGS] || undefined,
-                        createdByUser: row[columnMappings.csvCreatedByUser] || undefined,
-                        createdDate: row[columnMappings.csvCreatedDate] || undefined,
-                    };
+                    const childclass = row[columnMappings.csvChildClassification].toLowerCase();
+                    let i = await ChildCategory.findOne({ childClassification: childclass });
+                    // console.log(i);
+                    if (i) {
+                        const childData = {
+                            child_id: row[columnMappings.csvChildId] || undefined,
+                            state: row[columnMappings.csvState] || undefined,
+                            district: row[columnMappings.csvDistrict] || undefined,
+                            shelterHome: row[columnMappings.csvShelterHome] || undefined,
+                            childName: row[columnMappings.csvChildName] || undefined,
+                            linkedWithSAA: row[columnMappings.csvLinkedWithSAA] || undefined,
+                            gender: row[columnMappings.csvGender] || undefined,
+                            dateOfBirth: row[columnMappings.csvDateOfBirth] || undefined,
+                            age: row[columnMappings.csvAge] || undefined,
+                            childClassification: i.childClassification || undefined,
+                            recommendedForAdoption: row[columnMappings.csvRecommendedForAdoption] || undefined,
+                            inquiryDateOfAdmission: row[columnMappings.csvInquiryDateOfAdmission] || undefined,
+                            reasonForAdmission: row[columnMappings.csvReasonForAdmission] || undefined,
+                            reasonForFlagging: row[columnMappings.csvReasonForFlagging] || undefined,
+                            lastVisit: row[columnMappings.csvLastVisit] || undefined,
+                            lastCall: row[columnMappings.csvLastCall] || undefined,
+                            caseHistory: row[columnMappings.csvCaseHistory] || undefined,
+                            guardianListed: row[columnMappings.csvGuardianListed] || undefined,
+                            familyVisitsPhoneCall: row[columnMappings.csvFamilyVisitsPhoneCall] || undefined,
+                            siblings: row[columnMappings.csvSiblings] || undefined,
+                            lastDateOfCWCOrder: row[columnMappings.csvLastDateOfCWCOrder] || undefined,
+                            Lastcwcorder: row[columnMappings.csvLastcwcorder] || undefined,
+                            lengthOfStayInShelter: row[columnMappings.csvLengthOfStayInShelter] || undefined,
+                            caringsRegistrationNumber: row[columnMappings.csvCaringsRegistrationNumber] || undefined,
+                            dateLFA_CSR_MERUploadedInCARINGS: row[columnMappings.csvDateLFA_CSR_MERUploadedInCARINGS] || undefined,
+                            createdByUser: row[columnMappings.csvCreatedByUser] || undefined,
+                            createdDate: row[columnMappings.csvCreatedDate] || undefined,
+                        };
 
-                    //   console.log(childData);
+                        //   console.log(childData);
 
-                    const child = await Child.create(childData)
-                    if (req.body.contact_no) child.contactNo = req.body.contact_no;
-                    let childcategory = childData.childClassification.toLowerCase();
-                    let flow = await AdoptionFlow.findOne({ childClassification: childcategory });
-                    // console.log(flow);
-                    child.individualAdoptionFlow.majorTask = flow.majorTask;
-                    // console.log(await AdoptionFlow.findOne({ childClassification: childclass }))
-                    // console.log(child.individualAdoptionFlow);
-                    child.save();
+                        const child = await Child.create(childData)
+                        if (req.body.contact_no) child.contactNo = req.body.contact_no;
+                        let childcategory = childData.childClassification.toLowerCase();
+                        let flow = await AdoptionFlow.findOne({ childClassification: childcategory });
+                        // console.log(flow);
+                        child.individualAdoptionFlow.majorTask = flow.majorTask;
+                        // console.log(await AdoptionFlow.findOne({ childClassification: childclass }))
+                        // console.log(child.individualAdoptionFlow);
+                        child.save();
+                    } else {
+                        uploadFailed.push({
+                            reason: 'this child category does not exist',
+                            row: row
+                        })
+                    }
                 } else {
                     uploadFailed.push({
-                        reason: 'child category is not present',
+                        reason: 'child category is not present in csv',
                         row: row
                     })
                 }
@@ -583,7 +593,7 @@ module.exports.csvDownload = async function (req, res) {
         children.forEach(child => {
             const completedMajorTaskStatements = [];
             // console.log(child.individualAdoptionFlow);
-            const majorTasks = child.individualAdoptionFlow.majorTask?child.individualAdoptionFlow.majorTask : [];
+            const majorTasks = child.individualAdoptionFlow.majorTask ? child.individualAdoptionFlow.majorTask : [];
             majorTasks.forEach(majorTask => {
                 if (majorTask.majorTaskStatus === 2) {
                     completedMajorTaskStatements.push(majorTask.majorTaskStatement);
@@ -640,3 +650,14 @@ module.exports.csvDownload = async function (req, res) {
         return res.status(200).send('Error in downloading CSV file of children');
     }
 };
+
+module.exports.getadoptionbychildid = async function (req, res) {
+    try {
+        let adoptionflowchild = await Child.findById(req.body.child_id).select('individualAdoptionFlow');
+        return res.status(200).json({
+            response: adoptionflowchild
+        })
+    } catch (err) {
+        return res.status(200).send("error in sending individual adoption flow");
+    }
+}

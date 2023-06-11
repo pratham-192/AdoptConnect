@@ -79,11 +79,13 @@ const ManageData = () => {
   const uploadChildDataHandler = async () => {
     const formData = new FormData();
     formData.append("file", childData);
+    console.log(formData);
     const response = await axios.post(
       "https://adoptconnect.onrender.com/child/bulk_upload",
       formData
     );
-    if (response.message) {
+    console.log(response.data);
+    if (response.data.message) {
       setpopUpDetails({
         heading: "Success",
         message: "Child details uploaded succesfully",
@@ -101,7 +103,7 @@ const ManageData = () => {
   };
 
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl ">
+    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <Header category="App" title="Manage Data" />
       {openPopUp ? (
         <PopUp
