@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:adoptconnect_app/constants/error_handling.dart';
 import 'package:adoptconnect_app/constants/global_variables.dart';
 import 'package:adoptconnect_app/constants/utils.dart';
+import 'package:adoptconnect_app/features/auth/screens/auth_screen.dart';
 import 'package:adoptconnect_app/providers/user_provider.dart';
 import 'package:adoptconnect_app/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,12 @@ class AuthService {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  void signOutUser({required context}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove("user");
+    Navigator.pushNamedAndRemoveUntil(context, AuthScreen.routeName, (route) => false);
   }
 
   void getUserData(BuildContext context) async {

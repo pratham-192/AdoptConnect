@@ -40,7 +40,7 @@ class _ChildProfileScreenState extends State<ChildProfileScreen> {
   final _streetController = TextEditingController();
   final _cityController = TextEditingController();
   String _linkedWithSAAValue = "Yes";
-  String _childClassificationValue = "Abandoned";
+  String _childClassificationValue = "abandoned";
   final _inquiryDateOfAdmissionController = TextEditingController();
   String _caseStatusValue = "inactive";
   final _reasonForAdmissionController = TextEditingController();
