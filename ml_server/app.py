@@ -1,37 +1,25 @@
 import os
 from fastapi import FastAPI
-# from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import openai
 from dotenv import load_dotenv
-from starlette.middleware import Middleware
-from starlette.middleware.cors import CORSMiddleware
+
+app = FastAPI()
 
 # env variables
 load_dotenv("./.env.local")
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 # CORS
-origins = ["https://adopt-connect.vercel.app", "http://localhost"]
-middleware = [
-    Middleware(
-        CORSMiddleware,
-        allow_origins=origins,
-        allow_credentials=True,
-        allow_methods=['*'],
-        allow_headers=['*']
-    )
-]
-
-app = FastAPI(middleware=middleware)
-
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=origins,
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"]
-# )
+origins = ["https://adopt-connect.vercel.app", "http://localhost:3000", "http://localhost:3001"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 class ConversationHistory(BaseModel):
     history: str
