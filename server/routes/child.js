@@ -42,4 +42,7 @@ router.post('/bulk_upload',upload.single('file'),childController.bulkUpload);
 router.get('/download_csv',childController.csvDownload);
 
 router.post('/get_flow_child',childController.getadoptionbychildid);
+
+router.post('/get_childnodte',childController.getChildNote);
+router.post('/upload_childnote',childController.updateChildNote);
 module.exports=router;

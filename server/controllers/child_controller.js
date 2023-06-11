@@ -661,3 +661,26 @@ module.exports.getadoptionbychildid = async function (req, res) {
         return res.status(200).send("error in sending individual adoption flow");
     }
 }
+
+module.exports.getChildNote=async function(req,res){
+    try{
+        let child=await Child.findOne({child_id:req.body.child_id});
+        return res.status(200).json({
+            response:child.childNote
+        })
+    }catch(err){
+        return res.status(200).send("error in getting the child note");
+    }
+}
+module.exports.updateChildNote=async function(req,res){
+    try{
+        let child=await Child.findOne({child_id:req.body.child_id});
+        child.childNote=req.body.note;
+        await child.save();
+        return res.status(200).json({
+            response:child.childNote
+        })
+    }catch(err){
+        return res.status(200).send("error in getting the child note");
+    }
+}
