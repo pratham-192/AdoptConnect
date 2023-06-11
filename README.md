@@ -8,29 +8,32 @@ Bal Asha is having trouble scaling and handling the adoption process for every c
 
 # Features
 
-1. Added upload/download functionality to enable effective document management during the adoption process.
+- Created an offline- and online-compatible smartphone app for seamless accessibility.
 
-2. Created an offline- and online-compatible smartphone app for seamless accessibility.
+- Integrated many languages to guarantee inclusivity and usability for a range of users.
 
-3. Integrated many languages to guarantee inclusivity and usability for a range of users.
+- Added upload/download functionality to enable effective document management during the adoption process.
 
-4. Tailored the adoption procedure for each category of child.
+- Made a responsive website and mobile application for both android and ios that are simple to use and operates across all platforms.
 
-5. Made a responsive website that is simple to use and operates across all platforms.
+- User IDs and passwords are automatically emailed for easy sign-up and login procedures.
 
-6. Developed a child missing report for the media to utilise in the search for missing children.
+- A notification system for efficient communication among personnel at different levels of the hierarchy was established. 
 
-7. Automated bulk data download and upload as CSV files for improved data management.
 
-8. User IDs and passwords are automatically emailed for easy sign-up and login procedures.
+## For Workers -
+- A customizable note-taking function for each child to record pertinent facts and development.
+- A calendar tool was implemented to better coordinate tasks and schedules. 
+- Volunteer can access current tasks, completed tasks and upcoming tasks for all the allocated children
+- Parallel tasks can be performed independently and serial tasks to be performed in order.
+- Volunteer can upload/download documents related to child allocated to them.
+- Developed a child missing report for the media to utilise in the search for missing children.
 
-9. A notification system for efficient communication among personnel at different levels of the hierarchy was established. 
-
-10. A calendar tool was implemented to better coordinate tasks and schedules. 
-
-11. A data visualisation and informed decision-making admin analytics page was developed. 
-
-12. A customizable note-taking function for each child to record pertinent facts and development.
+## For Admin/Case Manager-
+- New Workers and child cases can be added and edited.
+- Tailored the adoption procedure for each category of child.
+- Automated bulk data download and upload as CSV files for improved data management.
+- A data visualisation and informed decision-making admin analytics page was developed. 
 
 # How to run Web Application
 
