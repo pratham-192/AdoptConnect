@@ -84,8 +84,8 @@ const ManageData = () => {
       "https://adoptconnect.onrender.com/child/bulk_upload",
       formData
     );
-    console.log(response);
-    if (response.message) {
+    console.log(response.data);
+    if (response.data.message) {
       setpopUpDetails({
         heading: "Success",
         message: "Child details uploaded succesfully",
