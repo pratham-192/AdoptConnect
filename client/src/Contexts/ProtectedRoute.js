@@ -6,7 +6,7 @@ export function protectedRoute(Component) {
     const user = JSON.parse(localStorage.getItem('userDetails'))
 
     if (!user) {
-      navigate("/user/login");
+      navigate("/login");
       return (
         <div className="w-full h-full flex justify-center items-center">
           Loading...

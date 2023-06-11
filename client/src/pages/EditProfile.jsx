@@ -25,24 +25,18 @@ const EditProfile = () => {
       const formData = new FormData();
       formData.append("file", avatar);
       formData.append("user_id", userId);
-      await axios.post(
-        "https://adoptconnect.onrender.com/users/image_upload",
-        formData
-      );
-      const response = await axios.post(
-        "https://adoptconnect.onrender.com/users/update",
-        {
-          user_id: userId,
-          name: userName,
-          email: userEmail,
-          category: userCat,
-          password: userPass,
-          zone: userZone,
-          address: userAddress,
-          aadharCardNo: userAadhar,
-          contactNo: userContact,
-        }
-      );
+      await axios.post("http://localhost:3000/users/image_upload", formData);
+      const response = await axios.post("http://localhost:3000/users/update", {
+        user_id: userId,
+        name: userName,
+        email: userEmail,
+        category: userCat,
+        password: userPass,
+        zone: userZone,
+        address: userAddress,
+        aadharCardNo: userAadhar,
+        contactNo: userContact,
+      });
       if (response.data.response) {
         localStorage.setItem(
           "userDetails",
@@ -51,20 +45,17 @@ const EditProfile = () => {
         setopenPopUp(true);
       }
     } else {
-      const response = await axios.post(
-        "https://adoptconnect.onrender.com/users/update",
-        {
-          user_id: userId,
-          name: userName,
-          email: userEmail,
-          category: userCat,
-          password: userPass,
-          zone: userZone,
-          address: userAddress,
-          aadharCardNo: userAadhar,
-          contactNo: userContact,
-        }
-      );
+      const response = await axios.post("http://localhost:3000/users/update", {
+        user_id: userId,
+        name: userName,
+        email: userEmail,
+        category: userCat,
+        password: userPass,
+        zone: userZone,
+        address: userAddress,
+        aadharCardNo: userAadhar,
+        contactNo: userContact,
+      });
       if (response.data.response) {
         localStorage.setItem(
           "userDetails",

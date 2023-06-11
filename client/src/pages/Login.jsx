@@ -13,7 +13,7 @@ function Login() {
 
   const loginHandler = async () => {
     const response = await axios.post(
-      `https://adoptconnect.onrender.com/users/createSession?user_id=${userid}&password=${pass}`,
+      `http://localhost:3000/users/createSession?user_id=${userid}&password=${pass}`,
       {
         category: "admin",
       }
@@ -23,7 +23,7 @@ function Login() {
       navigate("/analytics");
     }
     const response2 = await axios.post(
-      `https://adoptconnect.onrender.com/users/createSession?user_id=${userid}&password=${pass}`,
+      `http://localhost:3000/users/createSession?user_id=${userid}&password=${pass}`,
       {
         category: "worker",
       }
@@ -33,7 +33,7 @@ function Login() {
       navigate("/child-alloted");
     }
     const response3 = await axios.post(
-      `https://adoptconnect.onrender.com/users/createSession?user_id=${userid}&password=${pass}`,
+      `http://localhost:3000/users/createSession?user_id=${userid}&password=${pass}`,
       {
         category: "case-manager",
       }

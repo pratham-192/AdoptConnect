@@ -18,7 +18,7 @@ const Notification = () => {
 
   useEffect(async () => {
     const response = await axios.post(
-      "https://adoptconnect.onrender.com/users/getunseenmsgs",
+      "http://localhost:3000/users/getunseenmsgs",
       {
         to_user_id: JSON.parse(localStorage.getItem("userDetails"))._id,
       }

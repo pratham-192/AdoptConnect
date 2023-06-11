@@ -16,7 +16,7 @@ const ManageData = () => {
 
   const getUsersDataHandler = async () => {
     await axios
-      .get("https://adoptconnect.onrender.com/users/download_csv")
+      .get("http://localhost:3000/users/download_csv")
       .then((response) => response.data)
       .then((arrayBuffer) => {
         const blob = new Blob([arrayBuffer], { type: "text/csv" });
@@ -47,7 +47,7 @@ const ManageData = () => {
 
   const getChildDataHandler = async () => {
     await axios
-      .get("https://adoptconnect.onrender.com/child/download_csv")
+      .get("http://localhost:3000/child/download_csv")
       .then((response) => response.data)
       .then((arrayBuffer) => {
         const blob = new Blob([arrayBuffer], { type: "text/csv" });
@@ -79,10 +79,12 @@ const ManageData = () => {
   const uploadChildDataHandler = async () => {
     const formData = new FormData();
     formData.append("file", childData);
+    console.log(formData);
     const response = await axios.post(
-      "https://adoptconnect.onrender.com/child/bulk_upload",
+      "http://localhost:3000/child/bulk_upload",
       formData
     );
+    console.log(response);
     if (response.message) {
       setpopUpDetails({
         heading: "Success",
@@ -101,7 +103,7 @@ const ManageData = () => {
   };
 
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl ">
+    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <Header category="App" title="Manage Data" />
       {openPopUp ? (
         <PopUp

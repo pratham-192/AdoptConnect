@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Header } from "../components";
 import axios from "axios";
-import { AiFillDelete } from "react-icons/ai";
+import {
+  AiFillDelete,
+  AiOutlineArrowDown,
+  AiOutlineArrowUp,
+} from "react-icons/ai";
 import ConfirmPopUp from "../components/Modal/ConfirmPopUp";
 import EditFlowPopUp from "../components/Modal/EditFlowPopUp";
 import { FiEdit } from "react-icons/fi";
@@ -26,6 +30,7 @@ const FlowManagement = () => {
   const [minorTaskNote, setminorTaskNote] = useState("");
   const [openEditPopUp, setopenEditPopUp] = useState(false);
   const [editTaskDetails, seteditTaskDetails] = useState({});
+  const [changeMinorTaskPosition, setchangeMinorTaskPosition] = useState({});
   const [majorErr, setmajorErr] = useState("");
   const [minorErr, setminorErr] = useState("");
   const { t } = useTranslation();
@@ -35,16 +40,13 @@ const FlowManagement = () => {
       setmajorErr("Please fill all the details");
       return;
     }
-    await axios.post(
-      "https://adoptconnect.onrender.com/admin/adoption_flow/major/create",
-      {
-        childClassification: selectedCategory.childClassification,
-        majorTaskPosition: parseInt(majorTaskPosition) + 1,
-        majorTaskNote: majorTaskNote,
-        majorTaskStatement: majorTaskStatement,
-        iterationMethod: majorTaskIteration,
-      }
-    );
+    await axios.post("http://localhost:3000/admin/adoption_flow/major/create", {
+      childClassification: selectedCategory.childClassification,
+      majorTaskPosition: parseInt(majorTaskPosition) + 1,
+      majorTaskNote: majorTaskNote,
+      majorTaskStatement: majorTaskStatement,
+      iterationMethod: majorTaskIteration,
+    });
     setmajorTaskNote("");
     setmajorTaskPosition(0);
     setmajorTaskStatement("");
@@ -56,16 +58,13 @@ const FlowManagement = () => {
       setminorErr("Please fill all the details");
       return;
     }
-    await axios.post(
-      "https://adoptconnect.onrender.com/admin/adoption_flow/minor/create",
-      {
-        childClassification: selectedCategory.childClassification,
-        majorTaskPosition: majorTaskPosition,
-        minorTaskPosition: parseInt(minorTaskPosition) + 1,
-        minorTaskNote: minorTaskNote,
-        minorTaskStatement: minorTaskStatement,
-      }
-    );
+    await axios.post("http://localhost:3000/admin/adoption_flow/minor/create", {
+      childClassification: selectedCategory.childClassification,
+      majorTaskPosition: majorTaskPosition,
+      minorTaskPosition: parseInt(minorTaskPosition) + 1,
+      minorTaskNote: minorTaskNote,
+      minorTaskStatement: minorTaskStatement,
+    });
     setminorTaskNote("");
     // setminorTaskPosition(0);
     // setmajorTaskPosition(0);
@@ -75,19 +74,16 @@ const FlowManagement = () => {
   };
 
   const addCategoryHandler = async () => {
-    await axios.post(
-      "https://adoptconnect.onrender.com/child/create_child_category",
-      {
-        childClassification: newCategory,
-      }
-    );
+    await axios.post("http://localhost:3000/child/create_child_category", {
+      childClassification: newCategory,
+    });
     setreload(!reload);
     setopenAddCategory(false);
   };
 
   const changeCategory = async (childClassification) => {
     const response = await axios.post(
-      "https://adoptconnect.onrender.com/admin/adoption_flow/curr_flow",
+      "http://localhost:3000/admin/adoption_flow/curr_flow",
       {
         childClassification: childClassification,
       }
@@ -97,18 +93,52 @@ const FlowManagement = () => {
     }
   };
 
+  const minorTaskGoDownHandler = async (
+    major,
+    minor,
+    minorIndex,
+    majorIndex
+  ) => {
+    await axios.post("http://localhost:3000/admin/adoption_flow/minor/delete", {
+      childClassification: selectedCategory.childClassification,
+      majorTaskPosition: majorIndex,
+      minorTaskPosition: minorIndex,
+    });
+    await axios.post("http://localhost:3000/admin/adoption_flow/minor/create", {
+      childClassification: selectedCategory.childClassification,
+      majorTaskPosition: majorIndex,
+      minorTaskPosition: parseInt(minorIndex) + 1,
+      minorTaskNote: minor.minorTaskNote,
+      minorTaskStatement: minor.minorTaskStatement,
+    });
+    changeCategory(selectedCategory.childClassification);
+  };
+
+  const minorTaskGoUpHandler = async (major, minor, minorIndex, majorIndex) => {
+    await axios.post("http://localhost:3000/admin/adoption_flow/minor/delete", {
+      childClassification: selectedCategory.childClassification,
+      majorTaskPosition: majorIndex,
+      minorTaskPosition: minorIndex,
+    });
+    await axios.post("http://localhost:3000/admin/adoption_flow/minor/create", {
+      childClassification: selectedCategory.childClassification,
+      majorTaskPosition: majorIndex,
+      minorTaskPosition: parseInt(minorIndex) - 1,
+      minorTaskNote: minor.minorTaskNote,
+      minorTaskStatement: minor.minorTaskStatement,
+    });
+    changeCategory(selectedCategory.childClassification);
+  };
+
   useEffect(async () => {
     if (openConfirmPopUp == 1) {
-      await axios.post(
-        "https://adoptconnect.onrender.com/child/delete_child_category",
-        {
-          childClassification: selectedCategory.childClassification,
-        }
-      );
+      await axios.post("http://localhost:3000/child/delete_child_category", {
+        childClassification: selectedCategory.childClassification,
+      });
       setopenConfirmPopUp(0);
     }
     const response = await axios.get(
-      "https://adoptconnect.onrender.com/child/get_child_category"
+      "http://localhost:3000/child/get_child_category"
     );
     setcategory(response.data.response);
   }, [openConfirmPopUp, reload]);
@@ -255,23 +285,61 @@ const FlowManagement = () => {
                                     : ""}
                                 </span>
                               </span>
-                              <span
-                                className="hover:text-slate-500 cursor-pointer p-1"
-                                onClick={() => {
-                                  seteditTaskDetails({
-                                    minorTask: true,
-                                    majorTask: false,
-                                    statement: minor.minorTaskStatement,
-                                    note: minor.minorTaskNote,
-                                    majorIndex: majorIndex,
-                                    minorIndex: minorIndex,
-                                    childClassification:
-                                      selectedCategory.childClassification,
-                                  });
-                                  setopenEditPopUp(true);
-                                }}
-                              >
-                                <FiEdit />
+                              <span className="flex">
+                                <span className="flex flex-end items-center mr-3">
+                                  {minorIndex !== 0 ? (
+                                    <span
+                                      className="p-1 mr-2 rounded-full hover:bg-slate-200 cursor-pointer"
+                                      onClick={() => {
+                                        minorTaskGoUpHandler(
+                                          major,
+                                          minor,
+                                          minorIndex,
+                                          majorIndex
+                                        );
+                                      }}
+                                    >
+                                      <AiOutlineArrowUp />
+                                    </span>
+                                  ) : (
+                                    ""
+                                  )}
+                                  {minorIndex !== major.minorTask.length - 1 ? (
+                                    <span
+                                      className="p-1 mr-2 rounded-full hover:bg-slate-200 cursor-pointer"
+                                      onClick={() =>
+                                        minorTaskGoDownHandler(
+                                          major,
+                                          minor,
+                                          minorIndex,
+                                          majorIndex
+                                        )
+                                      }
+                                    >
+                                      <AiOutlineArrowDown />
+                                    </span>
+                                  ) : (
+                                    ""
+                                  )}
+                                </span>
+                                <span
+                                  className="hover:text-slate-500 cursor-pointer p-1"
+                                  onClick={() => {
+                                    seteditTaskDetails({
+                                      minorTask: true,
+                                      majorTask: false,
+                                      statement: minor.minorTaskStatement,
+                                      note: minor.minorTaskNote,
+                                      majorIndex: majorIndex,
+                                      minorIndex: minorIndex,
+                                      childClassification:
+                                        selectedCategory.childClassification,
+                                    });
+                                    setopenEditPopUp(true);
+                                  }}
+                                >
+                                  <FiEdit />
+                                </span>
                               </span>
                             </li>
                           );

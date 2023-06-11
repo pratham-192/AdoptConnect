@@ -4,25 +4,43 @@ import { AiOutlineFieldTime } from "react-icons/ai";
 import { BiError } from "react-icons/bi";
 import { HiUserGroup } from "react-icons/hi";
 import { adminRoute } from "../Contexts/ProtectedRoute";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+} from "recharts";
 import axios from "axios";
 
 const Analytics = () => {
   const [analyticsData, setanalyticsData] = useState();
   const [caseStatusCount, setcaseStatusCount] = useState([]);
+  const [shelterHomeData, setshelterHomeData] = useState([]);
+  const [genderDistributionData, setgenderDistributionData] = useState([]);
+  const [ageDistributionData, setageDistributionData] = useState([]);
+  const [workerRatioData, setworkerRatioData] = useState([]);
+  const [childClassificationRatioData, setchildClassificationRatioData] =
+    useState([]);
 
   useEffect(async () => {
     const response = await axios.get(
-      "https://adoptconnect.onrender.com/admin/get_analytics"
+      "http://localhost:3000/admin/get_analytics"
     );
-    console.log(response.data.response);
     if (response.data) {
+      console.log(response.data.response);
       setanalyticsData(response.data.response);
-      const arr = response.data.response.ratioCaseStatus;
+      const arr = response.data.response.ratioCaseStatus.labels;
       const newArr = [];
       var inactive = 0;
       for (var i = 0; i < arr.length; i++) {
-        if (arr[i].caseStatus === "inactive") {
-          inactive = arr[i].count;
+        if (arr[i] === "inactive") {
+          inactive = response.data.response.ratioCaseStatus.values[i];
           break;
         }
       }
@@ -30,8 +48,8 @@ const Analytics = () => {
 
       var completed = 0;
       for (var i = 0; i < arr.length; i++) {
-        if (arr[i].caseStatus === "completed") {
-          completed = arr[i].count;
+        if (arr[i] === "completed") {
+          completed = response.data.response.ratioCaseStatus.values[i];
           break;
         }
       }
@@ -39,13 +57,79 @@ const Analytics = () => {
 
       var inprogress = 0;
       for (var i = 0; i < arr.length; i++) {
-        if (arr[i].caseStatus === "inprogress") {
-          inprogress = arr[i].count;
+        if (arr[i] === "inprogress") {
+          inprogress = response.data.response.ratioCaseStatus.values[i];
           break;
         }
       }
       newArr.push(inprogress);
       setcaseStatusCount([...caseStatusCount, ...newArr]);
+
+      const newshelterHomeData = [];
+      for (
+        var i = 0;
+        i < response.data.response.ShelterHomeRatio.labels.length;
+        i++
+      ) {
+        newshelterHomeData.push({
+          place: response.data.response.ShelterHomeRatio.labels[i],
+          children: response.data.response.ShelterHomeRatio.values[i],
+        });
+      }
+      setshelterHomeData(newshelterHomeData);
+
+      const newgenderDistributionData = [];
+      for (
+        var i = 0;
+        i < response.data.response.genderDistribution.labels.length;
+        i++
+      ) {
+        newgenderDistributionData.push({
+          gender: response.data.response.genderDistribution.labels[i],
+          count: response.data.response.genderDistribution.values[i],
+        });
+      }
+      setgenderDistributionData(newgenderDistributionData);
+
+      const newageDistributionData = [];
+      for (
+        var i = 0;
+        i < response.data.response.ageDistribution.labels.length;
+        i++
+      ) {
+        newageDistributionData.push({
+          age: response.data.response.ageDistribution.labels[i],
+          count: response.data.response.ageDistribution.values[i],
+        });
+      }
+      setageDistributionData(newageDistributionData);
+
+      const newworkerRatioData = [];
+      for (
+        var i = 0;
+        i < response.data.response.workerRatio.labels.length;
+        i++
+      ) {
+        newworkerRatioData.push({
+          age: response.data.response.workerRatio.labels[i],
+          count: response.data.response.workerRatio.values[i],
+        });
+      }
+      setworkerRatioData(newworkerRatioData);
+
+      const newchildClassificationData = [];
+      for (
+        var i = 0;
+        i < response.data.response.childClassificationRatio.labels.length;
+        i++
+      ) {
+        newchildClassificationData.push({
+          classification:
+            response.data.response.childClassificationRatio.labels[i],
+          count: response.data.response.childClassificationRatio.values[i],
+        });
+      }
+      setchildClassificationRatioData(newchildClassificationData);
     }
   }, []);
 
@@ -65,8 +149,8 @@ const Analytics = () => {
                 <span className="text-xl font-semibold">
                   {analyticsData &&
                     analyticsData.AdoptionSuccess &&
-                    analyticsData.AdoptionSuccess[0] &&
-                    analyticsData.AdoptionSuccess[0].totalCount}
+                    analyticsData.AdoptionSuccess &&
+                    analyticsData.AdoptionSuccess.values}
                 </span>
               </p>
               <p className="text-sm text-gray-400  mt-1">Total Cases</p>
@@ -120,13 +204,153 @@ const Analytics = () => {
           </div>
         </div>
       </div>
-
-      <div className="flex gap-10 flex-wrap justify-center">
-        <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-4 rounded-2xl md:w-780  ">
-          <div className="flex justify-between">
-            <p className="font-semibold text-xl">Revenue Updates</p>
+      <div className="flex w-full gap-10 flex-wrap justify-center">
+        <div className="bg-white w-full dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-4 rounded-2xl md:w-780  ">
+          <div className="w-full grid grid-cols-2">
+            <div>
+              <div className="flex justify-between">
+                <p className="font-semibold text-xl mb-10">Shelter Homes</p>
+              </div>
+              <div className="h-96 w-96">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    width={500}
+                    height={300}
+                    data={shelterHomeData}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="place" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="children" fill="#a74786" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between">
+                <p className="font-semibold text-xl mb-10">
+                  Gender Distribution
+                </p>
+              </div>
+              <div className="h-96 w-96">
+                <PieChart width={250} height={250}>
+                  <Pie
+                    data={genderDistributionData}
+                    cx={125}
+                    cy={125}
+                    innerRadius={60}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    paddingAngle={5}
+                    dataKey="count"
+                  ></Pie>
+                </PieChart>
+                <div className="custom-legend flex pl-20 flex-col text-slate-600">
+                  {genderDistributionData.map((entry, index) => (
+                    <div key={`legend-${index}`} className="capitalize">
+                      <span className="legend-label">{`${entry.gender} - ${entry.count}`}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
-          <div></div>
+          <div className="w-full grid grid-cols-2">
+            <div>
+              <div className="flex justify-between">
+                <p className="font-semibold text-xl mb-10">
+                  Worker Distribution
+                </p>
+              </div>
+              <div className="h-full w-full">
+                <PieChart width={250} height={250}>
+                  <Pie
+                    data={workerRatioData}
+                    cx={125}
+                    cy={125}
+                    innerRadius={60}
+                    outerRadius={80}
+                    fill="#ffc556"
+                    paddingAngle={5}
+                    dataKey="count"
+                  ></Pie>
+                </PieChart>
+                <div className="custom-legend flex pl-20 flex-col text-slate-600">
+                  {workerRatioData.map((entry, index) => (
+                    <div key={`legend-${index}`} className="capitalize">
+                      <span className="legend-label">{`${entry.age} : ${entry.count}`}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between">
+                <p className="font-semibold text-xl mb-10">Age Distribution</p>
+              </div>
+              <div className="h-96 w-96">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    width={500}
+                    height={300}
+                    data={ageDistributionData}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="age" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="count" fill="#60badd" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+          <div className="w-full grid grid-cols-1">
+            <div>
+              <div className="flex justify-between">
+                <p className="font-semibold text-xl mb-10">
+                  Child Classification
+                </p>
+              </div>
+              <div className="h-96 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    width={1000}
+                    height={300}
+                    data={childClassificationRatioData}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="classification" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="count" fill="#f6977a" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

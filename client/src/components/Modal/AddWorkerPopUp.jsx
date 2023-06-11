@@ -27,20 +27,17 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
       seterr("Please fill all the details");
       return;
     }
-    const response = await axios.post(
-      "https://adoptconnect.onrender.com/users/create",
-      {
-        user_id: userId,
-        name: userName,
-        email: userEmail,
-        password: userPass,
-        category: userCat,
-        zone: userZone,
-        address: userAddress,
-        aadharCardNo: userAadhar,
-        contactNo: userContact,
-      }
-    );
+    const response = await axios.post("http://localhost:3000/users/create", {
+      user_id: userId,
+      name: userName,
+      email: userEmail,
+      password: userPass,
+      category: userCat,
+      zone: userZone,
+      address: userAddress,
+      aadharCardNo: userAadhar,
+      contactNo: userContact,
+    });
     if (!response.data.response) {
       seterr("Error in creating the user/user already exists");
     }
@@ -48,10 +45,7 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
       const formData = new FormData();
       formData.append("file", avatar);
       formData.append("user_id", userId);
-      await axios.post(
-        "https://adoptconnect.onrender.com/users/image_upload",
-        formData
-      );
+      await axios.post("http://localhost:3000/users/image_upload", formData);
     }
     setopenAddWorker(false);
   };

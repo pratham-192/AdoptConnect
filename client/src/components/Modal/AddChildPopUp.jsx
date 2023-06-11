@@ -13,7 +13,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
   const [district, setdistrict] = useState();
   const [shelterHome, setshelterHome] = useState();
   const [linkedWithSAA, setlinkedWithSAA] = useState("yes");
-  const [childClassification, setchildClassification] = useState("abandoned");
+  const [childClassification, setchildClassification] = useState("Abandoned");
   const [inquiryDateOfAdmission, setinquiryDateOfAdmission] = useState();
   const [reasonForAdmission, setreasonForAdmission] = useState();
   const [lastVisit, setlastVisit] = useState();
@@ -42,7 +42,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
       seterr("Please fill all the details");
       return;
     }
-    await axios.post("https://adoptconnect.onrender.com/child/create_child", {
+    await axios.post("http://localhost:3000/child/create_child", {
       child_id: child_id,
       childName: childName,
       age: age,
@@ -75,16 +75,13 @@ export default function AddChildPopUp({ setopenAddchild }) {
     const formData = new FormData();
     formData.append("file", avatar);
     formData.append("child_id", child_id);
-    await axios.post(
-      "https://adoptconnect.onrender.com/child/image_upload",
-      formData
-    );
+    await axios.post("http://localhost:3000/child/image_upload", formData);
 
     const docformData = new FormData();
     docformData.append("file", extraDocument);
     docformData.append("child_id", child_id);
     await axios.post(
-      "https://adoptconnect.onrender.com/child/document/upload",
+      "http://localhost:3000/child/document/upload",
       docformData
     );
     setopenAddchild(false);
@@ -254,9 +251,9 @@ export default function AddChildPopUp({ setopenAddchild }) {
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                         onChange={(e) => setchildClassification(e.target.value)}
                       >
-                        <option value="abandoned">Abandoned</option>
-                        <option value="surrendered">Surrendered</option>
-                        <option value="abandoned-guardian">
+                        <option value="Abandoned">Abandoned</option>
+                        <option value="Surrendered">Surrendered</option>
+                        <option value="Abandoned-by-Guardian">
                           Abandoned by guardian
                         </option>
                       </select>

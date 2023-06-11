@@ -3,6 +3,7 @@ import { Header } from "../components";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { TiTick } from "react-icons/ti";
+import { protectedRoute } from "../Contexts/ProtectedRoute";
 
 const Messages = () => {
   const [allMessages, setallMessages] = useState({});
@@ -13,7 +14,7 @@ const Messages = () => {
     if (!user) return;
     if (user.category === "admin") {
       const response = await axios.post(
-        "https://adoptconnect.onrender.com/admin/message/get_message",
+        "http://localhost:3000/admin/message/get_message",
         {
           from_user_id: user._id,
         }
@@ -21,13 +22,13 @@ const Messages = () => {
       setallMessages(response.data.response);
     } else {
       const response2 = await axios.post(
-        "https://adoptconnect.onrender.com/users/all_seen",
+        "http://localhost:3000/users/all_seen",
         {
           to_user_id: user._id,
         }
       );
       const response = await axios.post(
-        "https://adoptconnect.onrender.com/users/get_messages",
+        "http://localhost:3000/users/get_messages",
         {
           to_user_id: user._id,
         }
@@ -104,4 +105,4 @@ const Messages = () => {
     </div>
   );
 };
-export default Messages;
+export default protectedRoute(Messages);

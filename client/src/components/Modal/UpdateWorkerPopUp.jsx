@@ -20,7 +20,7 @@ export default function UpdateWorkerPopUp({
   const { t } = useTranslation();
 
   const updateWorkerHandler = async () => {
-    await axios.post("https://adoptconnect.onrender.com/users/update", {
+    await axios.post("http://localhost:3000/users/update", {
       user_id: userId,
       name: userName,
       email: userEmail,
@@ -35,10 +35,7 @@ export default function UpdateWorkerPopUp({
       const formData = new FormData();
       formData.append("file", avatar);
       formData.append("user_id", userId);
-      await axios.post(
-        "https://adoptconnect.onrender.com/users/image_upload",
-        formData
-      );
+      await axios.post("http://localhost:3000/users/image_upload", formData);
       setopenupdateWorker(false);
     } else {
       setopenupdateWorker(false);
