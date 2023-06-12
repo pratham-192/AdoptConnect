@@ -12,7 +12,7 @@ load_dotenv("./.env.local")
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 # CORS
-origins = ["https://adopt-connect.vercel.app", "http://localhost"]
+origins = ["https://adopt-connect.vercel.app", "http://localhost:3000", "http://localhost:3001"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

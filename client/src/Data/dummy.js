@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiBarChart, FiUser, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
-import { BsKanban, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsDatabaseFill } from 'react-icons/bs';
+import { BsKanban, BsRobot, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsDatabaseFill } from 'react-icons/bs';
 import { IoMdContacts } from 'react-icons/io';
 import { TbDeviceDesktopAnalytics } from 'react-icons/tb'
 import { TiTick, TiFlowChildren } from 'react-icons/ti'
@@ -10,18 +10,6 @@ import { MdOutlineSupervisorAccount } from 'react-icons/md';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import { FaChild } from 'react-icons/fa'
 import { GrLocation } from 'react-icons/gr';
-import avatar from './avatar.jpg';
-import avatar2 from './avatar2.jpg';
-import avatar3 from './avatar3.png';
-import avatar4 from './avatar4.jpg';
-import product1 from './product1.jpg';
-import product2 from './product2.jpg';
-import product3 from './product3.jpg';
-import product4 from './product4.jpg';
-import product5 from './product5.jpg';
-import product6 from './product6.jpg';
-import product7 from './product7.jpg';
-import product8 from './product8.jpg';
 import { AiOutlineMessage } from 'react-icons/ai';
 
 export const gridOrderImage = (props) => (
@@ -502,6 +490,11 @@ export const links = [
       {
         name: 'progress',
         icon: <BsKanban />,
+        allowed: ["admin", "case-manager", "worker"]
+      },
+      {
+        name: 'chat-bot',
+        icon: <BsRobot />,
         allowed: ["admin", "case-manager", "worker"]
       },
       {

@@ -29,12 +29,10 @@ const Calendar = () => {
           child_id: user.alloted_children[i],
         }
       );
-      console.log(response.data.response);
       if (response.data.response != null) {
         const adoptionFlow = response.data.response.individualAdoptionFlow;
         for (var j = 0; j < adoptionFlow.majorTask.length; j++) {
           const major = adoptionFlow.majorTask[j];
-          console.log(major && major.majorTaskStatus);
           if (major && major.majorTaskStatus === 1) {
             newscheduleData.push({
               Id: major._id,
@@ -50,7 +48,6 @@ const Calendar = () => {
         }
       }
     }
-    console.log(newscheduleData);
     setscheduleData(newscheduleData);
   }, []);
 

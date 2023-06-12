@@ -4,9 +4,38 @@ Deployed Website
 
 # What problem do we solve?
 
-# Description
+Bal Asha is having trouble scaling and handling the adoption process for every child in the spotlight. It's difficult to give one employee the responsibility of managing every distinct adoption case. The existing method is not scalable and makes it challenging to ensure that each kid receives a thorough adoption process. This difficulty makes it difficult for Bal Asha to manage the growing number of youngsters in need of adoption.
 
-# How to run
+# Features
+
+- Created an offline- and online-compatible smartphone app for seamless accessibility.
+
+- Integrated many languages to guarantee inclusivity and usability for a range of users.
+
+- Added upload/download functionality to enable effective document management during the adoption process.
+
+- Made a responsive website and mobile application for both android and ios that are simple to use and operates across all platforms.
+
+- User IDs and passwords are automatically emailed for easy sign-up and login procedures.
+
+- A notification system for efficient communication among personnel at different levels of the hierarchy was established. 
+
+
+## For Workers -
+- A customizable note-taking function for each child to record pertinent facts and development.
+- A calendar tool was implemented to better coordinate tasks and schedules. 
+- Volunteer can access current tasks, completed tasks and upcoming tasks for all the allocated children
+- Parallel tasks can be performed independently and serial tasks to be performed in order.
+- Volunteer can upload/download documents related to child allocated to them.
+- Developed a child missing report for the media to utilise in the search for missing children.
+
+## For Admin/Case Manager-
+- New Workers and child cases can be added and edited.
+- Tailored the adoption procedure for each category of child.
+- Automated bulk data download and upload as CSV files for improved data management.
+- A data visualisation and informed decision-making admin analytics page was developed. 
+
+# How to run Web Application
 
 ## Step 1
 
