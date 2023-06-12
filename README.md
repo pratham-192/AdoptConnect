@@ -39,7 +39,7 @@ Bal Asha is having trouble scaling and handling the adoption process for every c
 
 ## Step 1
 
-Clone the repo using\
+Clone the repo using
 ```
 git clone https://github.com/pratham-192/AdoptConnect
 ```
@@ -72,3 +72,44 @@ npm run start
 
 ## Step 5
 Visit the localhost:3001 for accesing the web application
+
+# How to run Mobile Application
+
+### Prerequisites
+
+Flutter SDK: Make sure you have Flutter SDK installed. You can download it from the official Flutter website: [https://flutter.dev](https://flutter.dev)
+
+## Step 1
+Clone the repo using
+```
+git clone https://github.com/pratham-192/AdoptConnect
+```
+
+## Step 2
+Go to the cloned repository using
+```
+cd AdoptConnect
+```
+
+## Step 3
+Start the backend server by going to server directory and start it
+```
+cd server
+
+npm i
+
+node index.js
+```
+
+## Step 4
+Start the mobile app by going into adoptconnect_app folder and run it. Make sure to connect either an emulator or a physical device
+```
+cd adoptconnect_app
+
+flutter pub get
+
+flutter run
+```
+
+## Step 5
+You can now access the mobile app on your emulator/physical device
