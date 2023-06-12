@@ -80,13 +80,13 @@ Visit the localhost:3001 for accesing the web application
 Flutter SDK: Make sure you have Flutter SDK installed. You can download it from the official Flutter website: [https://flutter.dev](https://flutter.dev)
 
 ## Step 1
-Clone the repo using
+Clone the repo
 ```
 git clone https://github.com/pratham-192/AdoptConnect
 ```
 
 ## Step 2
-Go to the cloned repository using
+Go to the cloned repository
 ```
 cd AdoptConnect
 ```
