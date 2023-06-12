@@ -127,11 +127,6 @@ class ChildService {
       http.Response childRes =
           await http.post(Uri.parse("$uri/child/create_child"), body: body);
 
-      var childObj = jsonDecode(childRes.body)["response"];
-      childObj["avatar"] = {"data": child.avatar["data"].readAsBytesSync()};
-      childObj["uploaded_documents"] = [];
-      Child newChild = Child.fromJson(jsonEncode(childObj));
-
       httpErrorHandle(
           response: childRes,
           context: context,
@@ -151,8 +146,6 @@ class ChildService {
             }
 
             await Future.wait(uploadTasks);
-            // Provider.of<CasesProvider>(context, listen: false)
-            //     .addChild(newChild);
             if (Navigator.canPop(context)) Navigator.pop(context);
           },
           errorText: "Error in Adding Child");
@@ -255,10 +248,12 @@ class ChildService {
             await Future.wait(uploadTasks);
             Provider.of<CasesProvider>(context, listen: false)
                 .editChild(child.childId, newChild);
-            APICacheDBModel cacheDBModel = APICacheDBModel(
-                key: "cases",
-                syncData: jsonEncode(
-                    Provider.of<CasesProvider>(context, listen: false).cases));
+            var cases = Provider.of<CasesProvider>(context, listen: false)
+                .cases
+                .map((cas) => cas.toMap())
+                .toList();
+            APICacheDBModel cacheDBModel =
+                APICacheDBModel(key: "cases", syncData: jsonEncode(cases));
             await APICacheManager().addCacheData(cacheDBModel);
             if (Navigator.canPop(context)) Navigator.pop(context);
           },

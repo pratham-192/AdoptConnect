@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// String uri = "http://192.168.0.4:3000";
 String uri = "https://adoptconnect.onrender.com";
 BuildContext? globalContext;
 class GlobalVariables {

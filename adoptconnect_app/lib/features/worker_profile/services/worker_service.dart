@@ -88,6 +88,27 @@ class WorkerService {
           Provider.of<UserProvider>(context, listen: false)
               .setUser(jsonEncode(userObj));
           await prefs.setString('user', jsonEncode(userObj));
+
+          Map<String, dynamic> avatarImage = avatar;
+          bool avatarChanged = false;
+          if (avatar["data"] != null && avatar["data"] is File) {
+            avatarImage = {"data": avatar["data"].path};
+            avatarChanged = true;
+          }
+
+          APICacheDBModel cacheDBModel = APICacheDBModel(
+            key: "worker",
+            syncData: jsonEncode({
+              "userId": userId,
+              "name": name,
+              "email": email,
+              "avatar": avatarImage,
+              "user": user.toJson(),
+              "avatarChanged": avatarChanged,
+            }),
+          );
+          await APICacheManager().addCacheData(cacheDBModel);
+          startInternetSubscription();
         },
         errorText: "Error in updating worker profile",
       );
