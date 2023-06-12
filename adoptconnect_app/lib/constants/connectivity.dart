@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 import 'package:adoptconnect_app/constants/utils.dart';
 import 'package:adoptconnect_app/features/child_cases/services/child_service.dart';
 import 'package:adoptconnect_app/features/worker_profile/services/worker_service.dart';
@@ -53,7 +52,7 @@ void syncData() async {
   }
 
   // Internet available, Perform all write operations
-  print("SYNCING");
+  // print("SYNCING");
   syncAddChild(context: globalContext);
   syncEditChild(context: globalContext);
   syncWorker(context: globalContext);
