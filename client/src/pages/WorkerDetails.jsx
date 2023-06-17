@@ -23,14 +23,14 @@ const WorkerDetails = () => {
 
   useEffect(async () => {
     const response = await axios.post(
-      "http://localhost:3000/users/getworker",
+      "https://adoptconnect.onrender.com/users/getworker",
       {
         user_id: workerId,
       }
     );
     setworkerDetails(response.data.response);
     const response2 = await axios.post(
-      "http://localhost:3000/users/get_image",
+      "https://adoptconnect.onrender.com/users/get_image",
       {
         user_id: workerId,
       }

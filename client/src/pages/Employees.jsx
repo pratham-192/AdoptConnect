@@ -25,12 +25,12 @@ const Employees = () => {
   useEffect(async () => {
     if (user && user.category === "admin") {
       const response = await axios.get(
-        "http://localhost:3000/admin/all_admin2"
+        "https://adoptconnect.onrender.com/admin/all_admin2"
       );
       setworkerData(response.data.response);
     } else {
       const response = await axios.get(
-        "http://localhost:3000/admin/all_workers2"
+        "https://adoptconnect.onrender.com/admin/all_workers2"
       );
       setworkerData(response.data.response);
     }

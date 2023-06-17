@@ -26,11 +26,11 @@ const EditProfile = () => {
       formData.append("file", avatar);
       formData.append("user_id", userId);
       await axios.post(
-        "http://localhost:3000/users/image_upload",
+        "https://adoptconnect.onrender.com/users/image_upload",
         formData
       );
       const response = await axios.post(
-        "http://localhost:3000/users/update",
+        "https://adoptconnect.onrender.com/users/update",
         {
           user_id: userId,
           name: userName,
@@ -52,7 +52,7 @@ const EditProfile = () => {
       }
     } else {
       const response = await axios.post(
-        "http://localhost:3000/users/update",
+        "https://adoptconnect.onrender.com/users/update",
         {
           user_id: userId,
           name: userName,

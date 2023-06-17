@@ -14,7 +14,7 @@ function Login() {
 
   const forgotPasswordHandler = async () => {
     const response = await axios.post(
-      `http://localhost:3000/users/reset_password`,
+      `https://adoptconnect.onrender.com/users/reset_password`,
       {
         user_id: userid,
       }

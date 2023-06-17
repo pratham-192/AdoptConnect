@@ -17,7 +17,7 @@ export default function EditFlowPopUp({
   const saveTaskHandler = async () => {
     if (editTaskDetails.minorTask) {
       await axios.post(
-        "http://localhost:3000/admin/adoption_flow/minor/update",
+        "https://adoptconnect.onrender.com/admin/adoption_flow/minor/update",
         {
           childClassification: editTaskDetails.childClassification,
           minorTaskStatement: taskStatement,
@@ -31,7 +31,7 @@ export default function EditFlowPopUp({
     }
     if (editTaskDetails.majorTask) {
       await axios.post(
-        "http://localhost:3000/admin/adoption_flow/major/update",
+        "https://adoptconnect.onrender.com/admin/adoption_flow/major/update",
         {
           childClassification: editTaskDetails.childClassification,
           majorTaskStatement: taskStatement,
@@ -48,7 +48,7 @@ export default function EditFlowPopUp({
   const deleteTaskHandler = async () => {
     if (editTaskDetails.minorTask) {
       await axios.post(
-        "http://localhost:3000/admin/adoption_flow/minor/delete",
+        "https://adoptconnect.onrender.com/admin/adoption_flow/minor/delete",
         {
           childClassification: editTaskDetails.childClassification,
           majorTaskPosition: editTaskDetails.majorIndex,
@@ -60,7 +60,7 @@ export default function EditFlowPopUp({
     }
     if (editTaskDetails.majorTask) {
       await axios.post(
-        "http://localhost:3000/admin/adoption_flow/major/delete",
+        "https://adoptconnect.onrender.com/admin/adoption_flow/major/delete",
         {
           childClassification: editTaskDetails.childClassification,
           deletePosition: editTaskDetails.majorIndex,

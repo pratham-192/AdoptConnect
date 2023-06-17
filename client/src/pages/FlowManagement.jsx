@@ -41,7 +41,7 @@ const FlowManagement = () => {
       return;
     }
     await axios.post(
-      "http://localhost:3000/admin/adoption_flow/major/create",
+      "https://adoptconnect.onrender.com/admin/adoption_flow/major/create",
       {
         childClassification: selectedCategory.childClassification,
         majorTaskPosition: parseInt(majorTaskPosition) + 1,
@@ -62,7 +62,7 @@ const FlowManagement = () => {
       return;
     }
     await axios.post(
-      "http://localhost:3000/admin/adoption_flow/minor/create",
+      "https://adoptconnect.onrender.com/admin/adoption_flow/minor/create",
       {
         childClassification: selectedCategory.childClassification,
         majorTaskPosition: majorTaskPosition,
@@ -81,7 +81,7 @@ const FlowManagement = () => {
 
   const addCategoryHandler = async () => {
     await axios.post(
-      "http://localhost:3000/child/create_child_category",
+      "https://adoptconnect.onrender.com/child/create_child_category",
       {
         childClassification: newCategory,
       }
@@ -92,7 +92,7 @@ const FlowManagement = () => {
 
   const changeCategory = async (childClassification) => {
     const response = await axios.post(
-      "http://localhost:3000/admin/adoption_flow/curr_flow",
+      "https://adoptconnect.onrender.com/admin/adoption_flow/curr_flow",
       {
         childClassification: childClassification,
       }
@@ -109,7 +109,7 @@ const FlowManagement = () => {
     majorIndex
   ) => {
     await axios.post(
-      "http://localhost:3000/admin/adoption_flow/minor/delete",
+      "https://adoptconnect.onrender.com/admin/adoption_flow/minor/delete",
       {
         childClassification: selectedCategory.childClassification,
         majorTaskPosition: majorIndex,
@@ -117,7 +117,7 @@ const FlowManagement = () => {
       }
     );
     await axios.post(
-      "http://localhost:3000/admin/adoption_flow/minor/create",
+      "https://adoptconnect.onrender.com/admin/adoption_flow/minor/create",
       {
         childClassification: selectedCategory.childClassification,
         majorTaskPosition: majorIndex,
@@ -131,7 +131,7 @@ const FlowManagement = () => {
 
   const minorTaskGoUpHandler = async (major, minor, minorIndex, majorIndex) => {
     await axios.post(
-      "http://localhost:3000/admin/adoption_flow/minor/delete",
+      "https://adoptconnect.onrender.com/admin/adoption_flow/minor/delete",
       {
         childClassification: selectedCategory.childClassification,
         majorTaskPosition: majorIndex,
@@ -139,7 +139,7 @@ const FlowManagement = () => {
       }
     );
     await axios.post(
-      "http://localhost:3000/admin/adoption_flow/minor/create",
+      "https://adoptconnect.onrender.com/admin/adoption_flow/minor/create",
       {
         childClassification: selectedCategory.childClassification,
         majorTaskPosition: majorIndex,
@@ -154,7 +154,7 @@ const FlowManagement = () => {
   useEffect(async () => {
     if (openConfirmPopUp == 1) {
       await axios.post(
-        "http://localhost:3000/child/delete_child_category",
+        "https://adoptconnect.onrender.com/child/delete_child_category",
         {
           childClassification: selectedCategory.childClassification,
         }
@@ -162,7 +162,7 @@ const FlowManagement = () => {
       setopenConfirmPopUp(0);
     }
     const response = await axios.get(
-      "http://localhost:3000/child/get_child_category"
+      "https://adoptconnect.onrender.com/child/get_child_category"
     );
     setcategory(response.data.response);
   }, [openConfirmPopUp, reload]);
