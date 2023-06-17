@@ -24,7 +24,7 @@ const Kanban = () => {
       const currAdoptionflow = currentChild.majorTask;
       currAdoptionflow[currentChild.currMajorTask].minorTask = grid.kanbanData;
       const response = await axios.post(
-        "https://adoptconnect.onrender.com/child/status_update",
+        "http://localhost:3000/child/status_update",
         {
           child_id: selectedChild,
           statusObject: currAdoptionflow,
@@ -42,7 +42,7 @@ const Kanban = () => {
     const majorAdoptionFlow = currentChild.majorTask;
     majorAdoptionFlow[currentChild.currMajorTask] = newmajorAdoptionFlow;
     const response = await axios.post(
-      "https://adoptconnect.onrender.com/child/status_update",
+      "http://localhost:3000/child/status_update",
       {
         child_id: selectedChild,
         statusObject: majorAdoptionFlow,
@@ -54,7 +54,7 @@ const Kanban = () => {
 
   const getcurrentChildHandler = async (child_id) => {
     const response = await axios.post(
-      "https://adoptconnect.onrender.com/child/getchild",
+      "http://localhost:3000/child/getchild",
       {
         child_id: child_id,
       }
@@ -69,7 +69,7 @@ const Kanban = () => {
 
   const updateChildNoteHandler = async () => {
     const response = await axios.post(
-      "https://adoptconnect.onrender.com/child/upload_childnote",
+      "http://localhost:3000/child/upload_childnote",
       {
         child_id: selectedChild,
         note: childNote,
@@ -81,12 +81,12 @@ const Kanban = () => {
     if (!user) return;
     if (user.category === "admin") {
       const response = await axios.get(
-        "https://adoptconnect.onrender.com/admin/all_child"
+        "http://localhost:3000/admin/all_child"
       );
       setchildData(response.data.response);
     } else {
       const response = await axios.post(
-        "https://adoptconnect.onrender.com/users/get_allocated_children",
+        "http://localhost:3000/users/get_allocated_children",
         {
           user_id: user.user_id,
         }

@@ -80,6 +80,7 @@ const ChatBot = () => {
                               );
                           })
                         : ""}
+
                       {messageSent ? (
                         <div className="col-start-6 col-end-13 p-3 rounded-lg">
                           <div className="flex items-center justify-start flex-row-reverse">
@@ -88,6 +89,19 @@ const ChatBot = () => {
                             </div>
                           </div>
                         </div>
+                        
+                      ) : (
+                        ""
+                      )}
+                      {messageSent ? (
+                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
+                        <div className="flex flex-row items-center">
+                          <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                            <div>...</div>
+                          </div>
+                        </div>
+                      </div>
+                        
                       ) : (
                         ""
                       )}

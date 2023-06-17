@@ -13,7 +13,7 @@ const ChildAlloted = () => {
   useEffect(async () => {
     if (!user) return;
     const response = await axios.post(
-      "https://adoptconnect.onrender.com/users/get_allocated_children",
+      "http://localhost:3000/users/get_allocated_children",
       {
         user_id: user.user_id,
       }

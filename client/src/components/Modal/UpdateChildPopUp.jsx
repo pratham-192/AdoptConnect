@@ -55,7 +55,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
   const { t } = useTranslation();
 
   const updatechildHandler = async () => {
-    await axios.post("https://adoptconnect.onrender.com/child/update_child", {
+    await axios.post("http://localhost:3000/child/update_child", {
       ...childDetails,
       child_id: child_id,
       childName: childName,
@@ -88,7 +88,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
       formData.append("file", avatar);
       formData.append("child_id", childDetails.child_id);
       await axios.post(
-        "https://adoptconnect.onrender.com/child/image_upload",
+        "http://localhost:3000/child/image_upload",
         formData
       );
       setopenEditDetails(false);
@@ -98,7 +98,7 @@ export default function UpdateChildPopUp({ childDetails, setopenEditDetails }) {
       formData.append("file", extraDocument);
       formData.append("child_id", childDetails.child_id);
       await axios.post(
-        "https://adoptconnect.onrender.com/child/document/upload",
+        "http://localhost:3000/child/document/upload",
         formData
       );
       setopenEditDetails(false);

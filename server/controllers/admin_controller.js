@@ -14,6 +14,20 @@ module.exports.getAllAdmin = async function (req, res) {
         return res.status(200).send("error in sending all admins");
     }
 }
+
+module.exports.getAllAdmin2 = async function (req, res) {
+  try {
+      let allworkers = await User.find({}).select('user_id name category email')
+
+      // allworkers.populate('alloted_children')
+      res.status(200).json({
+          response: allworkers
+      })
+  } catch (err) {
+      res.status(200).send("error in finding all workers");
+  }
+
+}
 module.exports.getAllWorkers = async function (req, res) {
     try {
         let allworkers = await User.find({ category: "worker" }).populate('alloted_children');

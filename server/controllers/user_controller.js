@@ -56,7 +56,7 @@ module.exports.create = async function (req, res) {
                 contactNo: req.body.contactNo
             });
 
-            await axios.post('https://adoptconnect.onrender.com/users/sendmail', {
+            await axios.post('http://localhost:3000/users/sendmail', {
                 password: req.body.password,
                 name: req.body.name,
                 email: req.body.email,

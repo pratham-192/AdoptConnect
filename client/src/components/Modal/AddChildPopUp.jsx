@@ -42,7 +42,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
       seterr("Please fill all the details");
       return;
     }
-    await axios.post("https://adoptconnect.onrender.com/child/create_child", {
+    await axios.post("http://localhost:3000/child/create_child", {
       child_id: child_id,
       childName: childName,
       age: age,
@@ -76,7 +76,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
     formData.append("file", avatar);
     formData.append("child_id", child_id);
     await axios.post(
-      "https://adoptconnect.onrender.com/child/image_upload",
+      "http://localhost:3000/child/image_upload",
       formData
     );
 
@@ -84,7 +84,7 @@ export default function AddChildPopUp({ setopenAddchild }) {
     docformData.append("file", extraDocument);
     docformData.append("child_id", child_id);
     await axios.post(
-      "https://adoptconnect.onrender.com/child/document/upload",
+      "http://localhost:3000/child/document/upload",
       docformData
     );
     setopenAddchild(false);

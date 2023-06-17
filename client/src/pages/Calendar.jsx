@@ -24,7 +24,7 @@ const Calendar = () => {
     const newscheduleData = [];
     for (var i = 0; i < user.alloted_children.length; i++) {
       const response = await axios.post(
-        "https://adoptconnect.onrender.com/child/get_flow_child",
+        "http://localhost:3000/child/get_flow_child",
         {
           child_id: user.alloted_children[i],
         }

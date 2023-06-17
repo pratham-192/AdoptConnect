@@ -28,7 +28,7 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
       return;
     }
     const response = await axios.post(
-      "https://adoptconnect.onrender.com/users/create",
+      "http://localhost:3000/users/create",
       {
         user_id: userId,
         name: userName,
@@ -49,7 +49,7 @@ export default function AddWorkerPopUp({ setopenAddWorker }) {
       formData.append("file", avatar);
       formData.append("user_id", userId);
       await axios.post(
-        "https://adoptconnect.onrender.com/users/image_upload",
+        "http://localhost:3000/users/image_upload",
         formData
       );
     }

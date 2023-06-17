@@ -495,7 +495,7 @@ export const links = [
       {
         name: 'chat-bot',
         icon: <BsRobot />,
-        allowed: ["admin", "case-manager", "worker"]
+        allowed: ["case-manager", "worker"]
       },
       {
         name: 'calendar',
@@ -505,7 +505,7 @@ export const links = [
       {
         name: 'flow-management',
         icon: <TiFlowChildren />,
-        allowed: ["admin", "case-manager"]
+        allowed: ["admin"]
       },
       {
         name: "manage-data",

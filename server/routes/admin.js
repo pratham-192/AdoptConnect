@@ -4,6 +4,8 @@ const passport=require('passport');
 //adding controller
 const adminController=require('../controllers/admin_controller');
 router.get('/all_admin',adminController.getAllAdmin);
+router.get('/all_admin2',adminController.getAllAdmin2);
+
 router.get('/all_workers',adminController.getAllWorkers);
 router.get('/all_child',adminController.getAllChild);
 router.get('/all_child2',adminController.getAllChild2);
